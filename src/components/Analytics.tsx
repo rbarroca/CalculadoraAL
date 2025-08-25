@@ -53,7 +53,7 @@ const Analytics = () => {
   useEffect(() => {
     // Track page view
     if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('config', 'GA_MEASUREMENT_ID', {
+      window.gtag('config', 'G-KVZD0XY5X4', {
         page_title: 'Calculadora de Alojamento Local',
         page_location: window.location.href
       });
