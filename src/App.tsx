@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Calculator, TrendingUp, Home, DollarSign, PieChart, HelpCircle, ChevronDown, ChevronUp, MapPin, Calendar, Users, Percent } from 'lucide-react';
+import Analytics, { trackCalculation, trackLocationChange, trackFAQOpen, trackCTAClick } from './components/Analytics';
 
 interface CalculatorData {
   location: string;
@@ -134,6 +135,15 @@ function App() {
   const handleCalculate = () => {
     const calculatedResult = calculateProfitability();
     setResult(calculatedResult);
+    
+    // Track calculation event
+    trackCalculation({
+      location: data.location,
+      pricePerNight: data.pricePerNight,
+      occupancyRate: data.occupancyRate,
+      monthlyProfit: calculatedResult.netMonthlyProfit,
+      alAdvantage: calculatedResult.alAdvantage
+    });
   };
 
   useEffect(() => {
@@ -142,6 +152,7 @@ function App() {
 
   const handleLocationChange = (location: string) => {
     const selectedLocation = locations.find(loc => loc.value === location);
+    trackLocationChange(location);
     setData(prev => ({
       ...prev,
       location,
@@ -151,6 +162,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <Analytics />
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -551,6 +563,7 @@ function App() {
               <div key={index} className="p-6">
                 <button
                   onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
+                  onClickCapture={() => openFAQ !== index && trackFAQOpen(faq.question)}
                   className="w-full text-left flex items-center justify-between gap-4"
                 >
                   <h3 className="font-semibold text-gray-900 flex-1">{faq.question}</h3>
@@ -581,6 +594,7 @@ function App() {
           
           <button
             onClick={() => {
+              trackCTAClick('scroll_to_calculator');
               document.querySelector('.bg-white.rounded-xl.shadow-lg.p-6')?.scrollIntoView({ 
                 behavior: 'smooth' 
               });
