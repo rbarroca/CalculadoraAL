@@ -65,6 +65,11 @@ const faqData = [
   }
 ];
 
+// Helper function to handle input focus and selection
+const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+  // Select all text when input is focused
+  e.target.select();
+};
 function App() {
   const [data, setData] = useState<CalculatorData>({
     location: 'lisboa',
@@ -240,6 +245,7 @@ function App() {
                     type="number"
                     value={data.pricePerNight}
                     onChange={(e) => setData(prev => ({ ...prev, pricePerNight: Number(e.target.value) }))}
+                    onFocus={handleInputFocus}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     min="0"
                   />
@@ -255,6 +261,7 @@ function App() {
                     type="number"
                     value={data.occupancyRate}
                     onChange={(e) => setData(prev => ({ ...prev, occupancyRate: Number(e.target.value) }))}
+                    onFocus={handleInputFocus}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     min="0"
                     max="100"
@@ -275,6 +282,7 @@ function App() {
                         type="number"
                         value={data.cleaningFee}
                         onChange={(e) => setData(prev => ({ ...prev, cleaningFee: Number(e.target.value) }))}
+                        onFocus={handleInputFocus}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         min="0"
                       />
@@ -288,6 +296,7 @@ function App() {
                         type="number"
                         value={data.maintenanceCosts}
                         onChange={(e) => setData(prev => ({ ...prev, maintenanceCosts: Number(e.target.value) }))}
+                        onFocus={handleInputFocus}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         min="0"
                       />
@@ -302,6 +311,7 @@ function App() {
                         type="number"
                         value={data.platformCommission}
                         onChange={(e) => setData(prev => ({ ...prev, platformCommission: Number(e.target.value) }))}
+                        onFocus={handleInputFocus}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         min="0"
                         max="30"
@@ -316,6 +326,7 @@ function App() {
                         type="number"
                         value={data.insurance}
                         onChange={(e) => setData(prev => ({ ...prev, insurance: Number(e.target.value) }))}
+                        onFocus={handleInputFocus}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         min="0"
                       />
@@ -330,6 +341,7 @@ function App() {
                       type="number"
                       value={data.utilities}
                       onChange={(e) => setData(prev => ({ ...prev, utilities: Number(e.target.value) }))}
+                      onFocus={handleInputFocus}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       min="0"
                     />
@@ -345,6 +357,7 @@ function App() {
                     type="number"
                     value={data.traditionalRent}
                     onChange={(e) => setData(prev => ({ ...prev, traditionalRent: Number(e.target.value) }))}
+                    onFocus={handleInputFocus}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     min="0"
                   />
