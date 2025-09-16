@@ -67,8 +67,11 @@ const faqData = [
 
 // Helper function to handle input focus and selection
 const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-  // Select all text when input is focused
-  e.target.select();
+  // Position cursor at the end of the input
+  const input = e.target;
+  setTimeout(() => {
+    input.setSelectionRange(input.value.length, input.value.length);
+  }, 0);
 };
 function App() {
   const [data, setData] = useState<CalculatorData>({
