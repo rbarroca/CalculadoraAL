@@ -434,7 +434,7 @@ function App() {
 
                       <div className="bg-blue-50 rounded-lg p-4">
                         <div className="flex justify-between items-center mb-2">
-                          <span className="text-sm text-gray-600">Ponto de Equilíbrio:</span>
+                          <span className="text-sm text-gray-600 font-bold">Ponto de Equilíbrio:</span>
                           <span className="font-semibold text-blue-600">{result.breakEvenDays} dias/mês</span>
                         </div>
                         <p className="text-sm text-gray-700">
@@ -444,7 +444,7 @@ function App() {
 
                       <div className="bg-green-50 rounded-lg p-4">
                         <div className="flex justify-between items-center mb-2">
-                          <span className="text-sm text-gray-600">Taxa de Ocupação Atual:</span>
+                          <span className="text-sm text-gray-600 font-bold">Taxa de Ocupação Atual:</span>
                           <span className="font-semibold text-green-600">{data.occupancyRate}%</span>
                         </div>
                         <p className="text-sm text-gray-700">
