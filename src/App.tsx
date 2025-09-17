@@ -355,8 +355,9 @@ function App() {
                   </label>
                   <input
                     type="number"
-                    value={data.traditionalRent}
-                    onChange={(e) => setData(prev => ({ ...prev, traditionalRent: Number(e.target.value) }))}
+                    value={data.traditionalRent === 0 ? '' : data.traditionalRent}
+                    onChange={(e) => handleNumberInputChange('traditionalRent', e.target.value)}
+                    onBlur={(e) => handleNumberInputBlur('traditionalRent', e.target.value)}
                     onFocus={handleInputFocus}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     min="0"
