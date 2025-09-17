@@ -419,7 +419,7 @@ function App() {
                     <div className="space-y-4">
                       <div className="bg-gray-50 rounded-lg p-4">
                         <div className="flex justify-between items-center mb-2">
-                          <span className="text-sm text-gray-600">AL vs Arrendamento:</span>
+                          <span className="text-sm text-gray-600 font-bold">AL vs Arrendamento:</span>
                           <span className={`font-semibold ${result.alAdvantage > 0 ? 'text-green-600' : 'text-red-600'}`}>
                             {result.alAdvantage > 0 ? '+' : ''}{result.alAdvantage.toFixed(1)}%
                           </span>
