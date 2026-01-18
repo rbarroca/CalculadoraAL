@@ -38,8 +38,8 @@ export default function CalculatorForm({
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-5 gap-8 items-start">
-        <div className="lg:col-span-2">
+      <div className="grid lg:grid-cols-12 gap-8 items-start">
+        <div className="lg:col-span-5">
           <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm hover:shadow-md transition-shadow">
             <h3 className="text-lg font-bold text-gray-900 mb-8">Dados do Imóvel</h3>
 
@@ -204,7 +204,7 @@ export default function CalculatorForm({
           </div>
         </div>
 
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-7">
           {result && (
             <div className="space-y-6">
               <div className="bg-gradient-to-br from-orange-500 via-red-500 to-red-600 rounded-2xl p-8 text-white shadow-lg">
