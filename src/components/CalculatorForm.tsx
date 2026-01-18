@@ -206,7 +206,7 @@ export default function CalculatorForm({
 
         <div className="lg:col-span-7">
           {result && (
-            <div className="space-y-8">
+            <div className="space-y-8 lg:sticky lg:top-24">
               <div className="bg-gradient-to-br from-orange-500 via-red-500 to-red-600 rounded-2xl p-10 text-white shadow-lg">
                 <h3 className="text-xl font-bold mb-8 tracking-tight">Resultados da Simulação</h3>
 
