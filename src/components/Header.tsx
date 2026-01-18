@@ -14,7 +14,7 @@ export default function Header() {
             </svg>
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">AL Calculator</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Calculadora de Alojamento Local</h1>
             <p className="text-sm text-gray-600 font-medium">Simulador de Rentabilidade</p>
           </div>
         </div>

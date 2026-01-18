@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-3 gap-12 mb-8">
           <div>
-            <h3 className="text-white font-bold mb-4">AL Calculator</h3>
+            <h3 className="text-white font-bold mb-4">Calculadora de Alojamento Local</h3>
             <p className="text-sm leading-relaxed">
               A ferramenta mais completa para simular a rentabilidade do seu alojamento local em Portugal.
             </p>
@@ -33,7 +33,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 pt-8 text-center text-sm">
           <p>
-            © {currentYear} AL Calculator. Simulações baseadas em dados médios do mercado. Todos os direitos reservados.
+            © {currentYear} Calculadora de Alojamento Local. Simulações baseadas em dados médios do mercado. Todos os direitos reservados.
           </p>
         </div>
       </div>
