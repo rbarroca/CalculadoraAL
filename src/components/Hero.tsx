@@ -7,10 +7,10 @@ export default function Hero() {
         <div className="flex justify-center">
           <div className="text-center lg:text-left max-w-2xl">
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-              Maximize a Rentabilidade do Seu Alojamento Local
+              Descubra o Potencial do Seu Imóvel
             </h2>
             <p className="text-xl text-gray-600 leading-relaxed mb-8 font-light">
-              Calcule com precisão as receitas, custos operacionais e margem de lucro do seu alojamento local. Obtenha uma análise comparativa detalhada com o arrendamento tradicional e descubra qual opção oferece o melhor retorno para o seu investimento imobiliário.
+              Simule receitas, custos e lucros do seu alojamento local em Portugal. Compare com arrendamento tradicional e tome decisões informadas sobre o seu investimento.
             </p>
             <div className="flex flex-wrap justify-center lg:justify-start gap-4">
               <div className="flex items-center gap-2 text-gray-700">
