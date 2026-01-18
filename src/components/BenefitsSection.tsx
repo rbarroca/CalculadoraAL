@@ -29,7 +29,7 @@ const benefits = [
 
 export default function BenefitsSection() {
   return (
-    <section className="py-16 lg:py-20 bg-gradient-to-b from-white via-gray-50 to-white">
+    <section className="py-16 lg:py-20 bg-white">
       <div className="text-center mb-12">
         <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
           Vantagens da Simulação
