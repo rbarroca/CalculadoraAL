@@ -28,12 +28,27 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="dns-prefetch" href="https://www.google-analytics.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Optimized font loading - defer to prevent render blocking -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+
+    <script>
+      /* Polyfill for browsers that don't support onload on link */
+      !function(e){"use strict";var t=function(t,n,r){var o,i=e.document,a=i.createElement("link");if(n)o=n;else{var l=(i.body||i.getElementsByTagName("head")[0]).childNodes;o=l[l.length-1]}var s=i.styleSheets;a.rel="stylesheet",a.href=t,a.media="only x",function e(t){if(i.body)return t();setTimeout(function(){e(t)})}(function(){o.parentNode.insertBefore(a,n?o:o.nextSibling)});var d=function(e){for(var t=a.href,n=s.length;n--;)if(s[n].href===t)return e();setTimeout(function(){d(e)})};return a.addEventListener&&a.addEventListener("load",r),a.onloadcssdefined=d,d(r),a};"undefined"!=typeof exports?exports.loadCSS=t:e.loadCSS=t}("undefined"!=typeof global?global:this);
+    </script>
 
     <style>
+      /* System font stack for instant text rendering */
       body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+      }
+
+      /* Inter will load and swap in asynchronously */
+      .fonts-loaded body {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
       }
+
       .skip-link {
         position: absolute;
         top: -40px;
@@ -50,13 +65,37 @@
       }
     </style>
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KVZD0XY5X4"></script>
+    <!-- Font loading script -->
+    <script>
+      (function() {
+        if ('fonts' in document) {
+          Promise.all([
+            document.fonts.load('400 1em Inter'),
+            document.fonts.load('500 1em Inter'),
+            document.fonts.load('600 1em Inter'),
+            document.fonts.load('700 1em Inter'),
+            document.fonts.load('800 1em Inter')
+          ]).then(function() {
+            document.documentElement.classList.add('fonts-loaded');
+          });
+        }
+      })();
+    </script>
+
+    <!-- Google Analytics - Deferred for performance -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-KVZD0XY5X4');
+
+      // Load GA script after page load
+      window.addEventListener('load', function() {
+        var script = document.createElement('script');
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-KVZD0XY5X4';
+        script.async = true;
+        document.head.appendChild(script);
+      });
     </script>
   </head>
   <body>
