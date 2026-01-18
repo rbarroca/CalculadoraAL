@@ -60,9 +60,11 @@ export default function FAQSection({ trackFAQOpen }: FAQSectionProps) {
               <button
                 onClick={() => toggleFAQ(index)}
                 className="w-full px-10 py-7 flex items-center justify-between hover:bg-gray-50 transition-colors text-left"
+                aria-expanded={openIndex === index}
+                aria-controls={`faq-answer-${index}`}
               >
                 <h3 className="text-lg font-bold text-gray-900 pr-6 flex-1 tracking-tight">{faq.question}</h3>
-                <div className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-orange-100">
+                <div className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-orange-100" aria-hidden="true">
                   {openIndex === index ? (
                     <ChevronUp className="h-5 w-5 text-orange-600" />
                   ) : (
@@ -72,7 +74,11 @@ export default function FAQSection({ trackFAQOpen }: FAQSectionProps) {
               </button>
 
               {openIndex === index && (
-                <div className="px-10 py-7 bg-gray-50 border-t border-gray-200 animate-in fade-in duration-200">
+                <div
+                  id={`faq-answer-${index}`}
+                  className="px-10 py-7 bg-gray-50 border-t border-gray-200 animate-in fade-in duration-200"
+                  role="region"
+                >
                   <p className="text-gray-600 text-base leading-relaxed">{faq.answer}</p>
                 </div>
               )}

@@ -45,11 +45,12 @@ export default function CalculatorForm({
 
             <div className="space-y-7">
               <div>
-                <label className="block text-base font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                  <MapPin className="h-5 w-5 text-orange-500" />
+                <label htmlFor="location" className="block text-base font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                  <MapPin className="h-5 w-5 text-orange-500" aria-hidden="true" />
                   Localização
                 </label>
                 <select
+                  id="location"
                   value={data.location}
                   onChange={(e) => onLocationChange(e.target.value)}
                   className="w-full px-5 py-4 text-base border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white text-gray-900 font-medium transition-all"
@@ -63,30 +64,33 @@ export default function CalculatorForm({
               </div>
 
               <div>
-                <label className="block text-base font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                  <DollarSign className="h-5 w-5 text-orange-500" />
+                <label htmlFor="pricePerNight" className="block text-base font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                  <DollarSign className="h-5 w-5 text-orange-500" aria-hidden="true" />
                   Preço por Noite
                 </label>
                 <div className="relative">
                   <input
+                    id="pricePerNight"
                     type="number"
                     value={data.pricePerNight}
                     onChange={(e) => setData((prev: any) => ({ ...prev, pricePerNight: Number(e.target.value) }))}
                     onFocus={handleInputFocus}
                     className="w-full px-5 py-4 text-base border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-900 font-medium transition-all"
                     min="0"
+                    aria-label="Preço por noite em euros"
                   />
-                  <span className="absolute right-5 top-4 text-gray-400 font-medium">€</span>
+                  <span className="absolute right-5 top-4 text-gray-600 font-medium" aria-hidden="true">€</span>
                 </div>
               </div>
 
               <div>
-                <label className="block text-base font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                  <Calendar className="h-5 w-5 text-orange-500" />
+                <label htmlFor="occupancyRate" className="block text-base font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                  <Calendar className="h-5 w-5 text-orange-500" aria-hidden="true" />
                   Taxa de Ocupação
                 </label>
                 <div className="relative">
                   <input
+                    id="occupancyRate"
                     type="number"
                     value={data.occupancyRate}
                     onChange={(e) => setData((prev: any) => ({ ...prev, occupancyRate: Number(e.target.value) }))}
@@ -94,10 +98,12 @@ export default function CalculatorForm({
                     className="w-full px-5 py-4 text-base border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-900 font-medium transition-all"
                     min="0"
                     max="100"
+                    aria-label="Taxa de ocupação em percentagem"
+                    aria-describedby="occupancy-help"
                   />
-                  <span className="absolute right-5 top-4 text-gray-400 font-medium">%</span>
+                  <span className="absolute right-5 top-4 text-gray-600 font-medium" aria-hidden="true">%</span>
                 </div>
-                <p className="text-sm text-gray-500 mt-2.5 leading-relaxed">Média Portugal: 60-75%</p>
+                <p id="occupancy-help" className="text-sm text-gray-600 mt-2.5 leading-relaxed">Média Portugal: 60-75%</p>
               </div>
             </div>
 
@@ -107,39 +113,44 @@ export default function CalculatorForm({
               <div className="space-y-5">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-gray-600 mb-2">Taxa Limpeza</label>
+                    <label htmlFor="cleaningFee" className="block text-xs font-semibold text-gray-600 mb-2">Taxa Limpeza</label>
                     <div className="relative">
                       <input
+                        id="cleaningFee"
                         type="number"
                         value={data.cleaningFee}
                         onChange={(e) => setData((prev: any) => ({ ...prev, cleaningFee: Number(e.target.value) }))}
                         onFocus={handleInputFocus}
                         className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium transition-all"
                         min="0"
+                        aria-label="Taxa de limpeza em euros"
                       />
-                      <span className="absolute right-3 top-2.5 text-gray-400 text-xs">€</span>
+                      <span className="absolute right-3 top-2.5 text-gray-600 text-xs" aria-hidden="true">€</span>
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-gray-600 mb-2">Manutenção</label>
+                    <label htmlFor="maintenanceCosts" className="block text-xs font-semibold text-gray-600 mb-2">Manutenção</label>
                     <div className="relative">
                       <input
+                        id="maintenanceCosts"
                         type="number"
                         value={data.maintenanceCosts}
                         onChange={(e) => setData((prev: any) => ({ ...prev, maintenanceCosts: Number(e.target.value) }))}
                         onFocus={handleInputFocus}
                         className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium transition-all"
                         min="0"
+                        aria-label="Custos de manutenção em euros"
                       />
-                      <span className="absolute right-3 top-2.5 text-gray-400 text-xs">€</span>
+                      <span className="absolute right-3 top-2.5 text-gray-600 text-xs" aria-hidden="true">€</span>
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-gray-600 mb-2">Comissão Plataforma</label>
+                    <label htmlFor="platformCommission" className="block text-xs font-semibold text-gray-600 mb-2">Comissão Plataforma</label>
                     <div className="relative">
                       <input
+                        id="platformCommission"
                         type="number"
                         value={data.platformCommission}
                         onChange={(e) => setData((prev: any) => ({ ...prev, platformCommission: Number(e.target.value) }))}
@@ -147,23 +158,26 @@ export default function CalculatorForm({
                         className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium transition-all"
                         min="0"
                         max="30"
+                        aria-label="Comissão da plataforma em percentagem"
                       />
-                      <span className="absolute right-3 top-2.5 text-gray-400 text-xs">%</span>
+                      <span className="absolute right-3 top-2.5 text-gray-600 text-xs" aria-hidden="true">%</span>
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-gray-600 mb-2">Utilities/Mês</label>
+                    <label htmlFor="utilities" className="block text-xs font-semibold text-gray-600 mb-2">Utilities/Mês</label>
                     <div className="relative">
                       <input
+                        id="utilities"
                         type="number"
                         value={data.utilities}
                         onChange={(e) => setData((prev: any) => ({ ...prev, utilities: Number(e.target.value) }))}
                         onFocus={handleInputFocus}
                         className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium transition-all"
                         min="0"
+                        aria-label="Utilities por mês em euros"
                       />
-                      <span className="absolute right-3 top-2.5 text-gray-400 text-xs">€</span>
+                      <span className="absolute right-3 top-2.5 text-gray-600 text-xs" aria-hidden="true">€</span>
                     </div>
                   </div>
                 </div>
@@ -176,32 +190,36 @@ export default function CalculatorForm({
               <div className="space-y-5">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-gray-600 mb-2">Seguro/Ano</label>
+                    <label htmlFor="insurance" className="block text-xs font-semibold text-gray-600 mb-2">Seguro/Ano</label>
                     <div className="relative">
                       <input
+                        id="insurance"
                         type="number"
                         value={data.insurance}
                         onChange={(e) => setData((prev: any) => ({ ...prev, insurance: Number(e.target.value) }))}
                         onFocus={handleInputFocus}
                         className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium transition-all"
                         min="0"
+                        aria-label="Seguro anual em euros"
                       />
-                      <span className="absolute right-3 top-2.5 text-gray-400 text-xs">€</span>
+                      <span className="absolute right-3 top-2.5 text-gray-600 text-xs" aria-hidden="true">€</span>
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-gray-600 mb-2">IMI Anual</label>
+                    <label htmlFor="imiAnual" className="block text-xs font-semibold text-gray-600 mb-2">IMI Anual</label>
                     <div className="relative">
                       <input
+                        id="imiAnual"
                         type="number"
                         value={data.imiAnual}
                         onChange={(e) => setData((prev: any) => ({ ...prev, imiAnual: Number(e.target.value) }))}
                         onFocus={handleInputFocus}
                         className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium transition-all"
                         min="0"
+                        aria-label="IMI anual em euros"
                       />
-                      <span className="absolute right-3 top-2.5 text-gray-400 text-xs">€</span>
+                      <span className="absolute right-3 top-2.5 text-gray-600 text-xs" aria-hidden="true">€</span>
                     </div>
                   </div>
                 </div>
@@ -209,19 +227,21 @@ export default function CalculatorForm({
             </div>
 
             <div className="border-t border-gray-200 mt-10 pt-10">
-              <label className="block text-base font-semibold text-gray-700 mb-3">
+              <label htmlFor="traditionalRent" className="block text-base font-semibold text-gray-700 mb-3">
                 Renda Tradicional/Mês (Comparação)
               </label>
               <div className="relative">
                 <input
+                  id="traditionalRent"
                   type="number"
                   value={data.traditionalRent === 0 ? '' : data.traditionalRent}
                   onChange={(e) => handleNumberInputChange('traditionalRent', e.target.value)}
                   onFocus={handleInputFocus}
                   className="w-full px-5 py-4 text-base border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-900 font-medium transition-all"
                   min="0"
+                  aria-label="Renda tradicional por mês em euros"
                 />
-                <span className="absolute right-5 top-4 text-gray-400 font-medium">€</span>
+                <span className="absolute right-5 top-4 text-gray-600 font-medium" aria-hidden="true">€</span>
               </div>
             </div>
           </div>
@@ -231,7 +251,7 @@ export default function CalculatorForm({
           {result && (
             <div className="space-y-8">
               <div className="bg-gradient-to-br from-orange-500 via-red-500 to-red-600 rounded-2xl p-10 text-white shadow-lg">
-                <h3 className="text-xl font-bold mb-8 tracking-tight">Resultados da Simulação</h3>
+                <h2 className="text-xl font-bold mb-8 tracking-tight">Resultados da Simulação</h2>
 
                 <div className="grid grid-cols-2 gap-5 mb-8">
                   <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm">
@@ -251,7 +271,7 @@ export default function CalculatorForm({
               </div>
 
               <div className="bg-white rounded-2xl border border-gray-200 p-10 shadow-sm">
-                <h4 className="text-xl font-bold text-gray-900 mb-8 tracking-tight">Projeção Anual</h4>
+                <h3 className="text-xl font-bold text-gray-900 mb-8 tracking-tight">Projeção Anual</h3>
 
                 <div className="space-y-5">
                   <div className="flex justify-between items-center pb-5 border-b border-gray-200">
@@ -270,7 +290,7 @@ export default function CalculatorForm({
               </div>
 
               <div className="bg-white rounded-2xl border border-gray-200 p-10 shadow-sm">
-                <h4 className="text-xl font-bold text-gray-900 mb-8 tracking-tight">Análise & Comparação</h4>
+                <h3 className="text-xl font-bold text-gray-900 mb-8 tracking-tight">Análise & Comparação</h3>
 
                 <div className="space-y-5">
                   <div className="bg-orange-50 rounded-xl p-6 border border-orange-100">
