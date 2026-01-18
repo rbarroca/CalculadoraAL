@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Analytics, { trackCalculation, trackLocationChange, trackFAQOpen, trackCTAClick } from './components/Analytics';
+import Analytics, { trackCalculation, trackLocationChange, trackFAQOpen, trackCTAClick, trackEvent } from './components/Analytics';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import CalculatorForm from './components/CalculatorForm';
@@ -8,6 +8,7 @@ import FeaturesSection from './components/FeaturesSection';
 import BenefitsSection from './components/BenefitsSection';
 import FAQSection from './components/FAQSection';
 import Footer from './components/Footer';
+import LayoutSwitcher, { LayoutType } from './components/LayoutSwitcher';
 
 interface CalculatorData {
   location: string;
@@ -59,6 +60,18 @@ function App() {
   });
 
   const [result, setResult] = useState<CalculationResult | null>(null);
+  const [layout, setLayout] = useState<LayoutType>(() => {
+    const savedLayout = localStorage.getItem('calculator-layout');
+    return (savedLayout as LayoutType) || 'side-by-side';
+  });
+
+  const handleLayoutChange = (newLayout: LayoutType) => {
+    setLayout(newLayout);
+    localStorage.setItem('calculator-layout', newLayout);
+    trackEvent('layout_change', {
+      layout_type: newLayout
+    });
+  };
 
   useEffect(() => {
     const selectedLocation = locations.find(loc => loc.value === data.location);
@@ -145,6 +158,8 @@ function App() {
           result={result}
           locations={locations}
           onLocationChange={handleLocationChange}
+          layout={layout}
+          onLayoutChange={handleLayoutChange}
         />
         {result && <ResultsDisplay result={result} data={data} />}
         <FeaturesSection />
