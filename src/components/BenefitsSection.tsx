@@ -1,5 +1,4 @@
 import React from 'react';
-import { CheckCircle2 } from 'lucide-react';
 
 const benefits = [
   {
@@ -44,9 +43,12 @@ export default function BenefitsSection() {
         {benefits.map((benefit, index) => (
           <div key={index} className="flex gap-4">
             <div className="flex-shrink-0">
-              <div className="flex items-center justify-center h-8 w-8 rounded-full bg-gradient-to-br from-orange-400 to-red-500">
-                <CheckCircle2 className="h-5 w-5 text-white" />
-              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" className="w-6 h-6 text-green-500">
+                <g fill="currentColor">
+                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                  <path d="m10.97 4.97l-.02.022l-3.473 4.425l-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
+                </g>
+              </svg>
             </div>
             <div>
               <h3 className="text-lg font-bold text-gray-900 mb-1">{benefit.title}</h3>
