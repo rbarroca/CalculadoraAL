@@ -17,6 +17,7 @@ interface CalculatorData {
   maintenanceCosts: number;
   platformCommission: number;
   insurance: number;
+  imiAnual: number;
   utilities: number;
   traditionalRent: number;
 }
@@ -54,6 +55,7 @@ function App() {
     maintenanceCosts: 150,
     platformCommission: 15,
     insurance: 300,
+    imiAnual: 400,
     utilities: 80,
     traditionalRent: 800
   });
@@ -78,8 +80,9 @@ function App() {
     const monthlyCleaningCosts = occupiedDaysPerMonth * (data.cleaningFee * 0.7);
     const monthlyPlatformCommission = grossMonthlyRevenue * (data.platformCommission / 100);
     const monthlyInsurance = data.insurance / monthsPerYear;
+    const monthlyIMI = data.imiAnual / monthsPerYear;
 
-    const totalMonthlyCosts = monthlyCleaningCosts + data.maintenanceCosts + monthlyPlatformCommission + monthlyInsurance + data.utilities;
+    const totalMonthlyCosts = monthlyCleaningCosts + data.maintenanceCosts + monthlyPlatformCommission + monthlyInsurance + monthlyIMI + data.utilities;
     const totalAnnualCosts = totalMonthlyCosts * monthsPerYear;
 
     const netMonthlyProfit = grossMonthlyRevenue - totalMonthlyCosts;

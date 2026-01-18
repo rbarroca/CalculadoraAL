@@ -153,6 +153,29 @@ export default function CalculatorForm({
                   </div>
 
                   <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-2">Utilities/Mês</label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        value={data.utilities}
+                        onChange={(e) => setData((prev: any) => ({ ...prev, utilities: Number(e.target.value) }))}
+                        onFocus={handleInputFocus}
+                        className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium transition-all"
+                        min="0"
+                      />
+                      <span className="absolute right-3 top-2.5 text-gray-400 text-xs">€</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t border-gray-200 mt-10 pt-10">
+              <h4 className="text-lg font-bold text-gray-900 mb-8 tracking-tight">Custos Anuais</h4>
+
+              <div className="space-y-5">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
                     <label className="block text-xs font-semibold text-gray-600 mb-2">Seguro/Ano</label>
                     <div className="relative">
                       <input
@@ -166,20 +189,20 @@ export default function CalculatorForm({
                       <span className="absolute right-3 top-2.5 text-gray-400 text-xs">€</span>
                     </div>
                   </div>
-                </div>
 
-                <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-2">Utilities/Mês</label>
-                  <div className="relative">
-                    <input
-                      type="number"
-                      value={data.utilities}
-                      onChange={(e) => setData((prev: any) => ({ ...prev, utilities: Number(e.target.value) }))}
-                      onFocus={handleInputFocus}
-                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium transition-all"
-                      min="0"
-                    />
-                    <span className="absolute right-3 top-2.5 text-gray-400 text-xs">€</span>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-2">IMI Anual</label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        value={data.imiAnual}
+                        onChange={(e) => setData((prev: any) => ({ ...prev, imiAnual: Number(e.target.value) }))}
+                        onFocus={handleInputFocus}
+                        className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium transition-all"
+                        min="0"
+                      />
+                      <span className="absolute right-3 top-2.5 text-gray-400 text-xs">€</span>
+                    </div>
                   </div>
                 </div>
               </div>
