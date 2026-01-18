@@ -43,12 +43,12 @@ export default function FAQSection({ trackFAQOpen }: FAQSectionProps) {
   };
 
   return (
-    <section className="py-16 lg:py-20">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+    <section className="py-20 lg:py-24">
+      <div className="text-center mb-16">
+        <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
           Perguntas Frequentes
         </h2>
-        <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+        <p className="text-gray-600 text-xl max-w-2xl mx-auto leading-relaxed">
           Respostas às dúvidas mais comuns sobre alojamento local em Portugal
         </p>
       </div>
@@ -59,10 +59,10 @@ export default function FAQSection({ trackFAQOpen }: FAQSectionProps) {
             <div key={index} className="transition-all duration-200">
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full px-8 py-6 flex items-center justify-between hover:bg-gray-50 transition-colors text-left"
+                className="w-full px-10 py-7 flex items-center justify-between hover:bg-gray-50 transition-colors text-left"
               >
-                <h3 className="font-bold text-gray-900 pr-4 flex-1">{faq.question}</h3>
-                <div className="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-orange-100">
+                <h3 className="text-lg font-bold text-gray-900 pr-6 flex-1 tracking-tight">{faq.question}</h3>
+                <div className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-orange-100">
                   {openIndex === index ? (
                     <ChevronUp className="h-5 w-5 text-orange-600" />
                   ) : (
@@ -72,8 +72,8 @@ export default function FAQSection({ trackFAQOpen }: FAQSectionProps) {
               </button>
 
               {openIndex === index && (
-                <div className="px-8 py-6 bg-gray-50 border-t border-gray-200 animate-in fade-in duration-200">
-                  <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
+                <div className="px-10 py-7 bg-gray-50 border-t border-gray-200 animate-in fade-in duration-200">
+                  <p className="text-gray-600 text-base leading-relaxed">{faq.answer}</p>
                 </div>
               )}
             </div>

@@ -36,29 +36,29 @@ const features = [
 
 export default function FeaturesSection() {
   return (
-    <section className="py-16 lg:py-20">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+    <section className="py-20 lg:py-24">
+      <div className="text-center mb-16">
+        <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
           O que Pode Calcular
         </h2>
-        <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+        <p className="text-gray-600 text-xl max-w-2xl mx-auto leading-relaxed">
           Funcionalidades completas para análise profissional do seu investimento
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {features.map((feature, index) => {
           const Icon = feature.icon;
           return (
             <div
               key={index}
-              className="bg-white rounded-2xl border border-gray-200 p-8 hover:border-orange-300 hover:shadow-lg transition-all duration-300 group"
+              className="bg-white rounded-2xl border border-gray-200 p-10 hover:border-orange-300 hover:shadow-lg transition-all duration-300 group"
             >
-              <div className="bg-gradient-to-br from-orange-100 to-red-100 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Icon className="h-7 w-7 text-orange-600" />
+              <div className="bg-gradient-to-br from-orange-100 to-red-100 w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Icon className="h-8 w-8 text-orange-600" />
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">{feature.title}</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">{feature.description}</p>
+              <h3 className="text-xl font-bold text-gray-900 mb-3 tracking-tight">{feature.title}</h3>
+              <p className="text-gray-600 text-base leading-relaxed">{feature.description}</p>
             </div>
           );
         })}
