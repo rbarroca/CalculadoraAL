@@ -4,8 +4,8 @@ export default function Hero() {
   return (
     <section className="py-16 lg:py-24 bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-8 items-center">
-          <div className="text-center lg:text-left">
+        <div className="flex justify-center">
+          <div className="text-center lg:text-left max-w-2xl">
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
               Descubra o Potencial do Seu Imóvel
             </h2>
@@ -32,9 +32,6 @@ export default function Hero() {
                 <span className="text-sm font-medium">100% Gratuito</span>
               </div>
             </div>
-          </div>
-          <div className="hidden lg:flex justify-center">
-            <img src="/calculadora_al.png" alt="Calculadora de Alojamento Local - Simulador de Rentabilidade" className="w-full max-w-md rounded-2xl shadow-xl" />
           </div>
         </div>
       </div>
