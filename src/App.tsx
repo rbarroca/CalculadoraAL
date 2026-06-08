@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Analytics, { trackCalculation, trackLocationChange, trackFAQOpen, trackCTAClick } from './components/Analytics';
 import MaisValias from './pages/MaisValias';
+import TaxaOcupacao from './pages/TaxaOcupacao';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import CalculatorForm from './components/CalculatorForm';
@@ -165,6 +166,7 @@ function App() {
       <Routes>
         <Route path="/" element={homePage} />
         <Route path="/mais-valias" element={<MaisValias />} />
+        <Route path="/taxa-ocupacao" element={<TaxaOcupacao />} />
       </Routes>
     </>
   );
