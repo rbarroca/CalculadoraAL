@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Analytics, { trackCalculation, trackLocationChange, trackFAQOpen, trackCTAClick } from './components/Analytics';
+import MaisValias from './pages/MaisValias';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import CalculatorForm from './components/CalculatorForm';
@@ -136,9 +138,8 @@ function App() {
     }));
   };
 
-  return (
+  const homePage = (
     <div className="min-h-screen bg-white">
-      <Analytics />
       <Header />
       <Hero />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -156,6 +157,16 @@ function App() {
       </main>
       <Footer />
     </div>
+  );
+
+  return (
+    <>
+      <Analytics />
+      <Routes>
+        <Route path="/" element={homePage} />
+        <Route path="/mais-valias" element={<MaisValias />} />
+      </Routes>
+    </>
   );
 }
 
