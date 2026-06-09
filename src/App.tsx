@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Analytics, { trackCalculation, trackLocationChange, trackFAQOpen, trackCTAClick } from './components/Analytics';
 import MaisValias from './pages/MaisValias';
 import TaxaOcupacao from './pages/TaxaOcupacao';
+import Impostos from './pages/Impostos';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import CalculatorForm from './components/CalculatorForm';
@@ -167,6 +168,7 @@ function App() {
         <Route path="/" element={homePage} />
         <Route path="/mais-valias" element={<MaisValias />} />
         <Route path="/taxa-ocupacao" element={<TaxaOcupacao />} />
+        <Route path="/impostos" element={<Impostos />} />
       </Routes>
     </>
   );
