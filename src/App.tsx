@@ -12,6 +12,8 @@ import FeaturesSection from './components/FeaturesSection';
 import BenefitsSection from './components/BenefitsSection';
 import FAQSection from './components/FAQSection';
 import Footer from './components/Footer';
+import ToolsSection from './components/ToolsSection';
+import PageMeta from './components/PageMeta';
 
 interface CalculatorData {
   location: string;
@@ -142,6 +144,11 @@ function App() {
 
   const homePage = (
     <div className="min-h-screen bg-white">
+      <PageMeta
+        title="Calculadora de Alojamento Local — Simulador de Rentabilidade AL Portugal"
+        description="Calcule a rentabilidade do seu Alojamento Local em Portugal. Simulador gratuito para comparar AL vs arrendamento tradicional. Descubra receitas, custos e lucros."
+        canonical="https://calculadoraal.pt/"
+      />
       <Header />
       <Hero />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -155,6 +162,7 @@ function App() {
         {result && <ResultsDisplay result={result} data={data} />}
         <FeaturesSection />
         <BenefitsSection />
+        <ToolsSection />
         <FAQSection trackFAQOpen={trackFAQOpen} />
       </main>
       <Footer />
