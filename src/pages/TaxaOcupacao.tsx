@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { BarChart2, ArrowLeft, Calendar, TrendingUp, Info } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import PageMeta from '../components/PageMeta';
 
 // Benchmarks de taxa de ocupação por destino (fonte: dados médios mercado PT)
 const BENCHMARKS: Record<string, { label: string; anual: number; verao: number; inverno: number }> = {
@@ -115,6 +116,11 @@ export default function TaxaOcupacao() {
 
   return (
     <div className="min-h-screen bg-white">
+      <PageMeta
+        title="Calculadora de Taxa de Ocupação Alojamento Local Portugal"
+        description="Calcule a taxa de ocupação do seu AL mês a mês e compare com os benchmarks de Lisboa, Porto e Algarve. Descubra a receita potencial que está a perder."
+        canonical="https://calculadoraal.pt/taxa-ocupacao"
+      />
       <Header />
 
       {/* Hero */}

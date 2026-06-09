@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { TrendingUp, Info, ArrowLeft, Calculator, Home, Euro } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import PageMeta from '../components/PageMeta';
 
 // Coeficientes de desvalorização monetária publicados pela AT (aproximados até 2025)
 const COEFICIENTES: Record<number, number> = {
@@ -185,6 +186,11 @@ export default function MaisValias() {
 
   return (
     <div className="min-h-screen bg-white">
+      <PageMeta
+        title="Simulador de Mais-Valias Alojamento Local — Calcule o Imposto na Venda"
+        description="Calcule o imposto sobre mais-valias na venda do seu imóvel de Alojamento Local em Portugal. Compare taxa liberatória 28% vs englobamento IRS e descubra a opção mais vantajosa."
+        canonical="https://calculadoraal.pt/mais-valias"
+      />
       <Header />
 
       {/* Hero */}

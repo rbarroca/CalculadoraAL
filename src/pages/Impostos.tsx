@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FileText, ArrowLeft, Info, TrendingUp, BarChart2, AlertTriangle, CheckCircle } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import PageMeta from '../components/PageMeta';
 
 // Escalões IRS 2025
 const ESCALOES = [
@@ -173,6 +174,11 @@ export default function Impostos() {
 
   return (
     <div className="min-h-screen bg-white">
+      <PageMeta
+        title="Simulador de Impostos Alojamento Local — IRS, CEAL e IVA em Portugal"
+        description="Calcule o IRS (Categoria B), CEAL e obrigações de IVA do seu Alojamento Local em Portugal. Compare regimes fiscais e descubra o peso total dos impostos sobre a sua receita."
+        canonical="https://calculadoraal.pt/impostos"
+      />
       <Header />
 
       {/* Hero */}
