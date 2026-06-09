@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Analytics, { trackCalculation, trackLocationChange, trackFAQOpen, trackCTAClick } from './components/Analytics';
+import ScrollToTop from './components/ScrollToTop';
 import MaisValias from './pages/MaisValias';
 import TaxaOcupacao from './pages/TaxaOcupacao';
 import Impostos from './pages/Impostos';
@@ -172,6 +173,7 @@ function App() {
   return (
     <>
       <Analytics />
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={homePage} />
         <Route path="/mais-valias" element={<MaisValias />} />
