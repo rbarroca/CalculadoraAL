@@ -39,7 +39,7 @@ export default function ToolsSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-6 mb-10">
           {ferramentas.map(({ to, icon: Icon, titulo, descricao }) => (
             <Link
               key={to}
@@ -62,6 +62,16 @@ export default function ToolsSection() {
             </Link>
           ))}
         </div>
+        <p className="text-center text-gray-600 text-base leading-relaxed">
+          Ainda a pensar em abrir o seu Alojamento Local? Consulte o{' '}
+          <a
+            href="https://tudosobrealojamentolocal.pt"
+            className="text-orange-600 hover:text-orange-700 font-medium underline transition-colors"
+          >
+            guia de alojamento local em Portugal
+          </a>{' '}
+          com tudo o que precisa de saber sobre registo, fiscalidade e legislação.
+        </p>
       </div>
     </section>
   );
