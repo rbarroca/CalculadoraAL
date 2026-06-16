@@ -2,17 +2,17 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ isSsrBuild }) => ({
   plugins: [react()],
   build: {
     cssCodeSplit: true,
     rollupOptions: {
-      output: {
+      output: isSsrBuild ? {} : {
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
-          'icons': ['lucide-react']
-        }
-      }
-    }
-  }
-});
+          'icons': ['lucide-react'],
+        },
+      },
+    },
+  },
+}));
