@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { BarChart2, ArrowLeft, Calendar, TrendingUp, Info } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
+import FAQAccordion from '../components/FAQAccordion';
 
 // Benchmarks de taxa de ocupação por destino (fonte: dados médios mercado PT)
 const BENCHMARKS: Record<string, { label: string; anual: number; verao: number; inverno: number }> = {
@@ -121,6 +123,46 @@ export default function TaxaOcupacao() {
         description="Calcule a taxa de ocupação do seu AL mês a mês e compare com os benchmarks de Lisboa, Porto e Algarve. Descubra a receita potencial que está a perder."
         canonical="https://calculadoraal.pt/taxa-ocupacao"
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Qual é a taxa de ocupação média de um alojamento local em Portugal?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A taxa de ocupação média em Portugal varia entre 60% e 80% nas principais cidades turísticas. Lisboa tem benchmark anual de 78%, Porto de 74%, e Algarve de 68% (com pico de 92% no verão). No interior e zonas rurais, a média situa-se entre 40% e 60%."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Como se calcula a taxa de ocupação de um alojamento local?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A taxa de ocupação calcula-se dividindo o número de noites vendidas pelo total de noites disponíveis no período, multiplicado por 100. Por exemplo: 18 noites vendidas em 28 disponíveis = 64,3% de ocupação. A nossa calculadora faz este cálculo mês a mês e compara com os benchmarks do mercado."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "O que é o RevPAR num alojamento local?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "RevPAR (Revenue Per Available Room/Day) é a receita por dia disponível — independentemente de o alojamento estar ocupado ou não. Calcula-se dividindo a receita bruta total pelo número de dias disponíveis. É uma métrica mais completa do que a taxa de ocupação porque combina ocupação e preço."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Como melhorar a taxa de ocupação do meu AL?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "As principais estratégias são: otimizar o preço por temporada (preço dinâmico), melhorar as fotos e descrição nos listings, aumentar o número de plataformas (Airbnb, Booking, VRBO), reduzir a estadia mínima em períodos de baixa procura, e recolher mais reviews para melhorar o posicionamento nas plataformas."
+              }
+            }
+          ]
+        })}</script>
+      </Helmet>
       <Header />
 
       {/* Hero */}
@@ -377,6 +419,28 @@ export default function TaxaOcupacao() {
           </div>
         </div>
       </section>
+
+      <FAQAccordion
+        title="Perguntas Frequentes sobre Taxa de Ocupação"
+        items={[
+          {
+            question: 'Qual é a taxa de ocupação média de um alojamento local em Portugal?',
+            answer: 'A taxa média varia entre 60% e 80% nas principais cidades turísticas. Lisboa tem benchmark anual de 78%, Porto de 74%, e Algarve de 68% (com pico de 92% no verão). No interior e zonas rurais, a média situa-se entre 40% e 60%.'
+          },
+          {
+            question: 'Como se calcula a taxa de ocupação de um alojamento local?',
+            answer: 'Divide-se o número de noites vendidas pelo total de noites disponíveis no período, multiplicado por 100. Por exemplo: 18 noites vendidas em 28 disponíveis = 64,3% de ocupação. A calculadora acima faz este cálculo mês a mês e compara com os benchmarks do mercado português.'
+          },
+          {
+            question: 'O que é o RevPAR num alojamento local?',
+            answer: 'RevPAR (Revenue Per Available Day) é a receita por dia disponível — independentemente de o alojamento estar ocupado ou não. Calcula-se dividindo a receita bruta total pelo número de dias disponíveis. É uma métrica mais completa do que a taxa de ocupação porque combina ocupação e preço médio.'
+          },
+          {
+            question: 'Como melhorar a taxa de ocupação do meu AL?',
+            answer: 'As principais estratégias são: preço dinâmico por temporada, melhores fotos e descrição nos listings, presença em múltiplas plataformas (Airbnb, Booking, VRBO), reduzir a estadia mínima em períodos de baixa procura, e acumular reviews para melhorar o ranking nas plataformas.'
+          }
+        ]}
+      />
 
       {/* Links para outras calculadoras */}
       <section className="py-12 bg-gray-50 border-t border-gray-200">

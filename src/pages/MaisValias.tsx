@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
+import FAQAccordion from '../components/FAQAccordion';
 
 // Coeficientes de desvalorização monetária publicados pela AT (aproximados até 2025)
 const COEFICIENTES: Record<number, number> = {
@@ -199,34 +200,34 @@ export default function MaisValias() {
           "mainEntity": [
             {
               "@type": "Question",
-              "name": "Como se calculam as mais-valias na venda de um imóvel AL?",
+              "name": "Tenho de pagar mais-valias se vender o meu imóvel de alojamento local?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "A mais-valia é a diferença entre o valor de venda e o valor de compra corrigido pelo coeficiente de desvalorização monetária da AT. A esse resultado subtraem-se as despesas de aquisição (IMT, IS, escritura) e as despesas de alienação (comissão imobiliária). Apenas 50% da mais-valia é tributável para imóveis detidos por mais de 2 anos."
+                "text": "Sim, se o valor de venda for superior ao valor de aquisição corrigido (após deduzir despesas), há lugar a imposto sobre mais-valias. Apenas 50% da mais-valia bruta é tributável. Use o simulador para calcular o valor exato no seu caso."
               }
             },
             {
               "@type": "Question",
-              "name": "Qual a taxa de imposto sobre mais-valias imobiliárias em Portugal?",
+              "name": "O que é o coeficiente de desvalorização monetária nas mais-valias?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Em Portugal existem duas opções: a taxa liberatória de 28% aplicada sobre 50% da mais-valia (sem necessidade de englobar no IRS), ou o englobamento no IRS à taxa marginal do contribuinte. O nosso simulador compara automaticamente as duas opções e indica a mais vantajosa."
+                "text": "É um fator publicado anualmente pela AT que corrige o valor de compra do imóvel pela inflação acumulada. Por exemplo, um imóvel comprado em 2010 tem coeficiente 1,48 — o valor de aquisição é multiplicado por 1,48 antes de calcular a mais-valia, reduzindo o imposto a pagar."
               }
             },
             {
               "@type": "Question",
-              "name": "O que são os coeficientes de desvalorização monetária da AT?",
+              "name": "Posso deduzir as obras de remodelação nas mais-valias do AL?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "São coeficientes publicados anualmente pela Autoridade Tributária que corrigem o valor de aquisição do imóvel pela inflação acumulada. Quanto mais antigo for o imóvel, maior o coeficiente e menor a mais-valia tributável. Por exemplo, um imóvel comprado em 2010 tem um coeficiente de ×1,48."
+                "text": "Sim, as obras e encargos de valorização realizados nos últimos 12 anos são dedutíveis, desde que comprovados por fatura. Também são dedutíveis o IMT, Imposto de Selo, despesas notariais pagas na compra, e a comissão da imobiliária na venda."
               }
             },
             {
               "@type": "Question",
-              "name": "Vale a pena englobar as mais-valias no IRS?",
+              "name": "É melhor pagar 28% de taxa liberatória ou englobar as mais-valias no IRS?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "O englobamento compensa quando a taxa marginal de IRS do contribuinte é inferior a 28%. Em geral, quem tem rendimentos anuais abaixo de €27.000 pode beneficiar do englobamento. Para rendimentos mais elevados, a taxa liberatória de 28% costuma ser mais vantajosa. Use o simulador para calcular o seu caso específico."
+                "text": "Depende dos seus outros rendimentos anuais. Se a sua taxa marginal de IRS for inferior a 28% (rendimentos abaixo de ~€27.000), o englobamento pode ser mais vantajoso. Para rendimentos superiores, a taxa liberatória de 28% poupa imposto. O simulador compara automaticamente as duas opções."
               }
             }
           ]
@@ -258,37 +259,6 @@ export default function MaisValias() {
               </p>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Conteúdo editorial */}
-      <section className="py-14 bg-white border-b border-gray-100">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">O que são mais-valias no Alojamento Local?</h2>
-          <p className="text-gray-600 leading-relaxed mb-8">
-            Quando vende um imóvel que estava registado como Alojamento Local, pode ser devido imposto sobre as mais-valias realizadas. A mais-valia é a diferença positiva entre o valor de venda e o valor de aquisição corrigido pela inflação (coeficientes AT). O regime fiscal português permite deduzir despesas de compra e venda, e tributa apenas 50% do ganho.
-          </p>
-
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Como funciona o cálculo do imposto?</h2>
-          <p className="text-gray-600 leading-relaxed mb-4">
-            O imposto sobre mais-valias imobiliárias em Portugal incide sobre 50% da mais-valia bruta. Existem duas formas de tributação:
-          </p>
-          <ul className="list-disc list-inside space-y-2 text-gray-600 mb-8">
-            <li><strong>Taxa liberatória de 28%</strong> — aplica-se diretamente aos 50% tributáveis, sem necessidade de englobar no IRS.</li>
-            <li><strong>Englobamento no IRS</strong> — os 50% tributáveis somam-se aos restantes rendimentos e são tributados à taxa marginal. Pode ser vantajoso para rendimentos mais baixos.</li>
-            <li><strong>Coeficientes de desvalorização</strong> — a AT publica anualmente coeficientes que corrigem o valor de compra pela inflação acumulada, reduzindo a mais-valia tributável.</li>
-            <li><strong>Despesas dedutíveis</strong> — IMT, Imposto de Selo, escritura, obras de valorização comprovadas nos últimos 12 anos e comissão imobiliária.</li>
-          </ul>
-
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Quando compensa o englobamento?</h2>
-          <p className="text-gray-600 leading-relaxed mb-8">
-            O englobamento é vantajoso quando a taxa marginal de IRS do contribuinte é inferior a 28%. Em 2025, isso acontece para rendimentos coletáveis anuais abaixo de aproximadamente €27.000. Para rendimentos superiores, a taxa liberatória de 28% é geralmente mais favorável. O nosso simulador calcula automaticamente as duas opções e recomenda a mais vantajosa para o seu caso.
-          </p>
-
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Particularidades do AL na venda do imóvel</h2>
-          <p className="text-gray-600 leading-relaxed">
-            Imóveis afetos ao Alojamento Local que tenham beneficiado de deduções de IRS em anos anteriores podem estar sujeitos a regras específicas de recaptura. Além disso, imóveis em regime de propriedade plural ou em condomínio podem ter obrigações adicionais. Recomendamos sempre a consulta a um contabilista certificado antes de tomar decisões fiscais com base nesta simulação.
-          </p>
         </div>
       </section>
 
@@ -607,6 +577,103 @@ export default function MaisValias() {
           </div>
         </div>
       </section>
+
+      {/* Conteúdo editorial */}
+      <section className="py-16 border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto space-y-10">
+
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                O que são mais-valias no Alojamento Local?
+              </h2>
+              <p className="text-gray-600 leading-relaxed">
+                Quando vende um imóvel que estava registado como Alojamento Local, pode ser devido
+                imposto sobre as mais-valias realizadas. A mais-valia é a diferença positiva entre o valor de
+                venda e o valor de aquisição corrigido pela inflação (coeficientes AT). O regime fiscal
+                português permite deduzir despesas de compra e venda, e tributa apenas 50% do ganho.
+              </p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Como funciona o cálculo do imposto?
+              </h2>
+              <p className="text-gray-600 leading-relaxed mb-4">
+                O imposto sobre mais-valias imobiliárias em Portugal incide sobre 50% da mais-valia bruta.
+                Existem duas formas de tributação:
+              </p>
+              <ul className="space-y-3 text-gray-600">
+                <li className="flex gap-3">
+                  <span className="text-orange-500 font-bold shrink-0">•</span>
+                  <span><strong className="text-gray-900">Taxa liberatória de 28%</strong> — aplica-se diretamente aos 50% tributáveis, sem necessidade de englobar no IRS.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-orange-500 font-bold shrink-0">•</span>
+                  <span><strong className="text-gray-900">Englobamento no IRS</strong> — os 50% tributáveis somam-se aos restantes rendimentos e são tributados à taxa marginal. Pode ser vantajoso para rendimentos mais baixos.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-orange-500 font-bold shrink-0">•</span>
+                  <span><strong className="text-gray-900">Coeficientes de desvalorização</strong> — a AT publica anualmente coeficientes que corrigem o valor de compra pela inflação acumulada, reduzindo a mais-valia tributável.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-orange-500 font-bold shrink-0">•</span>
+                  <span><strong className="text-gray-900">Despesas dedutíveis</strong> — IMT, Imposto de Selo, escritura, obras de valorização comprovadas nos últimos 12 anos e comissão imobiliária.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Quando compensa o englobamento?
+              </h2>
+              <p className="text-gray-600 leading-relaxed">
+                O englobamento é vantajoso quando a taxa marginal de IRS do contribuinte é inferior a 28%.
+                Em 2025, isso acontece para rendimentos coletáveis anuais abaixo de aproximadamente
+                €27.000. Para rendimentos superiores, a taxa liberatória de 28% é geralmente mais
+                favorável. O nosso simulador calcula automaticamente as duas opções e recomenda a mais
+                vantajosa para o seu caso.
+              </p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Particularidades do AL na venda do imóvel
+              </h2>
+              <p className="text-gray-600 leading-relaxed">
+                Imóveis afetos ao Alojamento Local que tenham beneficiado de deduções de IRS em anos
+                anteriores podem estar sujeitos a regras específicas de recaptura. Além disso, imóveis em
+                regime de propriedade plural ou em condomínio podem ter obrigações adicionais.
+                Recomendamos sempre a consulta a um contabilista certificado antes de tomar decisões
+                fiscais com base nesta simulação.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <FAQAccordion
+        title="Perguntas Frequentes sobre Mais-Valias AL"
+        items={[
+          {
+            question: 'Tenho de pagar mais-valias se vender o meu imóvel de alojamento local?',
+            answer: 'Sim, se o valor de venda for superior ao valor de aquisição corrigido (após deduzir despesas), há lugar a imposto sobre mais-valias. Apenas 50% da mais-valia bruta é tributável. Use o simulador acima para calcular o valor exato no seu caso.'
+          },
+          {
+            question: 'O que é o coeficiente de desvalorização monetária nas mais-valias?',
+            answer: 'É um fator publicado anualmente pela AT que corrige o valor de compra do imóvel pela inflação acumulada. Por exemplo, um imóvel comprado em 2010 tem coeficiente 1,48 — o valor de aquisição é multiplicado por 1,48 antes de calcular a mais-valia, reduzindo o imposto a pagar.'
+          },
+          {
+            question: 'Posso deduzir as obras de remodelação nas mais-valias do AL?',
+            answer: 'Sim, as obras e encargos de valorização realizados nos últimos 12 anos são dedutíveis, desde que comprovados por fatura. Também são dedutíveis o IMT, Imposto de Selo, despesas notariais pagas na compra, e a comissão da imobiliária na venda.'
+          },
+          {
+            question: 'É melhor pagar 28% de taxa liberatória ou englobar as mais-valias no IRS?',
+            answer: 'Depende dos seus outros rendimentos anuais. Se a sua taxa marginal de IRS for inferior a 28% (rendimentos abaixo de ~€27.000), o englobamento pode ser mais vantajoso. Para rendimentos superiores, a taxa liberatória de 28% poupa imposto. O simulador compara automaticamente as duas opções.'
+          }
+        ]}
+      />
 
       {/* Link para homepage */}
       <section className="py-12 bg-gray-50 border-t border-gray-200">

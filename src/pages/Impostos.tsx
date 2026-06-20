@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FileText, ArrowLeft, Info, TrendingUp, BarChart2, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
+import FAQAccordion from '../components/FAQAccordion';
 
 // Escalões IRS 2025
 const ESCALOES = [
@@ -179,6 +181,46 @@ export default function Impostos() {
         description="Calcule o IRS (Categoria B), CEAL e obrigações de IVA do seu Alojamento Local em Portugal. Compare regimes fiscais e descubra o peso total dos impostos sobre a sua receita."
         canonical="https://calculadoraal.pt/impostos"
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "O que é a CEAL e quem tem de pagar?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A CEAL (Contribuição Extraordinária sobre o Alojamento Local) foi criada em 2023 e incide sobre a receita bruta anual do AL. A taxa varia entre 4% (zonas sem pressão habitacional) e 15% (Lisboa, Porto e outros municípios de alta pressão). Estão isentos imóveis em habitação própria permanente e imóveis em zonas do interior."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Quando sou obrigado a pagar IVA no alojamento local?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "É obrigado a registar-se no regime de IVA quando a faturação anual de AL ultrapassa €14.500 (limiar de isenção do artigo 53.º do CIVA em 2025). A taxa de IVA para serviços de alojamento é de 6%. Abaixo deste valor, está isento mas não pode deduzir IVA dos custos."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Qual a diferença entre regime simplificado e contabilidade organizada no AL?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No regime simplificado, aplica-se o coeficiente 0,35 à receita bruta para determinar o rendimento tributável — simples mas sem dedução de custos reais. Na contabilidade organizada, deduzem-se os custos efetivos (limpeza, plataformas, seguros, manutenção). Compensa quando os custos reais superam 65% da receita."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Como se calcula o IRS do alojamento local?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No regime simplificado: Receita bruta × 0,35 = Rendimento tributável AL. Este valor soma-se aos outros rendimentos do ano e aplica-se a tabela progressiva de IRS (13% a 48%). O simulador de impostos AL calcula automaticamente o IRS, CEAL e obrigações de IVA com base na sua receita e localização."
+              }
+            }
+          ]
+        })}</script>
+      </Helmet>
       <Header />
 
       {/* Hero */}
@@ -525,6 +567,28 @@ export default function Impostos() {
           </div>
         </div>
       </section>
+
+      <FAQAccordion
+        title="Perguntas Frequentes sobre Impostos AL"
+        items={[
+          {
+            question: 'O que é a CEAL e quem tem de pagar?',
+            answer: 'A CEAL (Contribuição Extraordinária sobre o Alojamento Local) foi criada em 2023 e incide sobre a receita bruta anual do AL. A taxa varia entre 4% (zonas sem pressão habitacional) e 15% (Lisboa, Porto e outros municípios de alta pressão). Estão isentos imóveis em habitação própria permanente e imóveis em zonas do interior.'
+          },
+          {
+            question: 'Quando sou obrigado a pagar IVA no alojamento local?',
+            answer: 'É obrigado a registar-se no regime de IVA quando a faturação anual de AL ultrapassa €14.500 (limiar de isenção do artigo 53.º do CIVA em 2025). A taxa de IVA para serviços de alojamento é de 6%. Abaixo deste valor, está isento mas não pode deduzir IVA dos custos.'
+          },
+          {
+            question: 'Qual a diferença entre regime simplificado e contabilidade organizada no AL?',
+            answer: 'No regime simplificado, aplica-se o coeficiente 0,35 à receita bruta para determinar o rendimento tributável — simples mas sem dedução de custos reais. Na contabilidade organizada, deduzem-se os custos efetivos (limpeza, plataformas, seguros, manutenção). Compensa quando os custos reais superam 65% da receita.'
+          },
+          {
+            question: 'Como se calcula o IRS do alojamento local?',
+            answer: 'No regime simplificado: Receita bruta × 0,35 = Rendimento tributável AL. Este valor soma-se aos outros rendimentos do ano e aplica-se a tabela progressiva de IRS (13% a 48%). O simulador acima calcula automaticamente o IRS, CEAL e obrigações de IVA com base na sua receita e localização.'
+          }
+        ]}
+      />
 
       {/* Links para outras calculadoras */}
       <section className="py-12 bg-gray-50 border-t border-gray-200">
