@@ -55,7 +55,7 @@ export default function ToolsSection() {
               <p className="text-gray-600 text-sm leading-relaxed">
                 {descricao}
               </p>
-              <p className="mt-4 text-sm font-semibold text-orange-500 group-hover:text-orange-600 flex items-center gap-1">
+              <p className="mt-4 text-sm font-semibold text-orange-600 group-hover:text-orange-700 flex items-center gap-1">
                 Abrir calculadora
                 <span aria-hidden="true">→</span>
               </p>

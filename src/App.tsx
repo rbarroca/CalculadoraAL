@@ -146,8 +146,8 @@ function App() {
   const homePage = (
     <div className="min-h-screen bg-white">
       <PageMeta
-        title="Calculadora de Alojamento Local — Simulador de Rentabilidade AL Portugal"
-        description="Calcule a rentabilidade do seu Alojamento Local em Portugal. Simulador gratuito para comparar AL vs arrendamento tradicional. Descubra receitas, custos e lucros."
+        title="Calcular Rendimento Alojamento Local — Simulador Gratuito | CalculadoraAL"
+        description="Descobre em 2 minutos quanto rendimento líquido gera o teu alojamento local em Portugal. Simula impostos, taxa de ocupação e mais-valias. 100% gratuito."
         canonical="https://calculadoraal.pt/"
       />
       <Header />

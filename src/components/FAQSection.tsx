@@ -7,28 +7,28 @@ interface FAQSectionProps {
 
 const faqData = [
   {
-    question: 'Quanto rende o Alojamento Local em Lisboa, Porto ou Algarve?',
-    answer: 'A rentabilidade varia conforme a localização: Lisboa tem preços médios de €80-100/noite, Porto €60-80/noite, e Algarve €90-130/noite. A taxa de ocupação média situa-se entre 60-80% nas principais cidades turísticas.'
+    question: 'Como calcular o rendimento de um alojamento local?',
+    answer: 'Para calcular o rendimento do seu AL, multiplique o preço por noite pela taxa de ocupação mensal e subtraia os custos operacionais (limpeza, plataformas, manutenção, seguros, IMI). Use a nossa calculadora para simular cenários específicos por localização em Portugal.'
   },
   {
-    question: 'O que é mais rentável: AL ou arrendamento tradicional?',
-    answer: 'O AL pode ser 2-3x mais rentável que o arrendamento tradicional, mas requer mais gestão. Depende da localização, sazonalidade e capacidade de manter alta ocupação. Use a calculadora para comparar cenários específicos.'
+    question: 'Como simular os impostos de alojamento local?',
+    answer: 'No AL paga IRS sobre os rendimentos (coeficiente 0,35 no regime simplificado), CEAL (Contribuição Extraordinária AL) entre 4% e 15% conforme a zona, e IVA se faturar mais de €14.500/ano. O nosso simulador de impostos AL calcula automaticamente cada encargo.'
   },
   {
-    question: 'Que impostos tenho de pagar no AL em Portugal?',
-    answer: 'No AL paga IRS sobre os rendimentos, IVA se faturar mais de €12.500/ano, e contribuição extraordinária sobre o património de 7,5% para prédios urbanos. Pode haver também IMI adicional.'
+    question: 'O AL é mais rentável do que o arrendamento tradicional?',
+    answer: 'O AL pode gerar 2 a 3 vezes mais rendimento do que o arrendamento tradicional, mas requer mais gestão ativa. Depende da localização, sazonalidade e taxa de ocupação. Use a calculadora para comparar os dois cenários com os dados reais do seu imóvel.'
   },
   {
-    question: 'Preciso de licença para abrir um AL?',
-    answer: 'Sim, precisa de registo no RNAL (Registo Nacional de Alojamento Local) e cumprir requisitos de segurança, acessibilidade e localização definidos pela câmara municipal local.'
+    question: 'Como calcular a rentabilidade de um imóvel para arrendamento?',
+    answer: 'A rentabilidade bruta do arrendamento calcula-se dividindo a renda anual pelo valor do imóvel. Para a rentabilidade líquida, desconte IRS (28% sobre rendas), IMI, manutenção e seguros. Compare sempre com o cenário AL para escolher a melhor opção.'
   },
   {
-    question: 'Como calcular a taxa de ocupação média de um AL?',
-    answer: 'A taxa média em Portugal varia entre 40-80%. Cidades turísticas como Lisboa, Porto e Algarve têm taxas mais altas. Considere sazonalidade: verão 70-90%, inverno 30-60%.'
+    question: 'Como calcular a taxa de ocupação de um alojamento local?',
+    answer: 'A taxa de ocupação é o número de noites vendidas a dividir pelo total de noites disponíveis. Em Portugal, a média varia entre 60-80% nas cidades turísticas (Lisboa, Porto, Algarve). A nossa calculadora de taxa de ocupação permite análise mês a mês com benchmarks por destino.'
   },
   {
-    question: 'Quais os principais custos de um AL?',
-    answer: 'Limpeza (€15-30/estadia), manutenção (2-5% receita), comissões plataformas (12-18%), seguros (€200-500/ano), utilities, consumíveis e gestão se terceirizada (10-25%).'
+    question: 'Como funciona o simulador de mais-valias do alojamento local?',
+    answer: 'O simulador calcula o imposto sobre mais-valias na venda do imóvel AL aplicando os coeficientes de desvalorização monetária da AT, deduzindo despesas de aquisição e alienação, e comparando a taxa liberatória de 28% com o englobamento IRS para encontrar a opção mais vantajosa.'
   }
 ];
 
