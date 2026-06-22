@@ -177,11 +177,32 @@ export default function Impostos() {
   return (
     <div className="min-h-screen bg-white">
       <PageMeta
-        title="Simulador de Impostos Alojamento Local — IRS, CEAL e IVA em Portugal"
-        description="Calcule o IRS (Categoria B), CEAL e obrigações de IVA do seu Alojamento Local em Portugal. Compare regimes fiscais e descubra o peso total dos impostos sobre a sua receita."
+        title="Calcular Impostos Alojamento Local — Simulador IRS, CEAL e IVA Gratuito"
+        description="Calcule o IRS Categoria B, CEAL e IVA do seu Alojamento Local em Portugal. Regime simplificado vs contabilidade organizada, coeficientes 2025 e todas as taxas atualizadas."
         canonical="https://calculadoraal.pt/impostos"
       />
       <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "Simulador de Impostos de Alojamento Local",
+          "url": "https://calculadoraal.pt/impostos",
+          "applicationCategory": "FinanceApplication",
+          "operatingSystem": "Web",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+          },
+          "description": "Simulador gratuito que calcula IRS Categoria B, CEAL e obrigações de IVA do Alojamento Local em Portugal, com suporte para regime simplificado e contabilidade organizada.",
+          "featureList": [
+            "Cálculo de IRS Categoria B (regime simplificado e contabilidade organizada)",
+            "Simulação da CEAL com taxas por município",
+            "Verificação do limiar de IVA (artigo 53.º CIVA)",
+            "Comparação entre regimes fiscais",
+            "Coeficientes atualizados para 2025"
+          ]
+        })}</script>
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "FAQPage",
@@ -215,7 +236,31 @@ export default function Impostos() {
               "name": "Como se calcula o IRS do alojamento local?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "No regime simplificado: Receita bruta × 0,35 = Rendimento tributável AL. Este valor soma-se aos outros rendimentos do ano e aplica-se a tabela progressiva de IRS (13% a 48%). O simulador de impostos AL calcula automaticamente o IRS, CEAL e obrigações de IVA com base na sua receita e localização."
+                "text": "No regime simplificado: Receita bruta × 0,35 = Rendimento tributável AL. Este valor soma-se aos outros rendimentos do ano e aplica-se a tabela progressiva de IRS (13% a 48%). O simulador acima calcula automaticamente o IRS, CEAL e obrigações de IVA com base na sua receita e localização."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Quanto IRS pago num alojamento local em Lisboa?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Em Lisboa (zona de alta pressão), um AL com €20.000/ano de receita paga em regime simplificado: Rendimento tributável = €20.000 × 0,35 = €7.000; IRS sobre €7.000 ≈ €910 (escalão 13%); CEAL = €20.000 × 15% = €3.000. Total de impostos sobre receita: cerca de €3.910 (19,6%). Use o simulador para calcular o valor exato com os seus dados."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Como declarar o alojamento local no IRS?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Os rendimentos de AL declaram-se no Anexo B do IRS (rendimentos empresariais e profissionais, Categoria B). No regime simplificado, preenche o quadro 4 com a receita bruta — o AT aplica automaticamente o coeficiente 0,35. Na contabilidade organizada, entrega o Anexo C com o resultado apurado pelo contabilista. O prazo de entrega é abril/junho do ano seguinte."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "O alojamento local paga sempre IVA?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Não. Está isento de IVA enquanto a faturação anual não ultrapassar €14.500 (artigo 53.º CIVA, valor de 2025). Acima deste limiar, o AL passa a liquidar IVA à taxa de 6% sobre os serviços de alojamento e é obrigado a emitir fatura com IVA. A vantagem de ser sujeito passivo de IVA é poder deduzir o IVA dos custos operacionais."
               }
             }
           ]
@@ -244,6 +289,9 @@ export default function Impostos() {
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
                 Calcule o IRS, CEAL e obrigações de IVA do seu AL em Portugal. Compare regimes fiscais e descubra o peso total dos impostos sobre a sua receita.
+              </p>
+              <p className="text-sm text-gray-500 leading-relaxed max-w-2xl mt-3">
+                O Simulador de Impostos de Alojamento Local da CalculadoraAL é uma ferramenta gratuita para proprietários em Portugal. Suporta regime simplificado (coeficiente 0,35) e contabilidade organizada, calcula a CEAL por município com taxas 2025, e verifica automaticamente o limiar de IVA do artigo 53.º do CIVA.
               </p>
             </div>
           </div>
@@ -586,6 +634,18 @@ export default function Impostos() {
           {
             question: 'Como se calcula o IRS do alojamento local?',
             answer: 'No regime simplificado: Receita bruta × 0,35 = Rendimento tributável AL. Este valor soma-se aos outros rendimentos do ano e aplica-se a tabela progressiva de IRS (13% a 48%). O simulador acima calcula automaticamente o IRS, CEAL e obrigações de IVA com base na sua receita e localização.'
+          },
+          {
+            question: 'Quanto IRS pago num alojamento local em Lisboa?',
+            answer: 'Em Lisboa (zona de alta pressão), um AL com €20.000/ano de receita paga em regime simplificado: Rendimento tributável = €20.000 × 0,35 = €7.000; IRS sobre €7.000 ≈ €910; CEAL = €20.000 × 15% = €3.000. Total: cerca de €3.910 (19,6% da receita). Use o simulador acima para calcular o valor exato com os seus dados.'
+          },
+          {
+            question: 'Como declarar o alojamento local no IRS?',
+            answer: 'Os rendimentos de AL declaram-se no Anexo B do IRS (Categoria B — rendimentos empresariais e profissionais). No regime simplificado, preenche o quadro 4 com a receita bruta — o AT aplica automaticamente o coeficiente 0,35. Na contabilidade organizada, entrega o Anexo C com o resultado apurado pelo contabilista. O prazo de entrega é abril a junho do ano seguinte.'
+          },
+          {
+            question: 'O alojamento local paga sempre IVA?',
+            answer: 'Não. Está isento de IVA enquanto a faturação anual não ultrapassar €14.500 (artigo 53.º CIVA, 2025). Acima deste limiar, o AL passa a liquidar IVA à taxa de 6% sobre os serviços de alojamento. A vantagem de ser sujeito passivo de IVA é poder deduzir o IVA dos custos operacionais (limpeza, plataformas, etc.).'
           }
         ]}
       />
