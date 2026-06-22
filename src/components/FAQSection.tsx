@@ -73,15 +73,14 @@ export default function FAQSection({ trackFAQOpen }: FAQSectionProps) {
                 </div>
               </button>
 
-              {openIndex === index && (
-                <div
-                  id={`faq-answer-${index}`}
-                  className="px-10 py-7 bg-gray-50 border-t border-gray-200 animate-in fade-in duration-200"
-                  role="region"
-                >
-                  <p className="text-gray-600 text-base leading-relaxed">{faq.answer}</p>
-                </div>
-              )}
+              <div
+                id={`faq-answer-${index}`}
+                className={`px-10 py-7 bg-gray-50 border-t border-gray-200 ${openIndex === index ? 'block animate-in fade-in duration-200' : 'hidden'}`}
+                role="region"
+                aria-hidden={openIndex !== index}
+              >
+                <p className="text-gray-600 text-base leading-relaxed">{faq.answer}</p>
+              </div>
             </div>
           ))}
         </div>

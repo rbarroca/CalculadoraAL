@@ -6,7 +6,15 @@ export default function Hero() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center">
           <div className="text-center max-w-3xl">
-            <h2 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-8 tracking-tight">
+            <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-4 tracking-tight">
+              Calcular Rendimento de Alojamento Local
+            </h1>
+            <p className="text-base text-gray-500 mb-6 leading-relaxed max-w-2xl mx-auto">
+              A CalculadoraAL é um simulador gratuito de rentabilidade para proprietários e investidores em Portugal.
+              Calcule o rendimento líquido do seu AL, simule IRS Categoria B e CEAL, compare com arrendamento tradicional
+              e estime o imposto sobre mais-valias na venda — com dados atualizados para Lisboa, Porto, Algarve e mais.
+            </p>
+            <h2 className="text-2xl lg:text-3xl font-semibold text-gray-700 mb-8 tracking-tight">
               Descubra o Potencial do Seu Imóvel
             </h2>
             <p className="text-xl lg:text-2xl text-gray-600 mb-12 font-light leading-relaxed">

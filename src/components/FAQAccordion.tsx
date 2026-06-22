@@ -37,11 +37,12 @@ export default function FAQAccordion({ title = 'Perguntas Frequentes', items }: 
                     }
                   </div>
                 </button>
-                {openIndex === index && (
-                  <div className="px-8 py-6 bg-gray-50 border-t border-gray-200">
-                    <p className="text-gray-600 text-base leading-relaxed">{faq.answer}</p>
-                  </div>
-                )}
+                <div
+                  className={`px-8 py-6 bg-gray-50 border-t border-gray-200 ${openIndex === index ? 'block' : 'hidden'}`}
+                  aria-hidden={openIndex !== index}
+                >
+                  <p className="text-gray-600 text-base leading-relaxed">{faq.answer}</p>
+                </div>
               </div>
             ))}
           </div>
