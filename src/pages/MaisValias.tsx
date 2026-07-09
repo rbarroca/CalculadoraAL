@@ -191,7 +191,7 @@ export default function MaisValias() {
       <PageMeta
         title="Simulador de Mais-Valias Alojamento Local — Calcule o Imposto na Venda"
         description="Calcule o imposto sobre mais-valias na venda do seu imóvel de Alojamento Local em Portugal. Compare taxa liberatória 28% vs englobamento IRS e descubra a opção mais vantajosa."
-        canonical="https://calculadoraal.pt/mais-valias"
+        canonical="https://calculadoraal.pt/mais-valias/"
       />
       <Helmet>
         <script type="application/ld+json">{JSON.stringify({

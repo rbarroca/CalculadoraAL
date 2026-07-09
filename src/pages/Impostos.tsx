@@ -179,14 +179,14 @@ export default function Impostos() {
       <PageMeta
         title="Calcular Impostos Alojamento Local — Simulador IRS, CEAL e IVA Gratuito"
         description="Calcule o IRS Categoria B, CEAL e IVA do seu Alojamento Local em Portugal. Regime simplificado vs contabilidade organizada, coeficientes 2025 e todas as taxas atualizadas."
-        canonical="https://calculadoraal.pt/impostos"
+        canonical="https://calculadoraal.pt/impostos/"
       />
       <Helmet>
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebApplication",
           "name": "Simulador de Impostos de Alojamento Local",
-          "url": "https://calculadoraal.pt/impostos",
+          "url": "https://calculadoraal.pt/impostos/",
           "applicationCategory": "FinanceApplication",
           "operatingSystem": "Web",
           "offers": {

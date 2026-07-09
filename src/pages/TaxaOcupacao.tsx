@@ -121,7 +121,7 @@ export default function TaxaOcupacao() {
       <PageMeta
         title="Calculadora de Taxa de Ocupação Alojamento Local Portugal"
         description="Calcule a taxa de ocupação do seu AL mês a mês e compare com os benchmarks de Lisboa, Porto e Algarve. Descubra a receita potencial que está a perder."
-        canonical="https://calculadoraal.pt/taxa-ocupacao"
+        canonical="https://calculadoraal.pt/taxa-ocupacao/"
       />
       <Helmet>
         <script type="application/ld+json">{JSON.stringify({
