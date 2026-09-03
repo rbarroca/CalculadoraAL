@@ -119,8 +119,8 @@ export default function TaxaOcupacao() {
   return (
     <div className="min-h-screen bg-white">
       <PageMeta
-        title="Calculadora de Taxa de Ocupação Alojamento Local Portugal"
-        description="Calcule a taxa de ocupação do seu AL mês a mês e compare com os benchmarks de Lisboa, Porto e Algarve. Descubra a receita potencial que está a perder."
+        title="Taxa de Ocupação Alojamento Local — Calculadora e Benchmarks Portugal 2025"
+        description="Calcule a taxa de ocupação do seu AL mês a mês e compare com os benchmarks de Lisboa (78%), Porto (74%) e Algarve (68%). Descubra quanto está a deixar de ganhar. Gratuito."
         canonical="https://calculadoraal.pt/taxa-ocupacao/"
       />
       <Helmet>
@@ -128,6 +128,22 @@ export default function TaxaOcupacao() {
           "@context": "https://schema.org",
           "@type": "FAQPage",
           "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Qual é a taxa de ocupação média do Algarve em 2025?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No Algarve, a taxa de ocupação média anual situa-se em torno de 68% para alojamentos bem posicionados. No verão (junho a setembro) pode atingir 90–95%, enquanto no inverno (novembro a fevereiro) desce para 30–40%. A forte sazonalidade algarvia exige uma estratégia de preço dinâmico para maximizar a receita anual."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Como aumentar a taxa de ocupação num alojamento local em Portugal?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "As estratégias mais eficazes são: adoptar preço dinâmico por temporada (ferramentas como Pricelabs), reduzir a estadia mínima na época baixa, estar presente em múltiplas plataformas (Airbnb, Booking.com, VRBO), investir em fotografias profissionais, e acumular reviews para melhorar o ranking. Em épocas baixas, oferecer descontos de estadia prolongada (semanas ou meses) pode manter a ocupação elevada."
+              }
+            },
             {
               "@type": "Question",
               "name": "Qual é a taxa de ocupação média de um alojamento local em Portugal?",
@@ -420,9 +436,126 @@ export default function TaxaOcupacao() {
         </div>
       </section>
 
+      {/* Conteúdo editorial */}
+      <section className="py-16 border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto space-y-10">
+
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Taxa de ocupação em Portugal: o que dizem os dados do mercado
+              </h2>
+              <p className="text-gray-600 leading-relaxed">
+                A taxa de ocupação é o indicador mais directo da saúde de um alojamento local. Em Portugal,
+                os mercados urbanos e turísticos apresentam taxas médias anuais entre 60% e 80%, com
+                variações significativas por destino e sazonalidade. Conhecer os benchmarks do seu mercado
+                é essencial para perceber se o seu AL está a operar abaixo do potencial.
+              </p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Benchmarks por destino em Portugal
+              </h2>
+              <p className="text-gray-600 leading-relaxed mb-6">
+                Os valores abaixo representam médias anuais para alojamentos bem posicionados nas
+                plataformas (boas fotos, reviews sólidas, preço competitivo). Um AL novo ou com
+                posicionamento fraco pode estar 15–20 pontos abaixo destes valores.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[
+                  { destino: 'Lisboa', anual: '78%', verao: '92%', inverno: '65%', nota: 'Mercado urbano, procura estável todo o ano' },
+                  { destino: 'Porto', anual: '74%', verao: '88%', inverno: '62%', nota: 'Forte crescimento turístico, sazonalidade moderada' },
+                  { destino: 'Algarve', anual: '68%', verao: '95%', inverno: '35%', nota: 'Alta sazonalidade — verão compensa o inverno' },
+                  { destino: 'Madeira', anual: '72%', verao: '85%', inverno: '60%', nota: 'Clima favorável reduz sazonalidade' },
+                  { destino: 'Cascais / Sintra', anual: '70%', verao: '88%', inverno: '55%', nota: 'Proximidade a Lisboa sustenta procura off-season' },
+                  { destino: 'Interior / Rural', anual: '45%', verao: '65%', inverno: '28%', nota: 'Potencial de nicho — turismo natureza e slow travel' },
+                ].map(b => (
+                  <div key={b.destino} className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="font-bold text-gray-900">{b.destino}</h3>
+                      <span className="text-2xl font-bold text-orange-500">{b.anual}</span>
+                    </div>
+                    <div className="flex gap-4 text-sm text-gray-600 mb-2">
+                      <span>Verão: <strong>{b.verao}</strong></span>
+                      <span>Inverno: <strong>{b.inverno}</strong></span>
+                    </div>
+                    <p className="text-xs text-gray-500">{b.nota}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Como interpretar a taxa de ocupação do seu AL
+              </h2>
+              <p className="text-gray-600 leading-relaxed mb-4">
+                A taxa de ocupação bruta (noites vendidas ÷ noites disponíveis) é um ponto de partida,
+                mas não conta toda a história. Para uma análise completa, combine com:
+              </p>
+              <ul className="space-y-3 text-gray-600">
+                <li className="flex gap-3">
+                  <span className="text-orange-500 font-bold shrink-0">•</span>
+                  <span><strong className="text-gray-900">ADR (Average Daily Rate)</strong> — preço médio por noite vendida. Uma taxa de ocupação alta com ADR baixo pode gerar menos receita do que ocupação média com ADR premium.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-orange-500 font-bold shrink-0">•</span>
+                  <span><strong className="text-gray-900">RevPAR (Revenue Per Available Day)</strong> — receita por dia disponível, independentemente da ocupação. É a métrica que combina os dois factores e permite comparações reais entre propriedades.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-orange-500 font-bold shrink-0">•</span>
+                  <span><strong className="text-gray-900">Sazonalidade</strong> — uma taxa anual de 65% pode esconder 95% no verão e 35% no inverno. A rentabilidade real depende de como gere a época baixa.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-orange-500 font-bold shrink-0">•</span>
+                  <span><strong className="text-gray-900">Dias bloqueados</strong> — dias de uso próprio ou manutenção reduzem os dias disponíveis mas não devem contar como "não vendidos". A calculadora acima permite excluir estes dias para um cálculo preciso.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Estratégias para melhorar a taxa de ocupação
+              </h2>
+              <p className="text-gray-600 leading-relaxed mb-4">
+                Se a sua taxa de ocupação está abaixo do benchmark do seu mercado, as causas mais comuns são:
+              </p>
+              <ul className="space-y-3 text-gray-600">
+                <li className="flex gap-3">
+                  <span className="text-orange-500 font-bold shrink-0">•</span>
+                  <span><strong className="text-gray-900">Preço fora do mercado</strong> — demasiado alto afasta reservas; demasiado baixo atrai hóspedes de menor qualidade e não compensa. Use ferramentas de preço dinâmico como Pricelabs ou Wheelhouse.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-orange-500 font-bold shrink-0">•</span>
+                  <span><strong className="text-gray-900">Estadia mínima elevada</strong> — nas épocas baixas, reduzir de 3 para 2 noites pode aumentar significativamente a ocupação sem reduzir o ADR.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-orange-500 font-bold shrink-0">•</span>
+                  <span><strong className="text-gray-900">Poucas plataformas</strong> — presença apenas no Airbnb limita o alcance. Booking.com e VRBO cobrem segmentos diferentes de hóspedes.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-orange-500 font-bold shrink-0">•</span>
+                  <span><strong className="text-gray-900">Fotografias fracas</strong> — é o factor com maior impacto no CTR dos listings. Fotos profissionais recuperam o custo em 1–2 reservas adicionais.</span>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
       <FAQAccordion
         title="Perguntas Frequentes sobre Taxa de Ocupação"
         items={[
+          {
+            question: 'Qual é a taxa de ocupação média do Algarve em 2025?',
+            answer: 'No Algarve, a taxa de ocupação média anual situa-se em torno de 68% para alojamentos bem posicionados. No verão (junho a setembro) pode atingir 90–95%, enquanto no inverno (novembro a fevereiro) desce para 30–40%. A forte sazonalidade algarvia exige uma estratégia de preço dinâmico para maximizar a receita anual.'
+          },
+          {
+            question: 'Como aumentar a taxa de ocupação num alojamento local em Portugal?',
+            answer: 'As estratégias mais eficazes são: adoptar preço dinâmico por temporada (ferramentas como Pricelabs), reduzir a estadia mínima na época baixa, estar presente em múltiplas plataformas (Airbnb, Booking.com, VRBO), investir em fotografias profissionais, e acumular reviews para melhorar o ranking. Em épocas baixas, oferecer descontos de estadia prolongada (semanas ou meses) pode manter a ocupação elevada.'
+          },
           {
             question: 'Qual é a taxa de ocupação média de um alojamento local em Portugal?',
             answer: 'A taxa média varia entre 60% e 80% nas principais cidades turísticas. Lisboa tem benchmark anual de 78%, Porto de 74%, e Algarve de 68% (com pico de 92% no verão). No interior e zonas rurais, a média situa-se entre 40% e 60%.'

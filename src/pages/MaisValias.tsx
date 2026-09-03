@@ -190,7 +190,7 @@ export default function MaisValias() {
     <div className="min-h-screen bg-white">
       <PageMeta
         title="Simulador de Mais-Valias Alojamento Local — Calcule o Imposto na Venda"
-        description="Calcule o imposto sobre mais-valias na venda do seu imóvel de Alojamento Local em Portugal. Compare taxa liberatória 28% vs englobamento IRS e descubra a opção mais vantajosa."
+        description="Simule as mais-valias na venda do seu imóvel de Alojamento Local em Portugal. Coeficientes AT 2025, taxa liberatória 28% vs englobamento IRS. Resultado em 2 minutos. Gratuito."
         canonical="https://calculadoraal.pt/mais-valias/"
       />
       <Helmet>
@@ -621,6 +621,112 @@ export default function MaisValias() {
                   <span><strong className="text-gray-900">Despesas dedutíveis</strong> — IMT, Imposto de Selo, escritura, obras de valorização comprovadas nos últimos 12 anos e comissão imobiliária.</span>
                 </li>
               </ul>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Coeficientes de desvalorização monetária AT — 2025
+              </h2>
+              <p className="text-gray-600 leading-relaxed mb-5">
+                A AT publica anualmente os coeficientes que corrigem o valor de aquisição pela inflação.
+                Quanto mais antigo o imóvel, maior o coeficiente e menor a mais-valia tributável.
+                Os valores abaixo são os coeficientes oficiais publicados para 2025:
+              </p>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm border border-gray-200 rounded-xl overflow-hidden">
+                  <thead>
+                    <tr className="bg-gray-50">
+                      <th className="text-left px-4 py-3 font-semibold text-gray-700 border-b border-gray-200">Ano de aquisição</th>
+                      <th className="text-right px-4 py-3 font-semibold text-gray-700 border-b border-gray-200">Coeficiente 2025</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {[
+                      ['2000 ou anterior', '1,79'],
+                      ['2001', '1,73'],
+                      ['2002', '1,69'],
+                      ['2003', '1,65'],
+                      ['2004', '1,62'],
+                      ['2005', '1,58'],
+                      ['2006', '1,55'],
+                      ['2007', '1,52'],
+                      ['2008', '1,50'],
+                      ['2009', '1,49'],
+                      ['2010', '1,48'],
+                      ['2011', '1,49'],
+                      ['2012', '1,51'],
+                      ['2013', '1,52'],
+                      ['2014', '1,52'],
+                      ['2015', '1,51'],
+                      ['2016', '1,49'],
+                      ['2017', '1,46'],
+                      ['2018', '1,41'],
+                      ['2019', '1,37'],
+                      ['2020', '1,33'],
+                      ['2021', '1,25'],
+                      ['2022', '1,12'],
+                      ['2023', '1,05'],
+                      ['2024', '1,01'],
+                    ].map(([ano, coef]) => (
+                      <tr key={ano} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-4 py-2.5 text-gray-700">{ano}</td>
+                        <td className="px-4 py-2.5 text-right font-semibold text-orange-600">{coef}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="text-xs text-gray-500 mt-3">
+                Fonte: Portaria publicada pela AT para o ano fiscal 2025. O simulador acima aplica estes coeficientes automaticamente.
+              </p>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Exemplo prático: venda de AL comprado em 2015
+              </h2>
+              <p className="text-gray-600 leading-relaxed mb-5">
+                Um proprietário comprou um apartamento em Lisboa em 2015 por €180.000 para usar como AL.
+                Em 2025 vende por €320.000. Pagou €7.500 de IMT + IS na compra, fez obras de €15.000
+                nos últimos 12 anos (com factura), e a imobiliária cobra 4% de comissão.
+              </p>
+              <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 space-y-3 text-sm">
+                <div className="flex justify-between text-gray-600">
+                  <span>Valor de venda</span>
+                  <span className="font-semibold">€320.000</span>
+                </div>
+                <div className="flex justify-between text-gray-600">
+                  <span>Valor de aquisição × coeficiente 2015 (1,51)</span>
+                  <span className="font-semibold text-red-600">− €271.800</span>
+                </div>
+                <div className="flex justify-between text-gray-600">
+                  <span>Despesas de aquisição (IMT + IS)</span>
+                  <span className="font-semibold text-red-600">− €7.500</span>
+                </div>
+                <div className="flex justify-between text-gray-600">
+                  <span>Obras de valorização (últimos 12 anos)</span>
+                  <span className="font-semibold text-red-600">− €15.000</span>
+                </div>
+                <div className="flex justify-between text-gray-600">
+                  <span>Comissão imobiliária (4% × €320.000)</span>
+                  <span className="font-semibold text-red-600">− €12.800</span>
+                </div>
+                <div className="flex justify-between border-t border-gray-200 pt-3 text-gray-900 font-semibold">
+                  <span>Mais-valia bruta</span>
+                  <span>€12.900</span>
+                </div>
+                <div className="flex justify-between text-gray-600">
+                  <span>Valor tributável (50% da mais-valia bruta)</span>
+                  <span className="font-semibold">€6.450</span>
+                </div>
+                <div className="flex justify-between text-orange-700 font-bold text-base border-t border-orange-200 pt-3 bg-orange-50 rounded-lg px-3 py-2 -mx-3">
+                  <span>Imposto (taxa liberatória 28%)</span>
+                  <span>€1.806</span>
+                </div>
+              </div>
+              <p className="text-sm text-gray-500 mt-3">
+                Valores meramente indicativos. Use o simulador acima para calcular com os dados exactos do seu imóvel.
+              </p>
             </div>
 
             <div>
