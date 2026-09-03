@@ -177,8 +177,8 @@ export default function Impostos() {
   return (
     <div className="min-h-screen bg-white">
       <PageMeta
-        title="Calcular Impostos Alojamento Local — Simulador IRS, CEAL e IVA Gratuito"
-        description="Calcule o IRS Categoria B, CEAL e IVA do seu Alojamento Local em Portugal. Regime simplificado vs contabilidade organizada, coeficientes 2025 e todas as taxas atualizadas."
+        title="Simulador IVA Alojamento Local — IRS, CEAL e IVA em Portugal 2025"
+        description="Simule o IVA, IRS e CEAL do seu Alojamento Local em Portugal. Calcule automaticamente se ultrapassou o limiar de IVA (€14.500), o imposto a pagar e o regime mais vantajoso. Gratuito."
         canonical="https://calculadoraal.pt/impostos/"
       />
       <Helmet>
@@ -207,6 +207,22 @@ export default function Impostos() {
           "@context": "https://schema.org",
           "@type": "FAQPage",
           "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Como funciona o simulador de IVA para alojamento local?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "O simulador verifica automaticamente se a sua receita bruta anual de AL ultrapassa o limiar de isenção de IVA (€14.500 em 2025, artigo 53.º do CIVA). Se ultrapassar, calcula o IVA à taxa de 6% sobre os serviços de alojamento e mostra o impacto na receita líquida. Insira a receita bruta anual no campo acima para obter o resultado imediato."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Qual é o limiar de IVA para alojamento local em Portugal?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Em 2025, o limiar de isenção de IVA é €14.500 de faturação anual (artigo 53.º do CIVA). Abaixo deste valor está isento — não cobra nem paga IVA. Acima deste valor, é obrigatório registar-se no regime de IVA e liquidar 6% sobre os serviços de alojamento. A vantagem é poder deduzir o IVA dos custos operacionais (plataformas, limpeza, etc.)."
+              }
+            },
             {
               "@type": "Question",
               "name": "O que é a CEAL e quem tem de pagar?",
@@ -293,6 +309,17 @@ export default function Impostos() {
               <p className="text-sm text-gray-500 leading-relaxed max-w-2xl mt-3">
                 O Simulador de Impostos de Alojamento Local da CalculadoraAL é uma ferramenta gratuita para proprietários em Portugal. Suporta regime simplificado (coeficiente 0,35) e contabilidade organizada, calcula a CEAL por município com taxas 2025, e verifica automaticamente o limiar de IVA do artigo 53.º do CIVA.
               </p>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <span className="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-200 text-orange-700 text-sm font-medium px-3 py-1.5 rounded-full">
+                  ✓ Simulador de IVA incluído
+                </span>
+                <span className="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-200 text-orange-700 text-sm font-medium px-3 py-1.5 rounded-full">
+                  ✓ Limiar €14.500 calculado automaticamente
+                </span>
+                <span className="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-200 text-orange-700 text-sm font-medium px-3 py-1.5 rounded-full">
+                  ✓ Coeficientes IRS 2025
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -619,6 +646,14 @@ export default function Impostos() {
       <FAQAccordion
         title="Perguntas Frequentes sobre Impostos AL"
         items={[
+          {
+            question: 'Como funciona o simulador de IVA para alojamento local?',
+            answer: 'O simulador verifica automaticamente se a sua receita bruta anual de AL ultrapassa o limiar de isenção de IVA (€14.500 em 2025, artigo 53.º do CIVA). Se ultrapassar, calcula o IVA à taxa de 6% sobre os serviços de alojamento e mostra o impacto na receita líquida. Insira a receita bruta anual no campo acima para obter o resultado imediato.'
+          },
+          {
+            question: 'Qual é o limiar de IVA para alojamento local em Portugal?',
+            answer: 'Em 2025, o limiar de isenção de IVA é €14.500 de faturação anual (artigo 53.º do CIVA). Abaixo deste valor está isento — não cobra nem paga IVA. Acima deste valor, é obrigatório registar-se no regime de IVA e liquidar 6% sobre os serviços de alojamento. A vantagem é poder deduzir o IVA dos custos operacionais (plataformas, limpeza, etc.).'
+          },
           {
             question: 'O que é a CEAL e quem tem de pagar?',
             answer: 'A CEAL (Contribuição Extraordinária sobre o Alojamento Local) foi criada em 2023 e incide sobre a receita bruta anual do AL. A taxa varia entre 4% (zonas sem pressão habitacional) e 15% (Lisboa, Porto e outros municípios de alta pressão). Estão isentos imóveis em habitação própria permanente e imóveis em zonas do interior.'
