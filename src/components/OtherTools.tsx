@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
-import { TrendingUp, BarChart2, FileText, Calculator } from 'lucide-react';
+import { TrendingUp, BarChart2, FileText, Calculator, Landmark } from 'lucide-react';
 
-type ToolId = 'home' | 'mais-valias' | 'taxa-ocupacao' | 'impostos';
+type ToolId = 'home' | 'mais-valias' | 'taxa-ocupacao' | 'impostos' | 'imt';
 
 const tools: { id: ToolId; to: string; label: string; icon: typeof TrendingUp }[] = [
   { id: 'home', to: '/', label: 'Calculadora de Rentabilidade', icon: Calculator },
   { id: 'impostos', to: '/impostos/', label: 'Simulador de Impostos AL', icon: FileText },
+  { id: 'imt', to: '/imt/', label: 'Simulador de IMT', icon: Landmark },
   { id: 'mais-valias', to: '/mais-valias/', label: 'Simulador de Mais-Valias', icon: TrendingUp },
   { id: 'taxa-ocupacao', to: '/taxa-ocupacao/', label: 'Taxa de Ocupação', icon: BarChart2 },
 ];

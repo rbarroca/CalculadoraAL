@@ -12,6 +12,7 @@ const routes = [
   '/mais-valias',
   '/taxa-ocupacao',
   '/impostos',
+  '/imt',
 ];
 
 async function buildClient() {

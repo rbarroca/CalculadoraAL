@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { TrendingUp, BarChart2, FileText } from 'lucide-react';
+import { TrendingUp, BarChart2, FileText, Landmark } from 'lucide-react';
 
 const ferramentas = [
   {
@@ -24,6 +24,13 @@ const ferramentas = [
     descricao: 'Calcule o IRS (Categoria B) e as obrigações de IVA. Compare o regime simplificado com contabilidade organizada.',
     query: 'simulador impostos alojamento local',
   },
+  {
+    to: '/imt/',
+    icon: Landmark,
+    titulo: 'Simulador de IMT',
+    descricao: 'Calcule o IMT e o Imposto do Selo na compra do imóvel para AL, com as tabelas de 2026, não residentes e ilhas.',
+    query: 'simulador imt compra imovel alojamento local',
+  },
 ];
 
 export default function ToolsSection() {
@@ -39,7 +46,7 @@ export default function ToolsSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-10">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           {ferramentas.map(({ to, icon: Icon, titulo, descricao }) => (
             <Link
               key={to}

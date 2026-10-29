@@ -5,6 +5,7 @@ import ScrollToTop from './components/ScrollToTop';
 import MaisValias from './pages/MaisValias';
 import TaxaOcupacao from './pages/TaxaOcupacao';
 import Impostos from './pages/Impostos';
+import IMT from './pages/IMT';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import CalculatorForm from './components/CalculatorForm';
@@ -181,6 +182,7 @@ function App() {
         <Route path="/mais-valias" element={<MaisValias />} />
         <Route path="/taxa-ocupacao" element={<TaxaOcupacao />} />
         <Route path="/impostos" element={<Impostos />} />
+        <Route path="/imt" element={<IMT />} />
       </Routes>
     </>
   );
