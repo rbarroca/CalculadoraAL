@@ -28,7 +28,7 @@ const faqData = [
   },
   {
     question: 'Como funciona o simulador de mais-valias do alojamento local?',
-    answer: 'O simulador calcula o imposto sobre mais-valias na venda do imóvel AL aplicando os coeficientes de desvalorização monetária da AT, deduzindo despesas de aquisição e alienação, e comparando a taxa liberatória de 28% com o englobamento IRS para encontrar a opção mais vantajosa.'
+    answer: 'O simulador calcula o imposto sobre mais-valias na venda do imóvel AL aplicando os coeficientes de desvalorização monetária da AT, deduzindo despesas de aquisição e alienação, e estimando o imposto pelo englobamento no IRS às taxas progressivas.'
   }
 ];
 

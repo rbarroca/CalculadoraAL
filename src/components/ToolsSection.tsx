@@ -7,7 +7,7 @@ const ferramentas = [
     to: '/mais-valias/',
     icon: TrendingUp,
     titulo: 'Simulador de Mais-Valias',
-    descricao: 'Calcule o imposto na venda do seu imóvel AL. Compare a taxa liberatória de 28% com o englobamento IRS e descubra a opção mais vantajosa.',
+    descricao: 'Calcule o imposto na venda do seu imóvel AL. Veja o ganho tributável, o imposto por englobamento no IRS e o lucro líquido.',
     query: 'simulador mais-valias alojamento local',
   },
   {

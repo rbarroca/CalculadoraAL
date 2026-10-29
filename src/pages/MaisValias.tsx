@@ -8,57 +8,36 @@ import PageMeta from '../components/PageMeta';
 import FAQAccordion from '../components/FAQAccordion';
 import OtherTools from '../components/OtherTools';
 
-// Coeficientes de desvalorização monetária publicados pela AT (aproximados até 2025)
+// Coeficientes de desvalorização da moeda para bens alienados em 2026
+// Fonte: Portaria n.º 457/2026/1, de 15 de outubro (ano de aquisição -> coeficiente)
 const COEFICIENTES: Record<number, number> = {
+  1995: 1.88, 1996: 1.84, 1997: 1.81, 1998: 1.76, 1999: 1.74,
+  2000: 1.71, 2001: 1.58, 2002: 1.52, 2003: 1.48, 2004: 1.46,
+  2005: 1.43, 2006: 1.37, 2007: 1.35, 2008: 1.31, 2009: 1.33,
+  2010: 1.31, 2011: 1.27, 2012: 1.23, 2013: 1.23, 2014: 1.23,
+  2015: 1.23, 2016: 1.22, 2017: 1.21, 2018: 1.20, 2019: 1.20,
+  2020: 1.20, 2021: 1.19, 2022: 1.08, 2023: 1.04, 2024: 1.02,
   2025: 1.00,
-  2024: 1.02,
-  2023: 1.07,
-  2022: 1.14,
-  2021: 1.21,
-  2020: 1.23,
-  2019: 1.26,
-  2018: 1.28,
-  2017: 1.30,
-  2016: 1.32,
-  2015: 1.34,
-  2014: 1.37,
-  2013: 1.39,
-  2012: 1.41,
-  2011: 1.44,
-  2010: 1.48,
-  2009: 1.52,
-  2008: 1.54,
-  2007: 1.60,
-  2006: 1.64,
-  2005: 1.68,
-  2004: 1.73,
-  2003: 1.77,
-  2002: 1.83,
-  2001: 1.91,
-  2000: 1.97,
-  1999: 2.03,
-  1998: 2.08,
-  1997: 2.14,
-  1996: 2.22,
-  1995: 2.31,
 };
 
 function getCoeficiente(ano: number): number {
   if (ano >= 2025) return 1.00;
-  if (ano <= 1995) return 2.31;
+  if (ano <= 1995) return COEFICIENTES[1995];
   return COEFICIENTES[ano] ?? 1.00;
 }
 
-// Escalões IRS 2025 (taxa marginal)
+// Escalões IRS 2026, continente (rendimento coletável e taxa normal).
+// Limites: OE2026 (Lei n.º 73-A/2025). Taxas: tabela reduzida do 1.º ao 6.º escalão
+// aprovada em outubro de 2026 (Lei n.º 64-B/2026), com efeitos a 1 de janeiro.
 const ESCALOES_IRS = [
-  { limite: 7703, taxa: 0.13 },
-  { limite: 11623, taxa: 0.18 },
-  { limite: 16472, taxa: 0.23 },
-  { limite: 21321, taxa: 0.26 },
-  { limite: 27146, taxa: 0.3275 },
-  { limite: 39791, taxa: 0.37 },
-  { limite: 51997, taxa: 0.435 },
-  { limite: 81199, taxa: 0.45 },
+  { limite: 8342, taxa: 0.122 },
+  { limite: 12587, taxa: 0.152 },
+  { limite: 17838, taxa: 0.207 },
+  { limite: 23089, taxa: 0.236 },
+  { limite: 29397, taxa: 0.306 },
+  { limite: 43090, taxa: 0.346 },
+  { limite: 46566, taxa: 0.431 },
+  { limite: 86634, taxa: 0.446 },
   { limite: Infinity, taxa: 0.48 },
 ];
 
@@ -98,10 +77,8 @@ interface Resultado {
   despesasAlienacao: number;
   maisValiaBreuta: number;
   maisValiaTributavel: number;
-  impostoTaxaFlat: number;
-  impostoTaxaMarginal: number;
-  taxaMarginalEfetiva: number;
-  melhorOpcao: 'flat' | 'marginal';
+  imposto: number;
+  taxaEfetiva: number;
   lucroLiquido: number;
 }
 
@@ -116,25 +93,14 @@ function calcular(f: FormData): Resultado | null {
   const maisValiaBreuta =
     f.valorRealizacao - valorAquisicaoCorrigido - despesasAquisicao - despesasAlienacao;
 
-  // 50% da mais-valia é tributável (regra geral para imóveis detidos > 2 anos)
+  // Só 50% da mais-valia entra no rendimento (art. 43.º, n.º 2 CIRS), seja qual for o tempo de detenção
   const maisValiaTributavel = Math.max(0, maisValiaBreuta * 0.5);
 
-  // Opção 1: taxa liberatória de 28%
-  const impostoTaxaFlat = maisValiaTributavel * 0.28;
+  // Englobamento obrigatório aos restantes rendimentos, às taxas progressivas do IRS
+  const imposto = calcularImpostoMarginal(maisValiaTributavel, f.rendimentoAnualOutros);
+  const taxaEfetiva = maisValiaTributavel > 0 ? imposto / maisValiaTributavel : 0;
 
-  // Opção 2: englobamento (taxa marginal)
-  const impostoMarginalTotal = calcularImpostoMarginal(
-    maisValiaTributavel,
-    f.rendimentoAnualOutros
-  );
-  const impostoTaxaMarginal = impostoMarginalTotal;
-  const taxaMarginalEfetiva =
-    maisValiaTributavel > 0 ? impostoMarginalTotal / maisValiaTributavel : 0;
-
-  const melhorOpcao: 'flat' | 'marginal' =
-    impostoTaxaFlat <= impostoTaxaMarginal ? 'flat' : 'marginal';
-  const impostoOtimizado = Math.min(impostoTaxaFlat, impostoTaxaMarginal);
-  const lucroLiquido = f.valorRealizacao - f.valorAquisicao - despesasAquisicao - despesasAlienacao - impostoOtimizado;
+  const lucroLiquido = f.valorRealizacao - f.valorAquisicao - despesasAquisicao - despesasAlienacao - imposto;
 
   return {
     coeficiente,
@@ -143,10 +109,8 @@ function calcular(f: FormData): Resultado | null {
     despesasAlienacao,
     maisValiaBreuta,
     maisValiaTributavel,
-    impostoTaxaFlat,
-    impostoTaxaMarginal,
-    taxaMarginalEfetiva,
-    melhorOpcao,
+    imposto,
+    taxaEfetiva,
     lucroLiquido,
   };
 }
@@ -191,7 +155,7 @@ export default function MaisValias() {
     <div className="min-h-screen bg-white">
       <PageMeta
         title="Simulador de Mais-Valias Alojamento Local — Calcule o Imposto na Venda"
-        description="Simule as mais-valias na venda do seu imóvel de Alojamento Local em Portugal. Coeficientes AT 2025, taxa liberatória 28% vs englobamento IRS. Resultado em 2 minutos. Gratuito."
+        description="Simule as mais-valias na venda do seu imóvel de Alojamento Local em Portugal. Coeficientes de desvalorização da AT e englobamento no IRS. Resultado em 2 minutos. Gratuito."
         canonical="https://calculadoraal.pt/mais-valias/"
       />
       <Helmet>
@@ -212,7 +176,7 @@ export default function MaisValias() {
               "name": "O que é o coeficiente de desvalorização monetária nas mais-valias?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "É um fator publicado anualmente pela AT que corrige o valor de compra do imóvel pela inflação acumulada. Por exemplo, um imóvel comprado em 2010 tem coeficiente 1,48 — o valor de aquisição é multiplicado por 1,48 antes de calcular a mais-valia, reduzindo o imposto a pagar."
+                "text": "É um fator publicado anualmente pela AT que corrige o valor de compra do imóvel pela inflação acumulada. Por exemplo, para vendas em 2026, um imóvel comprado em 2010 tem coeficiente 1,31: o valor de aquisição é multiplicado por 1,31 antes de calcular a mais-valia, reduzindo o imposto a pagar."
               }
             },
             {
@@ -225,10 +189,10 @@ export default function MaisValias() {
             },
             {
               "@type": "Question",
-              "name": "É melhor pagar 28% de taxa liberatória ou englobar as mais-valias no IRS?",
+              "name": "As mais-valias do imóvel são tributadas a 28% ou englobadas no IRS?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Depende dos seus outros rendimentos anuais. Se a sua taxa marginal de IRS for inferior a 28% (rendimentos abaixo de ~€27.000), o englobamento pode ser mais vantajoso. Para rendimentos superiores, a taxa liberatória de 28% poupa imposto. O simulador compara automaticamente as duas opções."
+                "text": "São englobadas. Desde 2023, 50% da mais-valia soma-se aos restantes rendimentos do ano e é tributada às taxas progressivas do IRS, tanto para residentes como para não residentes. A antiga taxa autónoma de 28% já não se aplica às mais-valias de imóveis."
               }
             }
           ]
@@ -256,7 +220,7 @@ export default function MaisValias() {
                 <span className="block text-orange-500">Alojamento Local</span>
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
-                Calcule o imposto sobre mais-valias na venda do seu imóvel de AL em Portugal. Compare a taxa liberatória (28%) com o englobamento e descubra a opção mais vantajosa.
+                Calcule o imposto sobre mais-valias na venda do seu imóvel de AL em Portugal. O ganho é englobado no IRS, às taxas progressivas, e o simulador mostra o imposto estimado e o lucro líquido.
               </p>
             </div>
           </div>
@@ -425,7 +389,7 @@ export default function MaisValias() {
                     />
                     <span className="absolute right-4 top-3.5 text-gray-400 font-medium text-sm">€</span>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">Salário, rendas, etc. — usado para calcular a taxa marginal no englobamento</p>
+                  <p className="text-xs text-gray-500 mt-1">Rendimento coletável do ano sem esta venda (salário, rendas, etc., depois de deduções). Serve para calcular os escalões no englobamento.</p>
                 </div>
               </div>
 
@@ -436,7 +400,7 @@ export default function MaisValias() {
                   <div>
                     <p className="text-sm font-semibold text-blue-800 mb-1">Nota informativa</p>
                     <p className="text-sm text-blue-700 leading-relaxed">
-                      Simulação baseada no regime geral de mais-valias (Categoria G, CIRS). Para imóveis registados como AL que tenham beneficiado de deduções específicas, consulte um contabilista. Valores meramente indicativos.
+                      Simulação baseada no regime geral de mais-valias (Categoria G, CIRS). Para imóveis registados como AL que tenham beneficiado de deduções específicas, consulte um contabilista. Escalões do continente para 2026. Não inclui o adicional de solidariedade nem deduções à coleta. Valores meramente indicativos.
                     </p>
                   </div>
                 </div>
@@ -476,39 +440,18 @@ export default function MaisValias() {
                     </div>
                   </div>
 
-                  {/* Comparação de opções fiscais */}
+                  {/* Imposto (englobamento obrigatório) */}
                   {resultado.maisValiaBreuta > 0 && (
                     <>
-                      <div className="grid sm:grid-cols-2 gap-5">
-                        {/* Taxa liberatória 28% */}
-                        <div className={`rounded-2xl border-2 p-6 ${resultado.melhorOpcao === 'flat' ? 'border-orange-400 bg-orange-50' : 'border-gray-200 bg-white'}`}>
-                          <div className="flex items-center justify-between mb-3">
-                            <p className="font-bold text-gray-900">Taxa Liberatória</p>
-                            {resultado.melhorOpcao === 'flat' && (
-                              <span className="bg-orange-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">
-                                Mais vantajosa
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-3xl font-bold text-gray-900 mb-1">€{fmt(resultado.impostoTaxaFlat)}</p>
-                          <p className="text-sm text-gray-600">28% sobre €{fmt(resultado.maisValiaTributavel)}</p>
-                          <p className="text-xs text-gray-500 mt-2">Não necessita de englobar no IRS</p>
-                        </div>
-
-                        {/* Englobamento */}
-                        <div className={`rounded-2xl border-2 p-6 ${resultado.melhorOpcao === 'marginal' ? 'border-orange-400 bg-orange-50' : 'border-gray-200 bg-white'}`}>
-                          <div className="flex items-center justify-between mb-3">
-                            <p className="font-bold text-gray-900">Englobamento IRS</p>
-                            {resultado.melhorOpcao === 'marginal' && (
-                              <span className="bg-orange-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">
-                                Mais vantajosa
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-3xl font-bold text-gray-900 mb-1">€{fmt(resultado.impostoTaxaMarginal)}</p>
-                          <p className="text-sm text-gray-600">Taxa efetiva: {pct(resultado.taxaMarginalEfetiva)}</p>
-                          <p className="text-xs text-gray-500 mt-2">Inclui todos os rendimentos do ano</p>
-                        </div>
+                      <div className="rounded-2xl border-2 border-orange-400 bg-orange-50 p-6">
+                        <p className="font-bold text-gray-900 mb-3">Imposto estimado (englobamento no IRS)</p>
+                        <p className="text-3xl font-bold text-gray-900 mb-1">€{fmt(resultado.imposto)}</p>
+                        <p className="text-sm text-gray-600">
+                          Taxa efetiva sobre os €{fmt(resultado.maisValiaTributavel)} tributáveis: {pct(resultado.taxaEfetiva)}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-2">
+                          A mais-valia soma-se aos outros rendimentos do ano e é tributada às taxas progressivas do IRS.
+                        </p>
                       </div>
 
                       {/* Resumo final */}
@@ -523,8 +466,8 @@ export default function MaisValias() {
                             { label: 'Mais-valia bruta', value: `€${fmt(resultado.maisValiaBreuta)}`, bold: true },
                             { label: 'Valor tributável (50%)', value: `€${fmt(resultado.maisValiaTributavel)}` },
                             {
-                              label: `Imposto (opção ${resultado.melhorOpcao === 'flat' ? '28% liberatória' : 'englobamento'})`,
-                              value: `− €${fmt(Math.min(resultado.impostoTaxaFlat, resultado.impostoTaxaMarginal))}`,
+                              label: 'Imposto (englobamento no IRS)',
+                              value: `− €${fmt(resultado.imposto)}`,
                               neg: true,
                             },
                           ].map(({ label, value, neg, bold }) => (
@@ -539,21 +482,9 @@ export default function MaisValias() {
                             <span className="font-bold text-gray-900">Lucro líquido estimado</span>
                             <span className="text-2xl font-bold text-green-700">€{fmt(resultado.lucroLiquido)}</span>
                           </div>
-                          <p className="text-xs text-gray-500 mt-1">Após deduzir custo de compra original, despesas e imposto otimizado</p>
+                          <p className="text-xs text-gray-500 mt-1">Após deduzir custo de compra original, despesas e imposto estimado</p>
                         </div>
                       </div>
-
-                      {/* Poupança fiscal */}
-                      {resultado.melhorOpcao !== 'flat' || resultado.impostoTaxaFlat !== resultado.impostoTaxaMarginal ? (
-                        <div className="bg-blue-50 rounded-2xl border border-blue-100 p-6">
-                          <p className="text-sm font-semibold text-blue-800 mb-1">
-                            💡 Poupança potencial: €{fmt(Math.abs(resultado.impostoTaxaFlat - resultado.impostoTaxaMarginal))}
-                          </p>
-                          <p className="text-sm text-blue-700">
-                            Ao escolher a opção {resultado.melhorOpcao === 'flat' ? 'taxa liberatória (28%)' : 'englobamento'}, poupa €{fmt(Math.abs(resultado.impostoTaxaFlat - resultado.impostoTaxaMarginal))} em imposto. Confirme com o seu contabilista.
-                          </p>
-                        </div>
-                      ) : null}
                     </>
                   )}
 
@@ -592,7 +523,7 @@ export default function MaisValias() {
                 Quando vende um imóvel que estava registado como Alojamento Local, pode ser devido
                 imposto sobre as mais-valias realizadas. A mais-valia é a diferença positiva entre o valor de
                 venda e o valor de aquisição corrigido pela inflação (coeficientes AT). O regime fiscal
-                português permite deduzir despesas de compra e venda, e tributa apenas 50% do ganho.
+                português permite deduzir despesas de compra e venda, e só 50% do ganho entra no rendimento sujeito a IRS.
               </p>
             </div>
 
@@ -602,16 +533,12 @@ export default function MaisValias() {
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
                 O imposto sobre mais-valias imobiliárias em Portugal incide sobre 50% da mais-valia bruta.
-                Existem duas formas de tributação:
+                Esses 50% são sempre englobados nos restantes rendimentos do ano:
               </p>
               <ul className="space-y-3 text-gray-600">
                 <li className="flex gap-3">
                   <span className="text-orange-500 font-bold shrink-0">•</span>
-                  <span><strong className="text-gray-900">Taxa liberatória de 28%</strong> — aplica-se diretamente aos 50% tributáveis, sem necessidade de englobar no IRS.</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-orange-500 font-bold shrink-0">•</span>
-                  <span><strong className="text-gray-900">Englobamento no IRS</strong> — os 50% tributáveis somam-se aos restantes rendimentos e são tributados à taxa marginal. Pode ser vantajoso para rendimentos mais baixos.</span>
+                  <span><strong className="text-gray-900">Englobamento no IRS</strong> — os 50% tributáveis somam-se aos restantes rendimentos e são tributados às taxas progressivas do IRS. Desde 2023 aplica-se a residentes e não residentes; a antiga taxa autónoma de 28% já não se aplica a estas mais-valias.</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-orange-500 font-bold shrink-0">•</span>
@@ -626,59 +553,35 @@ export default function MaisValias() {
 
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                Coeficientes de desvalorização monetária AT — 2025
+                Coeficientes de desvalorização da moeda — vendas em 2026
               </h2>
               <p className="text-gray-600 leading-relaxed mb-5">
-                A AT publica anualmente os coeficientes que corrigem o valor de aquisição pela inflação.
+                O Governo publica anualmente os coeficientes que corrigem o valor de aquisição pela inflação.
                 Quanto mais antigo o imóvel, maior o coeficiente e menor a mais-valia tributável.
-                Os valores abaixo são os coeficientes oficiais publicados para 2025:
+                Os valores abaixo são os coeficientes oficiais para bens alienados em 2026:
               </p>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm border border-gray-200 rounded-xl overflow-hidden">
                   <thead>
                     <tr className="bg-gray-50">
                       <th className="text-left px-4 py-3 font-semibold text-gray-700 border-b border-gray-200">Ano de aquisição</th>
-                      <th className="text-right px-4 py-3 font-semibold text-gray-700 border-b border-gray-200">Coeficiente 2025</th>
+                      <th className="text-right px-4 py-3 font-semibold text-gray-700 border-b border-gray-200">Coeficiente (vendas em 2026)</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
-                    {[
-                      ['2000 ou anterior', '1,79'],
-                      ['2001', '1,73'],
-                      ['2002', '1,69'],
-                      ['2003', '1,65'],
-                      ['2004', '1,62'],
-                      ['2005', '1,58'],
-                      ['2006', '1,55'],
-                      ['2007', '1,52'],
-                      ['2008', '1,50'],
-                      ['2009', '1,49'],
-                      ['2010', '1,48'],
-                      ['2011', '1,49'],
-                      ['2012', '1,51'],
-                      ['2013', '1,52'],
-                      ['2014', '1,52'],
-                      ['2015', '1,51'],
-                      ['2016', '1,49'],
-                      ['2017', '1,46'],
-                      ['2018', '1,41'],
-                      ['2019', '1,37'],
-                      ['2020', '1,33'],
-                      ['2021', '1,25'],
-                      ['2022', '1,12'],
-                      ['2023', '1,05'],
-                      ['2024', '1,01'],
-                    ].map(([ano, coef]) => (
+                    {Object.entries(COEFICIENTES).map(([ano, coef]) => (
                       <tr key={ano} className="hover:bg-gray-50 transition-colors">
                         <td className="px-4 py-2.5 text-gray-700">{ano}</td>
-                        <td className="px-4 py-2.5 text-right font-semibold text-orange-600">{coef}</td>
+                        <td className="px-4 py-2.5 text-right font-semibold text-orange-600">
+                          {coef.toFixed(2).replace('.', ',')}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
               <p className="text-xs text-gray-500 mt-3">
-                Fonte: Portaria publicada pela AT para o ano fiscal 2025. O simulador acima aplica estes coeficientes automaticamente.
+                Fonte: Portaria n.º 457/2026/1, de 15 de outubro, para bens alienados em 2026. O simulador acima aplica estes coeficientes automaticamente. O coeficiente só se aplica se tiverem decorrido mais de 24 meses entre a compra e a venda.
               </p>
             </div>
 
@@ -688,7 +591,7 @@ export default function MaisValias() {
               </h2>
               <p className="text-gray-600 leading-relaxed mb-5">
                 Um proprietário comprou um apartamento em Lisboa em 2015 por €180.000 para usar como AL.
-                Em 2025 vende por €320.000. Pagou €7.500 de IMT + IS na compra, fez obras de €15.000
+                Em 2026 vende por €320.000. Pagou €7.500 de IMT + IS na compra, fez obras de €15.000
                 nos últimos 12 anos (com factura), e a imobiliária cobra 4% de comissão.
               </p>
               <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 space-y-3 text-sm">
@@ -697,8 +600,8 @@ export default function MaisValias() {
                   <span className="font-semibold">€320.000</span>
                 </div>
                 <div className="flex justify-between text-gray-600">
-                  <span>Valor de aquisição × coeficiente 2015 (1,51)</span>
-                  <span className="font-semibold text-red-600">− €271.800</span>
+                  <span>Valor de aquisição × coeficiente 2015 (1,23)</span>
+                  <span className="font-semibold text-red-600">− €221.400</span>
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>Despesas de aquisição (IMT + IS)</span>
@@ -714,32 +617,30 @@ export default function MaisValias() {
                 </div>
                 <div className="flex justify-between border-t border-gray-200 pt-3 text-gray-900 font-semibold">
                   <span>Mais-valia bruta</span>
-                  <span>€12.900</span>
+                  <span>€63.300</span>
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>Valor tributável (50% da mais-valia bruta)</span>
-                  <span className="font-semibold">€6.450</span>
-                </div>
-                <div className="flex justify-between text-orange-700 font-bold text-base border-t border-orange-200 pt-3 bg-orange-50 rounded-lg px-3 py-2 -mx-3">
-                  <span>Imposto (taxa liberatória 28%)</span>
-                  <span>€1.806</span>
+                  <span className="font-semibold">€31.650</span>
                 </div>
               </div>
               <p className="text-sm text-gray-500 mt-3">
-                Valores meramente indicativos. Use o simulador acima para calcular com os dados exactos do seu imóvel.
+                Os €31.650 tributáveis somam-se aos restantes rendimentos do ano e o imposto resulta das taxas
+                progressivas do IRS, por isso depende do que o proprietário já ganha. Valores meramente
+                indicativos. Use o simulador acima para calcular com os dados exatos do seu imóvel.
               </p>
             </div>
 
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                Quando compensa o englobamento?
+                Porque é que o imposto depende dos outros rendimentos?
               </h2>
               <p className="text-gray-600 leading-relaxed">
-                O englobamento é vantajoso quando a taxa marginal de IRS do contribuinte é inferior a 28%.
-                Em 2025, isso acontece para rendimentos coletáveis anuais abaixo de aproximadamente
-                €27.000. Para rendimentos superiores, a taxa liberatória de 28% é geralmente mais
-                favorável. O nosso simulador calcula automaticamente as duas opções e recomenda a mais
-                vantajosa para o seu caso.
+                Como a mais-valia é englobada, os 50% tributáveis são somados aos seus outros rendimentos
+                do ano e tributados por escalões. Quanto maiores forem esses rendimentos, mais a mais-valia
+                sobe de escalão e maior é a taxa efetiva. Vender num ano em que os restantes rendimentos
+                são mais baixos pode reduzir o imposto. O simulador usa o valor que indicar em "Outros
+                rendimentos anuais" para estimar essa taxa.
               </p>
             </div>
 
@@ -769,15 +670,15 @@ export default function MaisValias() {
           },
           {
             question: 'O que é o coeficiente de desvalorização monetária nas mais-valias?',
-            answer: 'É um fator publicado anualmente pela AT que corrige o valor de compra do imóvel pela inflação acumulada. Por exemplo, um imóvel comprado em 2010 tem coeficiente 1,48 — o valor de aquisição é multiplicado por 1,48 antes de calcular a mais-valia, reduzindo o imposto a pagar.'
+            answer: 'É um fator publicado anualmente pela AT que corrige o valor de compra do imóvel pela inflação acumulada. Por exemplo, para vendas em 2026, um imóvel comprado em 2010 tem coeficiente 1,31: o valor de aquisição é multiplicado por 1,31 antes de calcular a mais-valia, reduzindo o imposto a pagar.'
           },
           {
             question: 'Posso deduzir as obras de remodelação nas mais-valias do AL?',
             answer: 'Sim, as obras e encargos de valorização realizados nos últimos 12 anos são dedutíveis, desde que comprovados por fatura. Também são dedutíveis o IMT, Imposto de Selo, despesas notariais pagas na compra, e a comissão da imobiliária na venda.'
           },
           {
-            question: 'É melhor pagar 28% de taxa liberatória ou englobar as mais-valias no IRS?',
-            answer: 'Depende dos seus outros rendimentos anuais. Se a sua taxa marginal de IRS for inferior a 28% (rendimentos abaixo de ~€27.000), o englobamento pode ser mais vantajoso. Para rendimentos superiores, a taxa liberatória de 28% poupa imposto. O simulador compara automaticamente as duas opções.'
+            question: 'As mais-valias do imóvel são tributadas a 28% ou englobadas no IRS?',
+            answer: 'São englobadas. Desde 2023, 50% da mais-valia soma-se aos restantes rendimentos do ano e é tributada às taxas progressivas do IRS, tanto para residentes como para não residentes. A antiga taxa autónoma de 28% já não se aplica às mais-valias de imóveis.'
           }
         ]}
       />
