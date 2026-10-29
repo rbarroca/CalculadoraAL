@@ -491,6 +491,11 @@ export default function MaisValias() {
                 imposto sobre as mais-valias realizadas. A mais-valia é a diferença positiva entre o valor de
                 venda e o valor de aquisição corrigido pela inflação (coeficientes AT). O regime fiscal
                 português permite deduzir despesas de compra e venda, e só 50% do ganho entra no rendimento sujeito a IRS.
+                Se ainda vai comprar, o{' '}
+                <Link to="/imt/" className="text-orange-600 hover:underline">simulador de IMT</Link>{' '}
+                mostra quanto paga de IMT e Imposto do Selo, valores que depois deduz aqui. Enquanto explora o imóvel, o{' '}
+                <Link to="/impostos/" className="text-orange-600 hover:underline">simulador de impostos do AL</Link>{' '}
+                estima o IRS e o IVA sobre as rendas.
               </p>
             </div>
 
@@ -513,7 +518,7 @@ export default function MaisValias() {
                 </li>
                 <li className="flex gap-3">
                   <span className="text-orange-500 font-bold shrink-0">•</span>
-                  <span><strong className="text-gray-900">Despesas dedutíveis</strong> — IMT, Imposto de Selo, escritura, obras de valorização comprovadas nos últimos 12 anos e comissão imobiliária.</span>
+                  <span><strong className="text-gray-900">Despesas dedutíveis</strong> — <Link to="/imt/" className="text-orange-600 hover:underline">IMT</Link>, Imposto de Selo, escritura, obras de valorização comprovadas nos últimos 12 anos e comissão imobiliária.</span>
                 </li>
               </ul>
             </div>

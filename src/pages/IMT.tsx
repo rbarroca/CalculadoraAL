@@ -381,8 +381,13 @@ export default function IMT() {
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Porque é que o IMT conta para a rentabilidade do AL?</h2>
               <p className="text-gray-600 leading-relaxed">
                 O IMT e o Imposto do Selo fazem parte do investimento inicial e aumentam o tempo que o imóvel demora a pagar-se.
-                Some-os ao preço de compra para comparar a rentabilidade real com o arrendamento tradicional na calculadora de rentabilidade, e
-                lembre-se de que são dedutíveis ao calcular as mais-valias na venda.
+                Some-os ao preço de compra para comparar a rentabilidade real com o arrendamento tradicional na{' '}
+                <Link to="/" className="text-orange-600 hover:underline">calculadora de rentabilidade</Link>, e
+                lembre-se de que são dedutíveis ao calcular as{' '}
+                <Link to="/mais-valias/" className="text-orange-600 hover:underline">mais-valias</Link> na venda.
+                Depois da compra, o{' '}
+                <Link to="/impostos/" className="text-orange-600 hover:underline">simulador de impostos do AL</Link>{' '}
+                estima o IRS e o IVA sobre as rendas.
               </p>
             </div>
           </div>

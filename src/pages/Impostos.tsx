@@ -228,6 +228,11 @@ export default function Impostos() {
               </p>
               <p className="text-sm text-gray-500 leading-relaxed max-w-2xl mt-3">
                 O Simulador de Impostos de Alojamento Local da CalculadoraAL é uma ferramenta gratuita para proprietários em Portugal. Suporta regime simplificado (coeficientes 0,35, 0,50 e 0,15) e contabilidade organizada, usa os escalões de IRS de 2026 e verifica automaticamente o limiar de IVA do artigo 53.º do CIVA.
+                Para os impostos de antes e depois do AL, veja o{' '}
+                <Link to="/imt/" className="text-orange-600 hover:underline">simulador de IMT</Link>{' '}
+                na compra e o{' '}
+                <Link to="/mais-valias/" className="text-orange-600 hover:underline">simulador de mais-valias</Link>{' '}
+                na venda.
               </p>
               <div className="mt-4 flex flex-wrap gap-3">
                 <span className="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-200 text-orange-700 text-sm font-medium px-3 py-1.5 rounded-full">

@@ -69,3 +69,13 @@ nos números do Search Console. Tratar como uma única janela de mudança.
 
 ### Ferramentas
 - Pacote Bevizio SEO skills v1.3.0 instalado em `.claude/skills/` (só este projeto, fora do git via `.git/info/exclude`).
+
+### Search Console (2026-10-29, depois do deploy)
+- Pedida a indexação de `/imt/` (Inspeção de URL).
+- Sitemap `sitemap.xml` reconhecido com 5 páginas. Não é preciso submeter outro.
+
+### Ligações internas no corpo do texto (2026-10-29)
+- `/imt/`, `/mais-valias/` e `/impostos/` passam a ligar entre si dentro do texto (antes só havia o bloco "Explore as outras ferramentas"):
+  IMT -> calculadora de rentabilidade, mais-valias e impostos; mais-valias -> IMT (duas vezes) e impostos; impostos -> IMT e mais-valias.
+- Porquê: ligações contextuais com texto âncora descritivo ajudam o Google a perceber a relação entre páginas e a descobrir `/imt/`, que é nova.
+- Ainda por fazer: alargar `/mais-valias/` para "venda de casa", página de rendas, e rever o guia do tudosobrealojamentolocal.pt.
