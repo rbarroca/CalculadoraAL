@@ -4,21 +4,21 @@ import { TrendingUp, BarChart2, FileText } from 'lucide-react';
 
 const ferramentas = [
   {
-    to: '/mais-valias',
+    to: '/mais-valias/',
     icon: TrendingUp,
     titulo: 'Simulador de Mais-Valias',
     descricao: 'Calcule o imposto na venda do seu imóvel AL. Compare a taxa liberatória de 28% com o englobamento IRS e descubra a opção mais vantajosa.',
     query: 'simulador mais-valias alojamento local',
   },
   {
-    to: '/taxa-ocupacao',
+    to: '/taxa-ocupacao/',
     icon: BarChart2,
     titulo: 'Calculadora de Taxa de Ocupação',
     descricao: 'Analise a ocupação mês a mês e compare com os benchmarks de Lisboa, Porto e Algarve. Descubra a receita que está a deixar escapar.',
     query: 'calculo de taxa de ocupação alojamento local',
   },
   {
-    to: '/impostos',
+    to: '/impostos/',
     icon: FileText,
     titulo: 'Simulador de Impostos AL',
     descricao: 'Calcule IRS (Categoria B), CEAL e obrigações de IVA. Compare o regime simplificado com contabilidade organizada.',
