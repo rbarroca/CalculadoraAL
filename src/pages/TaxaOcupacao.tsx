@@ -8,7 +8,8 @@ import PageMeta from '../components/PageMeta';
 import FAQAccordion from '../components/FAQAccordion';
 import OtherTools from '../components/OtherTools';
 
-// Benchmarks de taxa de ocupação por destino (fonte: dados médios mercado PT)
+// Benchmarks de taxa de ocupação por destino: estimativas orientativas, sem fonte oficial
+// (as estatísticas do INE não incluem o alojamento local com menos de 10 camas)
 const BENCHMARKS: Record<string, { label: string; anual: number; verao: number; inverno: number }> = {
   lisboa:   { label: 'Lisboa',   anual: 78, verao: 88, inverno: 65 },
   porto:    { label: 'Porto',    anual: 74, verao: 84, inverno: 60 },
@@ -117,8 +118,8 @@ export default function TaxaOcupacao() {
   return (
     <div className="min-h-screen bg-white">
       <PageMeta
-        title="Taxa de Ocupação Alojamento Local — Calculadora e Benchmarks Portugal 2025"
-        description="Calcule a taxa de ocupação do seu AL mês a mês e compare com os benchmarks de Lisboa (78%), Porto (74%) e Algarve (68%). Descubra quanto está a deixar de ganhar. Gratuito."
+        title="Taxa de Ocupação Alojamento Local: Calculadora e Benchmarks Portugal"
+        description="Calcule a taxa de ocupação do seu AL mês a mês e compare com referências orientativas para Lisboa (78%), Porto (74%) e Algarve (68%). Descubra quanto está a deixar de ganhar. Gratuito."
         canonical="https://calculadoraal.pt/taxa-ocupacao/"
       />
       <Helmet>
@@ -128,10 +129,10 @@ export default function TaxaOcupacao() {
           "mainEntity": [
             {
               "@type": "Question",
-              "name": "Qual é a taxa de ocupação média do Algarve em 2025?",
+              "name": "Qual é a taxa de ocupação média do Algarve?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "No Algarve, a taxa de ocupação média anual situa-se em torno de 68% para alojamentos bem posicionados. No verão (junho a setembro) pode atingir 90–95%, enquanto no inverno (novembro a fevereiro) desce para 30–40%. A forte sazonalidade algarvia exige uma estratégia de preço dinâmico para maximizar a receita anual."
+                "text": "Como referência orientativa, a taxa de ocupação média anual no Algarve situa-se em torno de 68% para alojamentos bem posicionados. No verão (junho a setembro) pode atingir 90–95%, enquanto no inverno (novembro a fevereiro) desce para 30–40%. A forte sazonalidade algarvia exige uma estratégia de preço dinâmico para maximizar a receita anual."
               }
             },
             {
@@ -147,7 +148,7 @@ export default function TaxaOcupacao() {
               "name": "Qual é a taxa de ocupação média de um alojamento local em Portugal?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "A taxa de ocupação média em Portugal varia entre 60% e 80% nas principais cidades turísticas. Lisboa tem benchmark anual de 78%, Porto de 74%, e Algarve de 68% (com pico de 92% no verão). No interior e zonas rurais, a média situa-se entre 40% e 60%."
+                "text": "A taxa de ocupação média em Portugal varia entre 60% e 80% nas principais cidades turísticas. Lisboa tem benchmark anual de 78%, Porto de 74%, e Algarve de 68% (com pico de 92% no verão). No interior e zonas rurais, a média situa-se entre 40% e 60%. Estes valores são estimativas orientativas e não estatísticas oficiais: o INE não inclui o alojamento local com menos de 10 camas."
               }
             },
             {
@@ -236,7 +237,7 @@ export default function TaxaOcupacao() {
                       ))}
                     </select>
                     <p className="text-xs text-gray-500 mt-1">
-                      Benchmark mercado: {BENCHMARKS[form.destino].anual}% anual · {BENCHMARKS[form.destino].verao}% verão · {BENCHMARKS[form.destino].inverno}% inverno
+                      Referência orientativa: {BENCHMARKS[form.destino].anual}% anual · {BENCHMARKS[form.destino].verao}% verão · {BENCHMARKS[form.destino].inverno}% inverno
                     </p>
                   </div>
 
@@ -547,8 +548,8 @@ export default function TaxaOcupacao() {
         title="Perguntas Frequentes sobre Taxa de Ocupação"
         items={[
           {
-            question: 'Qual é a taxa de ocupação média do Algarve em 2025?',
-            answer: 'No Algarve, a taxa de ocupação média anual situa-se em torno de 68% para alojamentos bem posicionados. No verão (junho a setembro) pode atingir 90–95%, enquanto no inverno (novembro a fevereiro) desce para 30–40%. A forte sazonalidade algarvia exige uma estratégia de preço dinâmico para maximizar a receita anual.'
+            question: 'Qual é a taxa de ocupação média do Algarve?',
+            answer: 'Como referência orientativa, a taxa de ocupação média anual no Algarve situa-se em torno de 68% para alojamentos bem posicionados. No verão (junho a setembro) pode atingir 90–95%, enquanto no inverno (novembro a fevereiro) desce para 30–40%. A forte sazonalidade algarvia exige uma estratégia de preço dinâmico para maximizar a receita anual.'
           },
           {
             question: 'Como aumentar a taxa de ocupação num alojamento local em Portugal?',
@@ -556,7 +557,7 @@ export default function TaxaOcupacao() {
           },
           {
             question: 'Qual é a taxa de ocupação média de um alojamento local em Portugal?',
-            answer: 'A taxa média varia entre 60% e 80% nas principais cidades turísticas. Lisboa tem benchmark anual de 78%, Porto de 74%, e Algarve de 68% (com pico de 92% no verão). No interior e zonas rurais, a média situa-se entre 40% e 60%.'
+            answer: 'A taxa média varia entre 60% e 80% nas principais cidades turísticas. Lisboa tem benchmark anual de 78%, Porto de 74%, e Algarve de 68% (com pico de 92% no verão). No interior e zonas rurais, a média situa-se entre 40% e 60%. Estes valores são estimativas orientativas e não estatísticas oficiais: o INE não inclui o alojamento local com menos de 10 camas.'
           },
           {
             question: 'Como se calcula a taxa de ocupação de um alojamento local?',

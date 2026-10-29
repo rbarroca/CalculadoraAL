@@ -17,8 +17,6 @@
     <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Preconnect for performance -->
-    <link rel="preconnect" href="https://www.googletagmanager.com">
-    <link rel="dns-prefetch" href="https://www.google-analytics.com">
 
     <style>
       .skip-link {
@@ -35,26 +33,32 @@
       .skip-link:focus { top: 0; }
     </style>
 
-    <!-- Google Analytics — carrega apenas em idle para não bloquear LCP -->
+    <!-- Google Analytics: só carrega depois de o visitante aceitar os cookies (window.loadGA) -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-KVZD0XY5X4', { send_page_view: false });
 
-      function loadGA() {
+      window.loadGA = function () {
+        if (window.__gaLoaded) return;
+        window.__gaLoaded = true;
         var s = document.createElement('script');
         s.src = 'https://www.googletagmanager.com/gtag/js?id=G-KVZD0XY5X4';
         s.async = true;
-        s.onload = function() { gtag('event', 'page_view'); };
+        s.onload = function () { gtag('event', 'page_view'); };
         document.head.appendChild(s);
-      }
+      };
 
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(loadGA, { timeout: 3000 });
-      } else {
-        window.addEventListener('load', loadGA);
-      }
+      try {
+        if (localStorage.getItem('al-cookie-consent') === 'granted') {
+          if ('requestIdleCallback' in window) {
+            requestIdleCallback(window.loadGA, { timeout: 3000 });
+          } else {
+            window.addEventListener('load', window.loadGA);
+          }
+        }
+      } catch (e) {}
     </script>
   </head>
   <body>

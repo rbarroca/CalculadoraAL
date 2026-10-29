@@ -1,4 +1,3 @@
-
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -15,7 +14,19 @@ export default function Footer() {
           </a>
         </p>
         <p className="text-sm text-gray-500 leading-relaxed">
-          © {currentYear} Calculadora de Alojamento Local. Simulações baseadas em dados médios do mercado. Todos os direitos reservados.
+          © {currentYear} Calculadora de Alojamento Local. Todos os direitos reservados.
+        </p>
+        <p className="text-xs text-gray-500 leading-relaxed max-w-3xl mx-auto">
+          As simulações são indicativas, baseadas em dados médios e na legislação em vigor, e não constituem aconselhamento fiscal, jurídico ou financeiro. Consulte um contabilista certificado para a sua situação.
+        </p>
+        <p className="text-sm text-gray-500">
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new Event('al:cookie-settings'))}
+            className="underline hover:text-gray-300 transition-colors"
+          >
+            Preferências de cookies
+          </button>
         </p>
       </div>
     </footer>

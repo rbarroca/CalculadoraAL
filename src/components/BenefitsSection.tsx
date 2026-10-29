@@ -10,7 +10,7 @@ const benefits = [
   },
   {
     title: 'Preparação Fiscal',
-    description: 'Antecipe IRS, IVA e contribuição extraordinária sobre o património'
+    description: 'Antecipe IRS, IVA, IMT e mais-valias antes de decidir'
   },
   {
     title: 'Análise de Cenários',
