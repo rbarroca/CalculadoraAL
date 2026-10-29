@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { TrendingUp, BarChart2, FileText, Landmark } from 'lucide-react';
 

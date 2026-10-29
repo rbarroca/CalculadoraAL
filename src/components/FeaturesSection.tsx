@@ -1,4 +1,3 @@
-import React from 'react';
 import { TrendingUp, PieChart, DollarSign, Calendar, Home, Users } from 'lucide-react';
 
 const features = [

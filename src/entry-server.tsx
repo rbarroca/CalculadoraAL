@@ -1,11 +1,12 @@
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
-import { HelmetProvider, FilledContext } from 'react-helmet-async';
+import { HelmetProvider, type HelmetServerState } from 'react-helmet-async';
 import App from './App.tsx';
 
-export function render(url: string): { html: string; helmetContext: FilledContext } {
-  const helmetContext = {} as FilledContext;
+type HelmetContext = { helmet: HelmetServerState };
+
+export function render(url: string): { html: string; helmetContext: HelmetContext } {
+  const helmetContext = {} as HelmetContext;
 
   const html = renderToString(
     <HelmetProvider context={helmetContext}>

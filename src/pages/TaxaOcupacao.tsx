@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { BarChart2, ArrowLeft, Calendar, TrendingUp, Info } from 'lucide-react';
+import { BarChart2, ArrowLeft, Calendar, Info } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -88,9 +88,6 @@ function fmt(n: number): string {
 function pct(n: number): string {
   return n.toFixed(1) + '%';
 }
-
-// Dias úteis (máximo) por mês
-const DIAS_MES = [31,28,31,30,31,30,31,31,30,31,30,31];
 
 export default function TaxaOcupacao() {
   const [form, setForm] = useState<FormData>({

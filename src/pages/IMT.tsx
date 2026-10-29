@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Landmark, ArrowLeft, Info } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
@@ -7,7 +7,7 @@ import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
 import FAQAccordion from '../components/FAQAccordion';
 import OtherTools from '../components/OtherTools';
-import { calcularIMT, TAXA_SELO, type EntradaIMT, type Regiao, type TipoImovel } from '../data/imt';
+import { calcularIMT, TAXA_SELO, type Regiao, type TipoImovel } from '../data/imt';
 
 const TIPOS: { value: TipoImovel; label: string; descricao: string }[] = [
   { value: 'secundaria', label: 'Habitação secundária, arrendamento ou AL', descricao: 'Habitação que não é a sua casa de morada permanente. É o caso da maioria das compras para AL.' },
@@ -27,7 +27,7 @@ const FAQ_ITEMS = [
   },
   {
     question: 'Os compradores não residentes pagam mais IMT?',
-    answer: 'Sim, desde 25 de maio de 2026. Segundo o Decreto-Lei n.º 97/2026, a compra de habitação por quem não é residente fiscal em Portugal paga uma taxa fixa de 7,5%, sem escalões nem isenções. O critério é a residência fiscal e não a nacionalidade. A exceção prevista para imóveis destinados a arrendamento habitacional com renda moderada não abrange o alojamento local. Confirme a sua situação com um contabilista.'
+    answer: 'Sim, desde 25 de maio de 2026. Segundo o Decreto-Lei n.º 97/2026, a compra de habitação por quem não é residente fiscal em Portugal paga uma taxa fixa de 7,5%, sem escalões nem isenções. O critério é a residência fiscal e não a nacionalidade. A taxa não se aplica a quem seja ou se torne residente fiscal em Portugal nos dois anos seguintes, nem a imóveis arrendados para habitação com renda moderada (até €2.300 por mês) nos prazos previstos, casos em que pode pedir o reembolso da diferença. A lei fala em prédios destinados exclusivamente a habitação, e não é claro que a regra se aplique a imóveis comprados para AL, por isso confirme a sua situação com um contabilista.'
   },
   {
     question: 'Quanto é o Imposto do Selo na compra de um imóvel?',
@@ -39,7 +39,7 @@ const FAQ_ITEMS = [
   },
   {
     question: 'O que é o IMT Jovem e aplica-se a um AL?',
-    answer: 'O IMT Jovem isenta de IMT e de Imposto do Selo a compra da primeira habitação própria e permanente por quem tem até 35 anos, até €330.539 (continente). Entre €330.539 e €660.982 paga 8% sobre o excedente, e acima disso não há isenção. Como exige habitação própria e permanente, não se aplica a imóveis comprados para AL.'
+    answer: 'O IMT Jovem isenta de IMT e de Imposto do Selo a compra da primeira habitação própria e permanente por quem tem até 35 anos, até €330.539 (continente). Entre €330.539 e €660.982 paga IMT de 8% e Imposto do Selo de 0,8% apenas sobre o excedente, e acima disso não há isenção. Como exige habitação própria e permanente, não se aplica a imóveis comprados para AL.'
   },
   {
     question: 'O IMT pago na compra pode ser deduzido nas mais-valias?',
@@ -67,8 +67,7 @@ export default function IMT() {
   const [jovem, setJovem] = useState(false);
   const [naoResidente, setNaoResidente] = useState(false);
 
-  const entrada: EntradaIMT = { preco, vpt, regiao, tipo, jovem, naoResidente };
-  const r = useMemo(() => calcularIMT(entrada), [preco, vpt, regiao, tipo, jovem, naoResidente]);
+  const r = calcularIMT({ preco, vpt, regiao, tipo, jovem, naoResidente });
 
   const habitacao = tipo === 'hpp' || tipo === 'secundaria';
   const mostraJovem = tipo === 'hpp' && !naoResidente;
@@ -307,7 +306,7 @@ export default function IMT() {
                   <div className="bg-white/10 rounded-xl p-4 backdrop-blur-sm">
                     <p className="text-orange-100 text-xs font-medium mb-1">Imposto do Selo</p>
                     <p className="text-white font-bold text-xl">€{fmt(r.selo)}</p>
-                    <p className="text-orange-200 text-xs">{r.seloIsento ? 'isento (IMT Jovem)' : `${pct(TAXA_SELO)} sobre €${fmt(r.base)}`}</p>
+                    <p className="text-orange-200 text-xs">{r.seloIsento ? 'isento (IMT Jovem)' : `${pct(TAXA_SELO)} sobre €${fmt(r.baseSelo)}`}</p>
                   </div>
                 </div>
               </div>

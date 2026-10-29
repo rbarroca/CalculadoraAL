@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { TrendingUp, Info, ArrowLeft, Calculator, Home, Euro } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';

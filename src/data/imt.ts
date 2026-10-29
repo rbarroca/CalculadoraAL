@@ -101,8 +101,11 @@ export const TAXA_URBANO_OUTROS = 0.065;
 export const TAXA_NAO_RESIDENTE = 0.075; // DL n.º 97/2026, aquisições de habitação desde 25 de maio de 2026
 export const TAXA_SELO = 0.008; // Imposto do Selo, verba 1.1 da TGIS
 
-// Limite da isenção total do IMT Jovem
-const LIMITE_JOVEM: Record<Regiao, number> = { continente: 330539, ilhas: 413174 };
+// IMT Jovem: até `isento` não há IMT nem Imposto do Selo; até `fim` o Selo incide só sobre o excedente
+const JOVEM: Record<Regiao, { isento: number; fim: number }> = {
+  continente: { isento: 330539, fim: 660982 },
+  ilhas: { isento: 413174, fim: 826228 },
+};
 
 export interface EntradaIMT {
   preco: number;
@@ -124,6 +127,7 @@ export interface ResultadoIMT {
   descricao: string;
   escalaoIndex: number; // índice do escalão aplicado na tabela, -1 se não houver tabela
   seloIsento: boolean;
+  baseSelo: number; // valor sobre o qual incide o Imposto do Selo
 }
 
 export function calcularIMT(e: EntradaIMT): ResultadoIMT {
@@ -157,10 +161,14 @@ export function calcularIMT(e: EntradaIMT): ResultadoIMT {
     descricao = 'Prédios urbanos não habitacionais e outras aquisições onerosas: taxa de 6,5%';
   }
 
-  // Imposto do Selo: isento quando a isenção total do IMT Jovem se aplica
-  const seloIsento =
-    e.tipo === 'hpp' && e.jovem && !e.naoResidente && base <= LIMITE_JOVEM[e.regiao];
-  const selo = seloIsento ? 0 : base * TAXA_SELO;
+  // Imposto do Selo: no IMT Jovem fica isento até ao limite e incide só sobre o excedente até ao fim do benefício
+  let baseSelo = base;
+  if (e.tipo === 'hpp' && e.jovem && !e.naoResidente) {
+    const { isento, fim } = JOVEM[e.regiao];
+    if (base <= fim) baseSelo = Math.max(0, base - isento);
+  }
+  const seloIsento = baseSelo === 0;
+  const selo = baseSelo * TAXA_SELO;
 
   const total = imt + selo;
   return {
@@ -174,5 +182,6 @@ export function calcularIMT(e: EntradaIMT): ResultadoIMT {
     descricao,
     escalaoIndex,
     seloIsento,
+    baseSelo,
   };
 }

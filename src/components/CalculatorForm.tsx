@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, DollarSign, Calendar, Percent } from 'lucide-react';
+import { MapPin, DollarSign, Calendar } from 'lucide-react';
 
 interface CalculatorFormProps {
   data: any;
