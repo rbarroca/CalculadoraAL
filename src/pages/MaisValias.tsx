@@ -172,7 +172,7 @@ export default function MaisValias() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-orange-600 font-medium mb-8 transition-colors"
+            className="inline-flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-orange-600 font-medium mb-6 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             Voltar à Calculadora de Rentabilidade
@@ -184,7 +184,7 @@ export default function MaisValias() {
             <div>
               <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight mb-3">
                 Simulador de Mais-Valias{' '}
-                <span className="block text-orange-500">Alojamento Local</span>
+                <span className="block text-orange-600">Alojamento Local</span>
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
                 Calcule o imposto sobre mais-valias na venda do seu imóvel de AL em Portugal. O ganho é englobado no IRS, às taxas progressivas, e o simulador mostra o imposto estimado e o lucro líquido.
@@ -206,7 +206,7 @@ export default function MaisValias() {
               <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="bg-orange-100 p-2 rounded-lg">
-                    <Home className="h-5 w-5 text-orange-600" aria-hidden="true" />
+                    <Home className="h-5 w-5 text-orange-700" aria-hidden="true" />
                   </div>
                   <h2 className="text-lg font-bold text-gray-900">Dados de Aquisição</h2>
                 </div>
@@ -224,7 +224,7 @@ export default function MaisValias() {
                         className={inputClass + ' pr-8'}
                         aria-label="Valor de aquisição em euros"
                       />
-                      <span className="absolute right-4 top-3.5 text-gray-400 font-medium text-sm">€</span>
+                      <span className="absolute right-4 top-3.5 text-gray-500 font-medium text-sm">€</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">Valor escriturado na compra (sem impostos)</p>
                   </div>
@@ -260,7 +260,7 @@ export default function MaisValias() {
                         className={inputClass + ' pr-8'}
                         aria-label="IMT, Imposto de Selo e despesas de escritura em euros"
                       />
-                      <span className="absolute right-4 top-3.5 text-gray-400 font-medium text-sm">€</span>
+                      <span className="absolute right-4 top-3.5 text-gray-500 font-medium text-sm">€</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">Impostos e despesas notariais na compra</p>
                   </div>
@@ -278,7 +278,7 @@ export default function MaisValias() {
                         className={inputClass + ' pr-8'}
                         aria-label="Encargos de valorização em euros"
                       />
-                      <span className="absolute right-4 top-3.5 text-gray-400 font-medium text-sm">€</span>
+                      <span className="absolute right-4 top-3.5 text-gray-500 font-medium text-sm">€</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">Remodelações comprovadas nos últimos 12 anos</p>
                   </div>
@@ -289,7 +289,7 @@ export default function MaisValias() {
               <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="bg-orange-100 p-2 rounded-lg">
-                    <Euro className="h-5 w-5 text-orange-600" aria-hidden="true" />
+                    <Euro className="h-5 w-5 text-orange-700" aria-hidden="true" />
                   </div>
                   <h2 className="text-lg font-bold text-gray-900">Dados de Venda</h2>
                 </div>
@@ -307,7 +307,7 @@ export default function MaisValias() {
                         className={inputClass + ' pr-8'}
                         aria-label="Valor de venda em euros"
                       />
-                      <span className="absolute right-4 top-3.5 text-gray-400 font-medium text-sm">€</span>
+                      <span className="absolute right-4 top-3.5 text-gray-500 font-medium text-sm">€</span>
                     </div>
                   </div>
 
@@ -326,7 +326,7 @@ export default function MaisValias() {
                         className={inputClass + ' pr-8'}
                         aria-label="Comissão da agência imobiliária em percentagem"
                       />
-                      <span className="absolute right-4 top-3.5 text-gray-400 font-medium text-sm">%</span>
+                      <span className="absolute right-4 top-3.5 text-gray-500 font-medium text-sm">%</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">Habitualmente entre 3% e 6%</p>
                   </div>
@@ -337,7 +337,7 @@ export default function MaisValias() {
               <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="bg-orange-100 p-2 rounded-lg">
-                    <Calculator className="h-5 w-5 text-orange-600" aria-hidden="true" />
+                    <Calculator className="h-5 w-5 text-orange-700" aria-hidden="true" />
                   </div>
                   <h2 className="text-lg font-bold text-gray-900">Dados de IRS</h2>
                 </div>
@@ -354,7 +354,7 @@ export default function MaisValias() {
                       className={inputClass + ' pr-8'}
                       aria-label="Outros rendimentos anuais para cálculo do englobamento"
                     />
-                    <span className="absolute right-4 top-3.5 text-gray-400 font-medium text-sm">€</span>
+                    <span className="absolute right-4 top-3.5 text-gray-500 font-medium text-sm">€</span>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">Rendimento coletável do ano sem esta venda (salário, rendas, etc., depois de deduções). Serve para calcular os escalões no englobamento.</p>
                 </div>
@@ -492,9 +492,9 @@ export default function MaisValias() {
                 venda e o valor de aquisição corrigido pela inflação (coeficientes AT). O regime fiscal
                 português permite deduzir despesas de compra e venda, e só 50% do ganho entra no rendimento sujeito a IRS.
                 Se ainda vai comprar, o{' '}
-                <Link to="/imt/" className="text-orange-600 hover:underline">simulador de IMT</Link>{' '}
+                <Link to="/imt/" className="text-orange-700 hover:underline">simulador de IMT</Link>{' '}
                 mostra quanto paga de IMT e Imposto do Selo, valores que depois deduz aqui. Enquanto explora o imóvel, o{' '}
-                <Link to="/impostos/" className="text-orange-600 hover:underline">simulador de impostos do AL</Link>{' '}
+                <Link to="/impostos/" className="text-orange-700 hover:underline">simulador de impostos do AL</Link>{' '}
                 estima o IRS e o IVA sobre as rendas.
               </p>
             </div>
@@ -518,7 +518,7 @@ export default function MaisValias() {
                 </li>
                 <li className="flex gap-3">
                   <span className="text-orange-500 font-bold shrink-0">•</span>
-                  <span><strong className="text-gray-900">Despesas dedutíveis</strong> — <Link to="/imt/" className="text-orange-600 hover:underline">IMT</Link>, Imposto de Selo, escritura, obras de valorização comprovadas nos últimos 12 anos e comissão imobiliária.</span>
+                  <span><strong className="text-gray-900">Despesas dedutíveis</strong> — <Link to="/imt/" className="text-orange-700 hover:underline">IMT</Link>, Imposto de Selo, escritura, obras de valorização comprovadas nos últimos 12 anos e comissão imobiliária.</span>
                 </li>
               </ul>
             </div>
@@ -544,7 +544,7 @@ export default function MaisValias() {
                     {Object.entries(COEFICIENTES).map(([ano, coef]) => (
                       <tr key={ano} className="hover:bg-gray-50 transition-colors">
                         <td className="px-4 py-2.5 text-gray-700">{ano}</td>
-                        <td className="px-4 py-2.5 text-right font-semibold text-orange-600">
+                        <td className="px-4 py-2.5 text-right font-semibold text-orange-700">
                           {coef.toFixed(2).replace('.', ',')}
                         </td>
                       </tr>

@@ -53,7 +53,7 @@ export default function ToolsSection() {
               className="group bg-white rounded-2xl border border-gray-200 p-8 shadow-sm hover:shadow-md hover:border-orange-200 transition-all"
             >
               <div className="bg-gradient-to-br from-orange-100 to-red-100 p-3 rounded-xl w-fit mb-5 group-hover:from-orange-200 group-hover:to-red-200 transition-colors">
-                <Icon className="h-6 w-6 text-orange-600" aria-hidden="true" />
+                <Icon className="h-6 w-6 text-orange-700" aria-hidden="true" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-orange-600 transition-colors">
                 {titulo}
@@ -61,7 +61,7 @@ export default function ToolsSection() {
               <p className="text-gray-600 text-sm leading-relaxed">
                 {descricao}
               </p>
-              <p className="mt-4 text-sm font-semibold text-orange-600 group-hover:text-orange-700 flex items-center gap-1">
+              <p className="mt-4 text-sm font-semibold text-orange-700 group-hover:text-orange-800 flex items-center gap-1">
                 Abrir calculadora
                 <span aria-hidden="true">→</span>
               </p>
@@ -72,7 +72,7 @@ export default function ToolsSection() {
           Ainda a pensar em abrir o seu Alojamento Local? Consulte o{' '}
           <a
             href="https://tudosobrealojamentolocal.pt"
-            className="text-orange-600 hover:text-orange-700 font-medium underline transition-colors"
+            className="text-orange-700 hover:text-orange-800 font-medium underline transition-colors"
           >
             guia de alojamento local em Portugal
           </a>{' '}

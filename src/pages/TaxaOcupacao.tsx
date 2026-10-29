@@ -113,7 +113,7 @@ export default function TaxaOcupacao() {
   const inputClass = 'w-full px-4 py-3 text-base border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors font-medium text-gray-900 bg-white';
   const labelClass = 'block text-sm font-semibold text-gray-700 mb-1.5';
 
-  const taxaColor = resultado.taxaAnual >= 70 ? 'text-green-600' : resultado.taxaAnual >= 50 ? 'text-orange-500' : 'text-red-500';
+  const taxaColor = resultado.taxaAnual >= 70 ? 'text-green-700' : resultado.taxaAnual >= 50 ? 'text-orange-700' : 'text-red-600';
 
   return (
     <div className="min-h-screen bg-white">
@@ -185,7 +185,7 @@ export default function TaxaOcupacao() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-orange-600 font-medium mb-8 transition-colors"
+            className="inline-flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-orange-600 font-medium mb-6 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             Voltar à Calculadora de Rentabilidade
@@ -197,7 +197,7 @@ export default function TaxaOcupacao() {
             <div>
               <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight mb-3">
                 Calculadora de Taxa de Ocupação{' '}
-                <span className="block text-orange-500">Alojamento Local</span>
+                <span className="block text-orange-600">Alojamento Local</span>
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
                 Calcule a taxa de ocupação do seu AL mês a mês, compare com os benchmarks do mercado português e descubra a receita que está a deixar escapar.
@@ -219,7 +219,7 @@ export default function TaxaOcupacao() {
               <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="bg-orange-100 p-2 rounded-lg">
-                    <Calendar className="h-5 w-5 text-orange-600" aria-hidden="true" />
+                    <Calendar className="h-5 w-5 text-orange-700" aria-hidden="true" />
                   </div>
                   <h2 className="text-lg font-bold text-gray-900">Configuração do Alojamento</h2>
                 </div>
@@ -254,7 +254,7 @@ export default function TaxaOcupacao() {
                         onFocus={e => e.target.select()}
                         className={inputClass + ' pr-16'}
                       />
-                      <span className="absolute right-4 top-3.5 text-gray-400 font-medium text-sm">dias</span>
+                      <span className="absolute right-4 top-3.5 text-gray-500 font-medium text-sm">dias</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">Exclui dias para uso próprio ou manutenção</p>
                   </div>
@@ -271,7 +271,7 @@ export default function TaxaOcupacao() {
                         onFocus={e => e.target.select()}
                         className={inputClass + ' pr-8'}
                       />
-                      <span className="absolute right-4 top-3.5 text-gray-400 font-medium text-sm">€</span>
+                      <span className="absolute right-4 top-3.5 text-gray-500 font-medium text-sm">€</span>
                     </div>
                   </div>
                 </div>
@@ -305,7 +305,7 @@ export default function TaxaOcupacao() {
                                 style={{ width: `${Math.min(100, taxa)}%` }}
                               />
                             </div>
-                            <p className="text-xs text-gray-400 mt-0.5">{pct(taxa)}</p>
+                            <p className="text-xs text-gray-500 mt-0.5">{pct(taxa)}</p>
                           </div>
                         </div>
                       </div>
@@ -383,14 +383,14 @@ export default function TaxaOcupacao() {
                   <h3 className="text-lg font-bold text-gray-900 mb-5">Potencial de Crescimento</h3>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="bg-orange-50 rounded-xl p-5 border border-orange-100">
-                      <p className="text-xs font-semibold text-orange-600 uppercase tracking-wide mb-1">Receita atual</p>
+                      <p className="text-xs font-semibold text-orange-700 uppercase tracking-wide mb-1">Receita atual</p>
                       <p className="text-2xl font-bold text-gray-900">€{fmt(resultado.receitaBruta)}</p>
                       <p className="text-sm text-gray-500 mt-1">{pct(resultado.taxaAnual)} ocupação</p>
                     </div>
                     <div className="bg-green-50 rounded-xl p-5 border border-green-100">
-                      <p className="text-xs font-semibold text-green-600 uppercase tracking-wide mb-1">Ao benchmark ({pct(resultado.benchmark.anual)})</p>
+                      <p className="text-xs font-semibold text-green-700 uppercase tracking-wide mb-1">Ao benchmark ({pct(resultado.benchmark.anual)})</p>
                       <p className="text-2xl font-bold text-gray-900">€{fmt(resultado.receitaPotencial)}</p>
-                      <p className="text-sm text-green-600 font-medium mt-1">+€{fmt(resultado.receitaPerdida)}/ano</p>
+                      <p className="text-sm text-green-700 font-medium mt-1">+€{fmt(resultado.receitaPerdida)}/ano</p>
                     </div>
                   </div>
                   <div className="mt-4 bg-blue-50 rounded-xl p-4 border border-blue-100">
@@ -411,7 +411,7 @@ export default function TaxaOcupacao() {
                   {MESES.map((mes, i) => {
                     const taxa = form.diasDisponiveis > 0 ? (form.diasOcupados[i] / form.diasDisponiveis) * 100 : 0;
                     const receita = form.diasOcupados[i] * form.precoMedio;
-                    const cor = taxa >= 70 ? 'text-green-600' : taxa >= 50 ? 'text-orange-500' : 'text-red-500';
+                    const cor = taxa >= 70 ? 'text-green-700' : taxa >= 50 ? 'text-orange-700' : 'text-red-600';
                     const barColor = taxa >= 70 ? 'bg-green-400' : taxa >= 50 ? 'bg-orange-400' : 'bg-red-400';
                     return (
                       <div key={mes} className="flex items-center gap-3 py-1.5">
@@ -473,7 +473,7 @@ export default function TaxaOcupacao() {
                   <div key={b.destino} className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
                     <div className="flex items-center justify-between mb-3">
                       <h3 className="font-bold text-gray-900">{b.destino}</h3>
-                      <span className="text-2xl font-bold text-orange-500">{b.anual}</span>
+                      <span className="text-2xl font-bold text-orange-600">{b.anual}</span>
                     </div>
                     <div className="flex gap-4 text-sm text-gray-600 mb-2">
                       <span>Verão: <strong>{b.verao}</strong></span>

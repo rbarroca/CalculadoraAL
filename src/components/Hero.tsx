@@ -17,7 +17,7 @@ export default function Hero() {
             <div className="flex flex-wrap justify-center gap-3 mb-8">
               <a
                 href="#calculator"
-                className="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white font-semibold px-7 py-3.5 rounded-xl transition-colors"
+                className="inline-flex items-center bg-orange-700 hover:bg-orange-800 text-white font-semibold px-7 py-3.5 rounded-xl transition-colors"
               >
                 Calcular agora
               </a>
@@ -58,7 +58,7 @@ export default function Hero() {
               to={to}
               className="group bg-white rounded-xl border border-gray-200 hover:border-orange-300 hover:shadow-md p-4 transition-all"
             >
-              <Icon className="h-5 w-5 text-orange-600 mb-2" aria-hidden="true" />
+              <Icon className="h-5 w-5 text-orange-700 mb-2" aria-hidden="true" />
               <span className="block text-sm font-bold text-gray-900 group-hover:text-orange-600 transition-colors">{nome}</span>
               <span className="block text-xs text-gray-600 mt-0.5">{pergunta}</span>
             </Link>

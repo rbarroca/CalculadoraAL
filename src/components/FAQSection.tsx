@@ -66,9 +66,9 @@ export default function FAQSection({ trackFAQOpen }: FAQSectionProps) {
                 <h3 className="text-lg font-bold text-gray-900 pr-6 flex-1 tracking-tight">{faq.question}</h3>
                 <div className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-orange-100" aria-hidden="true">
                   {openIndex === index ? (
-                    <ChevronUp className="h-5 w-5 text-orange-600" />
+                    <ChevronUp className="h-5 w-5 text-orange-700" />
                   ) : (
-                    <ChevronDown className="h-5 w-5 text-orange-600" />
+                    <ChevronDown className="h-5 w-5 text-orange-700" />
                   )}
                 </div>
               </button>

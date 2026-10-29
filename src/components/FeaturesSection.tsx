@@ -54,7 +54,7 @@ export default function FeaturesSection() {
               className="bg-white rounded-2xl border border-gray-200 p-10 hover:border-orange-300 hover:shadow-lg transition-all duration-300 group"
             >
               <div className="bg-gradient-to-br from-orange-100 to-red-100 w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Icon className="h-8 w-8 text-orange-600" />
+                <Icon className="h-8 w-8 text-orange-700" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3 tracking-tight">{feature.title}</h3>
               <p className="text-gray-600 text-base leading-relaxed">{feature.description}</p>

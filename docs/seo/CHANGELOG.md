@@ -91,3 +91,10 @@ nos números do Search Console. Tratar como uma única janela de mudança.
 ### Footer partilhado (2026-10-29)
 - Footer refeito em 3 colunas (marca, Ferramentas com as 5 páginas, Links úteis com o Guia, o Find a Manager AL e as preferências de cookies), linha de direitos e aviso legal. Fundo claro, contraste corrigido (antes cinzento sobre escuro, cerca de 3,7:1).
 - Porquê: ligações a todas as ferramentas em todas as páginas (SEO e descoberta) e layout igual ao do Tudo sobre AL e do Find a Manager AL. Especificação em `docs/FOOTER-SPEC.md`.
+
+### Verificação de acessibilidade e responsivo (2026-10-29)
+- Medido em script (contraste calculado sobre fundos sólidos, tamanhos de toque, títulos, etiquetas) nas 5 páginas: o laranja do texto (`orange-600`, 3,56:1), o `orange-500`, o cinzento `gray-400` dos símbolos € nos campos e o verde `green-600` não passavam 4,5:1. Passaram a `orange-700`, `orange-600` (só títulos grandes, mínimo 3:1), `gray-500` e `green-700`. Botões laranja com texto branco: `bg-orange-700`.
+- Menu "Ferramentas": o foco volta ao botão ao fechar com Escape; `aria-expanded`, `aria-controls` e `aria-current` confirmados.
+- Alvos de toque: ligações do footer e "Voltar à Calculadora..." com altura mínima de 24 px (WCAG 2.2).
+- Sem scroll horizontal em 320, 375, 768 e 1440 px; menu sempre dentro do ecrã; ordem dos títulos correta e um só H1 por página.
+- Não medido: texto branco sobre os gradientes laranja/vermelho dos cartões de resultado (o script não calcula gradientes), ícones laranja (não são texto), leitor de ecrã real.

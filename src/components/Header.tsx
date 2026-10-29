@@ -9,6 +9,7 @@ export default function Header() {
   const { pathname } = useLocation();
   const [aberto, setAberto] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const botao = useRef<HTMLButtonElement>(null);
   const atual = normalizar(pathname);
 
   useEffect(() => setAberto(false), [pathname]);
@@ -18,7 +19,11 @@ export default function Header() {
     const fora = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setAberto(false);
     };
-    const esc = (e: KeyboardEvent) => e.key === 'Escape' && setAberto(false);
+    const esc = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      setAberto(false);
+      botao.current?.focus();
+    };
     document.addEventListener('mousedown', fora);
     document.addEventListener('keydown', esc);
     return () => {
@@ -51,6 +56,7 @@ export default function Header() {
 
           <div className="relative shrink-0" ref={ref}>
             <button
+              ref={botao}
               type="button"
               onClick={() => setAberto(v => !v)}
               aria-expanded={aberto}
@@ -77,7 +83,7 @@ export default function Header() {
                       className={`flex items-center gap-3 rounded-xl px-3 py-3 transition-colors ${ativa ? 'bg-orange-50' : 'hover:bg-gray-50'}`}
                     >
                       <span className="bg-gradient-to-br from-orange-100 to-red-100 p-2 rounded-lg shrink-0">
-                        <Icon className="h-5 w-5 text-orange-600" aria-hidden="true" />
+                        <Icon className="h-5 w-5 text-orange-700" aria-hidden="true" />
                       </span>
                       <span className="min-w-0">
                         <span className={`block text-sm font-semibold ${ativa ? 'text-orange-700' : 'text-gray-900'}`}>{nome}</span>

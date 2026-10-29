@@ -64,7 +64,7 @@ export default function CookieBanner() {
           <button
             type="button"
             onClick={() => escolher('granted')}
-            className="px-5 py-2.5 text-sm font-semibold text-white bg-orange-600 hover:bg-orange-700 rounded-xl transition-colors"
+            className="px-5 py-2.5 text-sm font-semibold text-white bg-orange-700 hover:bg-orange-800 rounded-xl transition-colors"
           >
             Aceitar
           </button>

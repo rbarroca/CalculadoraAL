@@ -36,7 +36,7 @@ const COLUNAS: { titulo: string; ligacoes: Ligacao[] }[] = [
   },
 ];
 
-const linkClass = 'inline-flex items-center gap-2 text-sm text-gray-600 hover:text-orange-600 transition-colors';
+const linkClass = 'inline-flex items-center gap-2 py-1 text-sm text-gray-600 hover:text-orange-600 transition-colors';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();

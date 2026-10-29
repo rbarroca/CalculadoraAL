@@ -209,7 +209,7 @@ export default function Impostos() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-orange-600 font-medium mb-8 transition-colors"
+            className="inline-flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-orange-600 font-medium mb-6 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             Voltar à Calculadora de Rentabilidade
@@ -221,7 +221,7 @@ export default function Impostos() {
             <div>
               <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight mb-3">
                 Simulador de Impostos{' '}
-                <span className="block text-orange-500">Alojamento Local</span>
+                <span className="block text-orange-600">Alojamento Local</span>
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
                 Calcule o IRS e as obrigações de IVA do seu AL em Portugal. Compare regimes fiscais e descubra o peso dos impostos sobre a sua receita.
@@ -229,9 +229,9 @@ export default function Impostos() {
               <p className="text-sm text-gray-500 leading-relaxed max-w-2xl mt-3">
                 O Simulador de Impostos de Alojamento Local da CalculadoraAL é uma ferramenta gratuita para proprietários em Portugal. Suporta regime simplificado (coeficientes 0,35, 0,50 e 0,15) e contabilidade organizada, usa os escalões de IRS de 2026 e verifica automaticamente o limiar de IVA do artigo 53.º do CIVA.
                 Para os impostos de antes e depois do AL, veja o{' '}
-                <Link to="/imt/" className="text-orange-600 hover:underline">simulador de IMT</Link>{' '}
+                <Link to="/imt/" className="text-orange-700 hover:underline">simulador de IMT</Link>{' '}
                 na compra e o{' '}
-                <Link to="/mais-valias/" className="text-orange-600 hover:underline">simulador de mais-valias</Link>{' '}
+                <Link to="/mais-valias/" className="text-orange-700 hover:underline">simulador de mais-valias</Link>{' '}
                 na venda.
               </p>
               <div className="mt-4 flex flex-wrap gap-3">
@@ -275,9 +275,9 @@ export default function Impostos() {
                         className={inputClass + ' pr-8'}
                         aria-label="Receita bruta anual de alojamento local em euros"
                       />
-                      <span className="absolute right-4 top-3.5 text-gray-400 font-medium text-sm">€</span>
+                      <span className="absolute right-4 top-3.5 text-gray-500 font-medium text-sm">€</span>
                     </div>
-                    <p className={`text-xs mt-1 font-medium ${form.receitaAnualAL > LIMIAR_IVA ? 'text-orange-600' : 'text-gray-500'}`}>
+                    <p className={`text-xs mt-1 font-medium ${form.receitaAnualAL > LIMIAR_IVA ? 'text-orange-700' : 'text-gray-500'}`}>
                       {form.receitaAnualAL > LIMIAR_IVA
                         ? `⚠ Acima do limiar de IVA (€${fmt(LIMIAR_IVA)})`
                         : `Limiar de isenção de IVA: €${fmt(LIMIAR_IVA)}/ano`}
@@ -297,7 +297,7 @@ export default function Impostos() {
                         className={inputClass + ' pr-8'}
                         aria-label="Outros rendimentos anuais em euros"
                       />
-                      <span className="absolute right-4 top-3.5 text-gray-400 font-medium text-sm">€</span>
+                      <span className="absolute right-4 top-3.5 text-gray-500 font-medium text-sm">€</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">Usado para determinar a taxa marginal de IRS aplicável ao AL</p>
                   </div>
@@ -342,7 +342,7 @@ export default function Impostos() {
                           className={inputClass + ' pr-8'}
                           aria-label="Despesas dedutíveis em euros"
                         />
-                        <span className="absolute right-4 top-3.5 text-gray-400 font-medium text-sm">€</span>
+                        <span className="absolute right-4 top-3.5 text-gray-500 font-medium text-sm">€</span>
                       </div>
                       <p className="text-xs text-gray-500 mt-1">Limpeza, manutenção, comissões, seguros, IMI, etc.</p>
                     </div>
@@ -380,7 +380,7 @@ export default function Impostos() {
                       className={inputClass + ' pr-8'}
                       aria-label="Custos anuais com IVA incluído em euros"
                     />
-                    <span className="absolute right-4 top-3.5 text-gray-400 font-medium text-sm">€</span>
+                    <span className="absolute right-4 top-3.5 text-gray-500 font-medium text-sm">€</span>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">Limpeza, manutenção, comissões, etc. Assume IVA de {fmt(TAXA_IVA_CUSTOS * 100)}% nos custos e preço aos hóspedes com IVA de 6% incluído. Só continente.</p>
                 </div>
@@ -478,8 +478,8 @@ export default function Impostos() {
                   ].map(({ label, a, b, bold }) => (
                     <div key={label} className={`grid grid-cols-[1.6fr_1fr_1fr] gap-x-3 py-2 border-b border-gray-100 ${bold ? 'font-bold text-gray-900' : 'text-gray-600'}`}>
                       <span>{label}</span>
-                      <span className={`text-right ${!resultado.sujeitoIVAAgora ? 'text-orange-600 font-semibold' : ''}`}>{a}</span>
-                      <span className={`text-right ${resultado.sujeitoIVAAgora ? 'text-orange-600 font-semibold' : ''}`}>{b}</span>
+                      <span className={`text-right ${!resultado.sujeitoIVAAgora ? 'text-orange-700 font-semibold' : ''}`}>{a}</span>
+                      <span className={`text-right ${resultado.sujeitoIVAAgora ? 'text-orange-700 font-semibold' : ''}`}>{b}</span>
                     </div>
                   ))}
                 </div>
@@ -528,7 +528,7 @@ export default function Impostos() {
                         className={`flex justify-between py-2 border-b border-gray-100 last:border-0 ${highlight ? 'bg-orange-50 -mx-3 px-3 rounded-lg' : ''}`}
                       >
                         <span className={`text-sm ${bold ? 'font-bold text-gray-900' : 'text-gray-600'}`}>{label}</span>
-                        <span className={`text-sm font-semibold ${highlight ? 'text-orange-600' : neg ? 'text-red-600' : 'text-gray-900'}`}>{value}</span>
+                        <span className={`text-sm font-semibold ${highlight ? 'text-orange-700' : neg ? 'text-red-600' : 'text-gray-900'}`}>{value}</span>
                       </div>
                     ))}
                   </div>
@@ -569,9 +569,9 @@ export default function Impostos() {
                         className={`flex justify-between items-center py-2 px-3 rounded-lg text-sm ${ativo ? 'bg-orange-50 border border-orange-200' : ''}`}
                       >
                         <span className={ativo ? 'font-semibold text-orange-800' : 'text-gray-600'}>{rotuloEscalao(i)}</span>
-                        <span className={`font-bold ${ativo ? 'text-orange-600' : 'text-gray-700'}`}>
+                        <span className={`font-bold ${ativo ? 'text-orange-700' : 'text-gray-700'}`}>
                           {pct(e.taxa)}
-                          {ativo && <span className="text-xs ml-1 font-normal text-orange-500">(o seu escalão)</span>}
+                          {ativo && <span className="text-xs ml-1 font-normal text-orange-700">(o seu escalão)</span>}
                         </span>
                       </div>
                     );

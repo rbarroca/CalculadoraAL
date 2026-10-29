@@ -126,7 +126,7 @@ export default function IMT() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-orange-600 font-medium mb-8 transition-colors"
+            className="inline-flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-orange-600 font-medium mb-6 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             Voltar à Calculadora de Rentabilidade
@@ -138,7 +138,7 @@ export default function IMT() {
             <div>
               <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight mb-3">
                 Simulador de IMT{' '}
-                <span className="block text-orange-500">Compra de Imóvel para AL</span>
+                <span className="block text-orange-600">Compra de Imóvel para AL</span>
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
                 Calcule o IMT e o Imposto do Selo na compra do imóvel e saiba o custo total de aquisição, com as tabelas oficiais de 2026.
@@ -182,7 +182,7 @@ export default function IMT() {
                         className={inputClass + ' pr-8'}
                         aria-label="Preço de compra em euros"
                       />
-                      <span className="absolute right-4 top-3.5 text-gray-400 font-medium text-sm">€</span>
+                      <span className="absolute right-4 top-3.5 text-gray-500 font-medium text-sm">€</span>
                     </div>
                   </div>
 
@@ -199,7 +199,7 @@ export default function IMT() {
                         className={inputClass + ' pr-8'}
                         aria-label="Valor patrimonial tributário em euros"
                       />
-                      <span className="absolute right-4 top-3.5 text-gray-400 font-medium text-sm">€</span>
+                      <span className="absolute right-4 top-3.5 text-gray-500 font-medium text-sm">€</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">O imposto incide sobre o maior entre o preço e o VPT. Consulte o VPT na caderneta predial.</p>
                   </div>
@@ -349,10 +349,10 @@ export default function IMT() {
                           className={`flex justify-between items-center py-2 px-3 rounded-lg text-sm ${ativo ? 'bg-orange-50 border border-orange-200' : ''}`}
                         >
                           <span className={ativo ? 'font-semibold text-orange-800' : 'text-gray-600'}>{rotulo(i)}</span>
-                          <span className={`font-bold ${ativo ? 'text-orange-600' : 'text-gray-700'}`}>
+                          <span className={`font-bold ${ativo ? 'text-orange-700' : 'text-gray-700'}`}>
                             {pct(e.taxa)}
                             {e.abater > 0 && <span className="text-xs ml-1 font-normal text-gray-500">− €{fmt(e.abater, 2)}</span>}
-                            {ativo && <span className="text-xs ml-1 font-normal text-orange-500">(o seu escalão)</span>}
+                            {ativo && <span className="text-xs ml-1 font-normal text-orange-700">(o seu escalão)</span>}
                           </span>
                         </div>
                       );
@@ -382,11 +382,11 @@ export default function IMT() {
               <p className="text-gray-600 leading-relaxed">
                 O IMT e o Imposto do Selo fazem parte do investimento inicial e aumentam o tempo que o imóvel demora a pagar-se.
                 Some-os ao preço de compra para comparar a rentabilidade real com o arrendamento tradicional na{' '}
-                <Link to="/" className="text-orange-600 hover:underline">calculadora de rentabilidade</Link>, e
+                <Link to="/" className="text-orange-700 hover:underline">calculadora de rentabilidade</Link>, e
                 lembre-se de que são dedutíveis ao calcular as{' '}
-                <Link to="/mais-valias/" className="text-orange-600 hover:underline">mais-valias</Link> na venda.
+                <Link to="/mais-valias/" className="text-orange-700 hover:underline">mais-valias</Link> na venda.
                 Depois da compra, o{' '}
-                <Link to="/impostos/" className="text-orange-600 hover:underline">simulador de impostos do AL</Link>{' '}
+                <Link to="/impostos/" className="text-orange-700 hover:underline">simulador de impostos do AL</Link>{' '}
                 estima o IRS e o IVA sobre as rendas.
               </p>
             </div>

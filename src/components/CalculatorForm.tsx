@@ -284,7 +284,7 @@ export default function CalculatorForm({
                   </div>
                   <div className="flex justify-between items-center pt-2">
                     <span className="text-gray-900 font-bold text-base">Lucro Líquido Anual</span>
-                    <span className="text-3xl font-bold text-orange-600">€{result.netAnnualProfit.toFixed(0)}</span>
+                    <span className="text-3xl font-bold text-orange-700">€{result.netAnnualProfit.toFixed(0)}</span>
                   </div>
                 </div>
               </div>
@@ -296,7 +296,7 @@ export default function CalculatorForm({
                   <div className="bg-orange-50 rounded-xl p-6 border border-orange-100">
                     <div className="flex justify-between items-center mb-3">
                       <span className="text-base font-semibold text-gray-700">AL vs Arrendamento</span>
-                      <span className={`text-xl font-bold ${result.alAdvantage > 0 ? 'text-orange-600' : 'text-gray-600'}`}>
+                      <span className={`text-xl font-bold ${result.alAdvantage > 0 ? 'text-orange-700' : 'text-gray-600'}`}>
                         {result.alAdvantage > 0 ? '+' : ''}{result.alAdvantage.toFixed(1)}%
                       </span>
                     </div>
@@ -320,7 +320,7 @@ export default function CalculatorForm({
                   <div className="bg-green-50 rounded-xl p-6 border border-green-100">
                     <div className="flex justify-between items-center mb-3">
                       <span className="text-base font-semibold text-gray-700">Ocupação Atual</span>
-                      <span className="text-xl font-bold text-green-600">{data.occupancyRate}%</span>
+                      <span className="text-xl font-bold text-green-700">{data.occupancyRate}%</span>
                     </div>
                     <p className="text-base text-gray-600 leading-relaxed">
                       {Math.round((30 * data.occupancyRate) / 100)} dias ocupados por mês
