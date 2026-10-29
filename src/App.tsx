@@ -15,6 +15,7 @@ import FAQSection from './components/FAQSection';
 import Footer from './components/Footer';
 import ToolsSection from './components/ToolsSection';
 import PageMeta from './components/PageMeta';
+import HomeSchema from './components/HomeSchema';
 
 interface CalculatorData {
   location: string;
@@ -150,6 +151,7 @@ function App() {
         description="Descobre em 2 minutos quanto rendimento líquido gera o teu alojamento local em Portugal. Simula impostos, taxa de ocupação e mais-valias. 100% gratuito."
         canonical="https://calculadoraal.pt/"
       />
+      <HomeSchema />
       <Header />
       <Hero />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

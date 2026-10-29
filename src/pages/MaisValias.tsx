@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
 import FAQAccordion from '../components/FAQAccordion';
+import OtherTools from '../components/OtherTools';
 
 // Coeficientes de desvalorização monetária publicados pela AT (aproximados até 2025)
 const COEFICIENTES: Record<number, number> = {
@@ -781,19 +782,7 @@ export default function MaisValias() {
         ]}
       />
 
-      {/* Link para homepage */}
-      <section className="py-12 bg-gray-50 border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-gray-600 mb-4">Quer também simular a rentabilidade do seu AL antes de vender?</p>
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold px-8 py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg"
-          >
-            <Calculator className="h-5 w-5" aria-hidden="true" />
-            Calculadora de Rentabilidade AL
-          </Link>
-        </div>
-      </section>
+      <OtherTools current="mais-valias" />
 
       <Footer />
     </div>

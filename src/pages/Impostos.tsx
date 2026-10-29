@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
 import FAQAccordion from '../components/FAQAccordion';
+import OtherTools from '../components/OtherTools';
 
 // Escalões IRS 2025
 const ESCALOES = [
@@ -685,35 +686,7 @@ export default function Impostos() {
         ]}
       />
 
-      {/* Links para outras calculadoras */}
-      <section className="py-12 bg-gray-50 border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-gray-600 mb-5">Explore as outras ferramentas</p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Link
-              to="/"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold px-7 py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg"
-            >
-              <TrendingUp className="h-5 w-5" aria-hidden="true" />
-              Calculadora de Rentabilidade
-            </Link>
-            <Link
-              to="/mais-valias"
-              className="inline-flex items-center gap-2 bg-white border-2 border-gray-300 hover:border-orange-500 text-gray-900 font-semibold px-7 py-3.5 rounded-xl transition-all"
-            >
-              <FileText className="h-5 w-5 text-orange-500" aria-hidden="true" />
-              Simulador de Mais-Valias
-            </Link>
-            <Link
-              to="/taxa-ocupacao"
-              className="inline-flex items-center gap-2 bg-white border-2 border-gray-300 hover:border-orange-500 text-gray-900 font-semibold px-7 py-3.5 rounded-xl transition-all"
-            >
-              <BarChart2 className="h-5 w-5 text-orange-500" aria-hidden="true" />
-              Taxa de Ocupação
-            </Link>
-          </div>
-        </div>
-      </section>
+      <OtherTools current="impostos" />
 
       <Footer />
     </div>
