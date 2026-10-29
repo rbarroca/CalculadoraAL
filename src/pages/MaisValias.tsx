@@ -121,7 +121,7 @@ export default function MaisValias() {
   return (
     <div className="min-h-screen bg-white">
       <PageMeta
-        title="Simulador de Mais-Valias Alojamento Local — Calcule o Imposto na Venda"
+        title="Simulador de Mais-Valias Alojamento Local: Calcule o Imposto na Venda"
         description="Simule as mais-valias na venda do seu imóvel de Alojamento Local em Portugal. Coeficientes de desvalorização da AT e englobamento no IRS. Resultado em 2 minutos. Gratuito."
         canonical="https://calculadoraal.pt/mais-valias/"
       />
@@ -183,7 +183,7 @@ export default function MaisValias() {
             </div>
             <div>
               <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight mb-3">
-                Simulador de Mais-Valias
+                Simulador de Mais-Valias{' '}
                 <span className="block text-orange-500">Alojamento Local</span>
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">

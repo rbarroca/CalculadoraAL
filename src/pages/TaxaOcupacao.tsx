@@ -196,7 +196,7 @@ export default function TaxaOcupacao() {
             </div>
             <div>
               <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight mb-3">
-                Calculadora de Taxa de Ocupação
+                Calculadora de Taxa de Ocupação{' '}
                 <span className="block text-orange-500">Alojamento Local</span>
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">

@@ -205,7 +205,7 @@ export default function Impostos() {
             </div>
             <div>
               <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight mb-3">
-                Simulador de Impostos
+                Simulador de Impostos{' '}
                 <span className="block text-orange-500">Alojamento Local</span>
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">

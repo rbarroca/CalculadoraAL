@@ -149,8 +149,8 @@ function App() {
   const homePage = (
     <div className="min-h-screen bg-white">
       <PageMeta
-        title="Calcular Rendimento Alojamento Local — Simulador Gratuito | CalculadoraAL"
-        description="Descobre em 2 minutos quanto rendimento líquido gera o teu alojamento local em Portugal. Simula impostos, taxa de ocupação e mais-valias. 100% gratuito."
+        title="Calcular Rendimento Alojamento Local: Simulador Gratuito | CalculadoraAL"
+        description="Descubra em 2 minutos quanto rendimento líquido gera o seu alojamento local em Portugal. Simule impostos, IMT, taxa de ocupação e mais-valias. 100% gratuito."
         canonical="https://calculadoraal.pt/"
       />
       <HomeSchema />

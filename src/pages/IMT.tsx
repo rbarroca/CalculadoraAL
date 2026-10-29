@@ -137,7 +137,7 @@ export default function IMT() {
             </div>
             <div>
               <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight mb-3">
-                Simulador de IMT
+                Simulador de IMT{' '}
                 <span className="block text-orange-500">Compra de Imóvel para AL</span>
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
