@@ -87,3 +87,7 @@ nos números do Search Console. Tratar como uma única janela de mudança.
 - Dados partilhados em `src/data/ferramentas.ts`. Ver `AUDITORIA-UX-2026-10-29.md`.
 - Por medir depois: páginas por sessão e cliques no menu (sem dados ainda, o GA só mede quem aceita cookies). Ligações em todas as páginas ajudam também a `/imt/`.
 - Ainda por fazer da auditoria: migalhas de pão e "próxima ferramenta" depois do resultado.
+
+### Footer partilhado (2026-10-29)
+- Footer refeito em 3 colunas (marca, Ferramentas com as 5 páginas, Links úteis com o Guia, o Find a Manager AL e as preferências de cookies), linha de direitos e aviso legal. Fundo claro, contraste corrigido (antes cinzento sobre escuro, cerca de 3,7:1).
+- Porquê: ligações a todas as ferramentas em todas as páginas (SEO e descoberta) e layout igual ao do Tudo sobre AL e do Find a Manager AL. Especificação em `docs/FOOTER-SPEC.md`.
