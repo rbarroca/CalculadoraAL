@@ -8,9 +8,8 @@ import PageMeta from '../components/PageMeta';
 import FAQAccordion from '../components/FAQAccordion';
 import OtherTools from '../components/OtherTools';
 import { ESCALOES_IRS, impostoMarginal } from '../data/irs';
+import { LIMIAR_IVA, LIMIAR_IVA_IMEDIATO, TAXA_IVA_ALOJAMENTO, TAXA_IVA_CUSTOS, calcularIVA, limiteCustosRegimeNormal, type ResultadoIVA } from '../data/iva';
 
-const LIMIAR_IVA = 15000; // artigo 53.º CIVA (valor em vigor em 2026)
-const LIMIAR_IVA_IMEDIATO = LIMIAR_IVA * 1.25; // acima disto a saída da isenção é imediata
 
 // Coeficientes do regime simplificado (art. 31.º CIRS)
 const COEFICIENTES: Record<string, { label: string; valor: number; descricao: string }> = {
@@ -40,6 +39,7 @@ interface FormData {
   outrosRendimentos: number;
   regime: string;
   pagaIVA: boolean;
+  custosComIVA: number; // custos anuais com IVA incluído, para estimar o IVA recuperável
   deducoesDespesas: number; // só no regime contabilidade organizada
 }
 
@@ -49,14 +49,20 @@ interface Resultado {
   impostoIRS: number;
   taxaEfetivaSobreReceita: number;
   alertaIVA: boolean;
+  sujeitoIVAAgora: boolean;
+  receitaIRS: number; // receita que conta para o IRS (sem IVA, se já estiver no regime normal)
+  iva: ResultadoIVA;
   receitaLiquida: number;
 }
 
 function calcular(f: FormData): Resultado {
   const coef = COEFICIENTES[f.regime];
+  // No regime normal de IVA, o IVA incluído no preço não é rendimento do AL
+  const sujeitoIVAAgora = f.pagaIVA || f.receitaAnualAL > LIMIAR_IVA_IMEDIATO;
+  const receitaIRS = sujeitoIVAAgora ? f.receitaAnualAL / (1 + TAXA_IVA_ALOJAMENTO) : f.receitaAnualAL;
   const receitaTrib = f.regime === 'contab_organizada'
-    ? Math.max(0, f.receitaAnualAL - f.deducoesDespesas)
-    : f.receitaAnualAL * coef.valor;
+    ? Math.max(0, receitaIRS - f.deducoesDespesas)
+    : receitaIRS * coef.valor;
 
   const impostoIRS = impostoMarginal(receitaTrib, f.outrosRendimentos);
 
@@ -66,7 +72,10 @@ function calcular(f: FormData): Resultado {
     impostoIRS,
     taxaEfetivaSobreReceita: f.receitaAnualAL > 0 ? impostoIRS / f.receitaAnualAL : 0,
     alertaIVA: f.receitaAnualAL > LIMIAR_IVA && !f.pagaIVA,
-    receitaLiquida: f.receitaAnualAL - impostoIRS,
+    sujeitoIVAAgora,
+    receitaIRS,
+    iva: calcularIVA(f.receitaAnualAL, f.custosComIVA),
+    receitaLiquida: receitaIRS - impostoIRS,
   };
 }
 
@@ -81,7 +90,7 @@ function rotuloEscalao(i: number): string {
 const FAQ_ITEMS = [
   {
     question: 'Como funciona o simulador de IVA para alojamento local?',
-    answer: 'O simulador compara a sua receita bruta anual de AL com o limiar de isenção de IVA (€15.000 em 2026, artigo 53.º do CIVA) e avisa se o ultrapassar. Acima deste valor deixa de poder beneficiar da isenção e passa a liquidar IVA à taxa de 6% sobre os serviços de alojamento. Insira a receita bruta anual no campo acima para obter o resultado imediato.'
+    answer: 'O simulador compara a sua receita bruta anual de AL com o limiar de isenção de IVA (€15.000 em 2026, artigo 53.º do CIVA) e avisa se o ultrapassar. Com os seus custos anuais, estima ainda o IVA liquidado a 6%, o IVA recuperável nos custos e compara o resultado na isenção e no regime normal. Insira a receita bruta e os custos nos campos acima para obter o resultado imediato.'
   },
   {
     question: 'Qual é o limiar de IVA para alojamento local em Portugal?',
@@ -90,6 +99,10 @@ const FAQ_ITEMS = [
   {
     question: 'A CEAL ainda existe?',
     answer: 'Não. A Contribuição Extraordinária sobre o Alojamento Local (CEAL) foi criada em 2023 pelo programa Mais Habitação e revogada em 2024 pelo Decreto-Lei n.º 57/2024, de 10 de setembro, ao abrigo da Lei n.º 35/2024. Por isso, o simulador já não a inclui.'
+  },
+  {
+    question: 'Compensa estar no regime normal de IVA no alojamento local?',
+    answer: 'No regime normal liquida 6% sobre o alojamento, mas recupera o IVA dos custos, em regra a 23%. Em termos simples, compensa quando os custos com IVA a 23% passam de cerca de 30% da receita. Na isenção não liquida nem recupera IVA. Abaixo de €15.000 a isenção aplica-se automaticamente, por isso confirme com um contabilista se pode optar pelo regime normal. O simulador mostra as duas situações lado a lado.'
   },
   {
     question: 'Quando sou obrigado a pagar IVA no alojamento local?',
@@ -131,6 +144,7 @@ export default function Impostos() {
     outrosRendimentos: 22000,
     regime: 'al_moradia',
     pagaIVA: false,
+    custosComIVA: 5000,
     deducoesDespesas: 5000,
   });
 
@@ -153,7 +167,7 @@ export default function Impostos() {
     <div className="min-h-screen bg-white">
       <PageMeta
         title="Simulador de Impostos Alojamento Local: IRS e IVA em Portugal 2026"
-        description="Simule o IRS e o IVA do seu Alojamento Local em Portugal. Calcule o imposto a pagar no regime simplificado ou na contabilidade organizada e veja se ultrapassou o limiar de IVA (€15.000). Gratuito."
+        description="Simule o IRS e o IVA do seu Alojamento Local em Portugal: imposto no regime simplificado ou na contabilidade organizada, IVA liquidado e recuperável, e o limiar de IVA (€15.000). Gratuito."
         canonical="https://calculadoraal.pt/impostos/"
       />
       <Helmet>
@@ -173,6 +187,7 @@ export default function Impostos() {
           "featureList": [
             "Cálculo de IRS Categoria B (regime simplificado e contabilidade organizada)",
             "Verificação do limiar de IVA (artigo 53.º CIVA)",
+            "Comparação do resultado na isenção de IVA e no regime normal",
             "Comparação entre regimes fiscais",
             "Escalões de IRS e coeficientes atualizados para 2026"
           ]
@@ -346,6 +361,24 @@ export default function Impostos() {
                     <p className="text-xs text-gray-500 mt-0.5">Se faturar mais de €{fmt(LIMIAR_IVA)}/ano, a inscrição no IVA é obrigatória (taxa 6% para alojamento)</p>
                   </div>
                 </label>
+
+                <div className="mt-5">
+                  <label className={labelClass} htmlFor="custosIVA">Custos anuais com IVA incluído</label>
+                  <div className="relative">
+                    <input
+                      id="custosIVA"
+                      type="number"
+                      min={0}
+                      value={form.custosComIVA || ''}
+                      onChange={e => set('custosComIVA', Number(e.target.value))}
+                      onFocus={e => e.target.select()}
+                      className={inputClass + ' pr-8'}
+                      aria-label="Custos anuais com IVA incluído em euros"
+                    />
+                    <span className="absolute right-4 top-3.5 text-gray-400 font-medium text-sm">€</span>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">Limpeza, manutenção, comissões, etc. Assume IVA de {fmt(TAXA_IVA_CUSTOS * 100)}% nos custos e preço aos hóspedes com IVA de 6% incluído. Só continente.</p>
+                </div>
               </div>
 
               {/* Nota */}
@@ -413,6 +446,53 @@ export default function Impostos() {
                 </div>
               )}
 
+              {/* IVA no AL */}
+              <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
+                <h3 className="text-lg font-bold text-gray-900 mb-1">IVA no AL: isenção ou regime normal</h3>
+                <p className="text-sm text-gray-500 mb-5">
+                  {form.pagaIVA
+                    ? 'Está enquadrado no regime normal de IVA.'
+                    : form.receitaAnualAL > LIMIAR_IVA_IMEDIATO
+                      ? `A receita ultrapassa €${fmt(LIMIAR_IVA_IMEDIATO)}: o regime normal aplica-se já este ano.`
+                      : form.receitaAnualAL > LIMIAR_IVA
+                        ? 'Isento este ano. O regime normal aplica-se a partir de 1 de janeiro do ano seguinte.'
+                        : 'Isento ao abrigo do artigo 53.º do CIVA: não liquida nem deduz IVA.'}
+                </p>
+                <div className="text-sm">
+                  <div className="grid grid-cols-[1.6fr_1fr_1fr] gap-x-3 pb-2 border-b border-gray-200 font-semibold text-gray-700">
+                    <span></span>
+                    <span className="text-right">Isenção</span>
+                    <span className="text-right">Regime normal</span>
+                  </div>
+                  {[
+                    { label: 'Receita cobrada aos hóspedes', a: `€${fmt(form.receitaAnualAL)}`, b: `€${fmt(form.receitaAnualAL)}` },
+                    { label: 'IVA liquidado (6%, incluído no preço)', a: '—', b: `− €${fmt(resultado.iva.liquidado)}` },
+                    { label: 'Custos pagos (com IVA)', a: `− €${fmt(form.custosComIVA)}`, b: `− €${fmt(form.custosComIVA)}` },
+                    { label: 'IVA recuperado nos custos', a: '—', b: `+ €${fmt(resultado.iva.recuperavel)}` },
+                    { label: 'Resultado antes de IRS', a: `€${fmt(resultado.iva.resultadoIsento)}`, b: `€${fmt(resultado.iva.resultadoNormal)}`, bold: true },
+                  ].map(({ label, a, b, bold }) => (
+                    <div key={label} className={`grid grid-cols-[1.6fr_1fr_1fr] gap-x-3 py-2 border-b border-gray-100 ${bold ? 'font-bold text-gray-900' : 'text-gray-600'}`}>
+                      <span>{label}</span>
+                      <span className={`text-right ${!resultado.sujeitoIVAAgora ? 'text-orange-600 font-semibold' : ''}`}>{a}</span>
+                      <span className={`text-right ${resultado.sujeitoIVAAgora ? 'text-orange-600 font-semibold' : ''}`}>{b}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 bg-gray-50 rounded-xl p-4 border border-gray-100 space-y-2">
+                  <p className="text-sm text-gray-800">
+                    {resultado.iva.diferenca >= 0
+                      ? `Com estes custos, o regime normal deixa-lhe mais €${fmt(resultado.iva.diferenca)} por ano, antes de IRS.`
+                      : `Com estes custos, a isenção deixa-lhe mais €${fmt(Math.abs(resultado.iva.diferenca))} por ano, antes de IRS.`}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    Regra prática: o regime normal compensa quando os custos com IVA a {fmt(TAXA_IVA_CUSTOS * 100)}% passam de cerca de {fmt(limiteCustosRegimeNormal() * 100)}% da receita. {resultado.iva.aEntregar < 0 ? `IVA a recuperar no regime normal: €${fmt(Math.abs(resultado.iva.aEntregar))}.` : `IVA a entregar no regime normal: €${fmt(resultado.iva.aEntregar)}.`}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    Não inclui IVA não dedutível, pro-rata nem a autoliquidação que as comissões de plataformas estrangeiras podem implicar. Se pode optar pelo regime normal abaixo do limiar, confirme com um contabilista.
+                  </p>
+                </div>
+              </div>
+
               {/* Detalhe do cálculo */}
               <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
                 <h3 className="text-lg font-bold text-gray-900 mb-5">Detalhe do Cálculo</h3>
@@ -423,6 +503,7 @@ export default function Impostos() {
                   <div className="space-y-2.5">
                     {[
                       { label: 'Receita bruta AL', value: `€${fmt(form.receitaAnualAL)}` },
+                      ...(resultado.sujeitoIVAAgora ? [{ label: 'Receita sem IVA (6% incluído)', value: `€${fmt(resultado.receitaIRS)}` }] : []),
                       {
                         label: isContab
                           ? 'Despesas dedutíveis'
@@ -452,7 +533,7 @@ export default function Impostos() {
                 <div className="pt-4 border-t border-gray-200">
                   <div className="bg-gray-50 rounded-xl p-5 space-y-3">
                     {[
-                      { label: 'Receita bruta AL', value: `€${fmt(form.receitaAnualAL)}` },
+                      { label: resultado.sujeitoIVAAgora ? 'Receita sem IVA' : 'Receita bruta AL', value: `€${fmt(resultado.receitaIRS)}` },
                       { label: 'IRS sobre AL', value: `− €${fmt(resultado.impostoIRS)}`, neg: true },
                     ].map(({ label, value, neg }) => (
                       <div key={label} className="flex justify-between">
