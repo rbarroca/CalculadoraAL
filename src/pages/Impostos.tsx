@@ -1,95 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FileText, ArrowLeft, Info, TrendingUp, BarChart2, AlertTriangle, CheckCircle } from 'lucide-react';
+import { FileText, ArrowLeft, Info, AlertTriangle, CheckCircle } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
 import FAQAccordion from '../components/FAQAccordion';
 import OtherTools from '../components/OtherTools';
+import { ESCALOES_IRS, impostoMarginal } from '../data/irs';
 
-// Escalões IRS 2025
-const ESCALOES = [
-  { limite: 7703,    taxa: 0.1300, label: 'até €7.703'        },
-  { limite: 11623,   taxa: 0.1800, label: '€7.703 – €11.623'  },
-  { limite: 16472,   taxa: 0.2300, label: '€11.623 – €16.472' },
-  { limite: 21321,   taxa: 0.2600, label: '€16.472 – €21.321' },
-  { limite: 27146,   taxa: 0.3275, label: '€21.321 – €27.146' },
-  { limite: 39791,   taxa: 0.3700, label: '€27.146 – €39.791' },
-  { limite: 51997,   taxa: 0.4350, label: '€39.791 – €51.997' },
-  { limite: 81199,   taxa: 0.4500, label: '€51.997 – €81.199' },
-  { limite: Infinity, taxa: 0.4800, label: 'acima de €81.199' },
-];
+const LIMIAR_IVA = 15000; // artigo 53.º CIVA (valor em vigor em 2026)
+const LIMIAR_IVA_IMEDIATO = LIMIAR_IVA * 1.25; // acima disto a saída da isenção é imediata
+
+// Coeficientes do regime simplificado (art. 31.º CIRS)
+const COEFICIENTES: Record<string, { label: string; valor: number; descricao: string }> = {
+  al_moradia: {
+    label: 'AL em moradia ou apartamento',
+    valor: 0.35,
+    descricao: 'Coeficiente 0,35 sobre a receita bruta'
+  },
+  al_contencao: {
+    label: 'AL em moradia ou apartamento, em área de contenção',
+    valor: 0.50,
+    descricao: 'Coeficiente 0,50 sobre a receita bruta (art. 31.º, n.º 1, al. h) do CIRS)'
+  },
+  al_quartos: {
+    label: 'AL em quartos (estabelecimento de hospedagem)',
+    valor: 0.15,
+    descricao: 'Coeficiente 0,15 sobre a receita bruta'
+  },
+};
 
 function taxaMarginal(rendimento: number): number {
-  for (const e of ESCALOES) {
-    if (rendimento <= e.limite) return e.taxa;
-  }
-  return 0.48;
+  return (ESCALOES_IRS.find(e => rendimento <= e.limite) ?? ESCALOES_IRS[ESCALOES_IRS.length - 1]).taxa;
 }
-
-function impostoProgressivo(rendimento: number): number {
-  let imposto = 0;
-  let anterior = 0;
-  for (const e of ESCALOES) {
-    if (rendimento <= anterior) break;
-    const trib = Math.min(rendimento, e.limite) - anterior;
-    imposto += trib * e.taxa;
-    anterior = e.limite;
-  }
-  return imposto;
-}
-
-const LIMIAR_IVA = 14500; // artigo 53.º CIVA (valor 2025)
-
-// Coeficientes regime simplificado (art. 31.º CIRS)
-const COEFICIENTES: Record<string, { label: string; valor: number; descricao: string }> = {
-  al_urbano: {
-    label: 'AL em zona urbana/pressão',
-    valor: 0.35,
-    descricao: 'Coeficiente 0,35 aplica-se a rendimentos de AL em regime simplificado'
-  },
-  al_rural: {
-    label: 'AL em área rural / interior',
-    valor: 0.35,
-    descricao: 'Coeficiente 0,35 aplica-se; CEAL com taxa reduzida'
-  },
-  turismo_rural: {
-    label: 'Turismo rural / TER',
-    valor: 0.15,
-    descricao: 'Coeficiente 0,15 para turismo no espaço rural (art. 31.º n.º 1 b)'
-  },
-};
-
-// Taxas CEAL (Contribuição Extraordinária sobre o Alojamento Local)
-const CEAL_TAXAS: Record<string, { label: string; taxa: number; descricao: string }> = {
-  pressao_alta: {
-    label: 'Zona de pressão habitacional (ex: Lisboa, Porto)',
-    taxa: 0.15,
-    descricao: 'Municípios declarados como zonas de pressão habitacional'
-  },
-  pressao_media: {
-    label: 'Município com pressão moderada',
-    taxa: 0.10,
-    descricao: 'Municípios com pressão habitacional moderada'
-  },
-  sem_pressao: {
-    label: 'Zona interior / sem pressão habitacional',
-    taxa: 0.04,
-    descricao: 'Interior e municípios fora de zonas de pressão'
-  },
-  isento: {
-    label: 'Isento (ex: habitação própria, imóvel novo)',
-    taxa: 0,
-    descricao: 'Isenção aplicável em determinadas situações (art. 21.º Lei 56/2023)'
-  },
-};
 
 interface FormData {
   receitaAnualAL: number;
   outrosRendimentos: number;
   regime: string;
-  zonaCEAL: string;
   pagaIVA: boolean;
   deducoesDespesas: number; // só no regime contabilidade organizada
 }
@@ -98,9 +47,6 @@ interface Resultado {
   rendimentoTributavelIRS: number;
   baseIRS: number;
   impostoIRS: number;
-  taxaMarginalEfetiva: number;
-  ceal: number;
-  totalImposto: number;
   taxaEfetivaSobreReceita: number;
   alertaIVA: boolean;
   receitaLiquida: number;
@@ -112,35 +58,64 @@ function calcular(f: FormData): Resultado {
     ? Math.max(0, f.receitaAnualAL - f.deducoesDespesas)
     : f.receitaAnualAL * coef.valor;
 
-  const baseIRS = f.outrosRendimentos + receitaTrib;
-  const impostoTotal = impostoProgressivo(baseIRS);
-  const impostoSoOutros = impostoProgressivo(f.outrosRendimentos);
-  const impostoIRS = impostoTotal - impostoSoOutros;
-
-  const taxaEfetiva = receitaTrib > 0 ? impostoIRS / receitaTrib : 0;
-
-  const ceal = f.receitaAnualAL * CEAL_TAXAS[f.zonaCEAL].taxa;
-  const total = impostoIRS + ceal;
+  const impostoIRS = impostoMarginal(receitaTrib, f.outrosRendimentos);
 
   return {
     rendimentoTributavelIRS: receitaTrib,
-    baseIRS,
+    baseIRS: f.outrosRendimentos + receitaTrib,
     impostoIRS,
-    taxaMarginalEfetiva: taxaEfetivaSobreReceita(receitaTrib, f.outrosRendimentos),
-    ceal,
-    totalImposto: total,
-    taxaEfetivaSobreReceita: f.receitaAnualAL > 0 ? total / f.receitaAnualAL : 0,
+    taxaEfetivaSobreReceita: f.receitaAnualAL > 0 ? impostoIRS / f.receitaAnualAL : 0,
     alertaIVA: f.receitaAnualAL > LIMIAR_IVA && !f.pagaIVA,
-    receitaLiquida: f.receitaAnualAL - total,
+    receitaLiquida: f.receitaAnualAL - impostoIRS,
   };
 }
 
-function taxaEfetivaSobreReceita(rendAL: number, outrosRend: number): number {
-  if (rendAL === 0) return 0;
-  const total = impostoProgressivo(outrosRend + rendAL);
-  const soOutros = impostoProgressivo(outrosRend);
-  return (total - soOutros) / rendAL;
+function rotuloEscalao(i: number): string {
+  const inferior = i === 0 ? 0 : ESCALOES_IRS[i - 1].limite;
+  const { limite } = ESCALOES_IRS[i];
+  if (i === 0) return `até €${fmt(limite)}`;
+  if (limite === Infinity) return `acima de €${fmt(inferior)}`;
+  return `€${fmt(inferior)} – €${fmt(limite)}`;
 }
+
+const FAQ_ITEMS = [
+  {
+    question: 'Como funciona o simulador de IVA para alojamento local?',
+    answer: 'O simulador compara a sua receita bruta anual de AL com o limiar de isenção de IVA (€15.000 em 2026, artigo 53.º do CIVA) e avisa se o ultrapassar. Acima deste valor deixa de poder beneficiar da isenção e passa a liquidar IVA à taxa de 6% sobre os serviços de alojamento. Insira a receita bruta anual no campo acima para obter o resultado imediato.'
+  },
+  {
+    question: 'Qual é o limiar de IVA para alojamento local em Portugal?',
+    answer: 'Em 2026, o limiar de isenção de IVA é de €15.000 de volume de negócios anual (artigo 53.º do CIVA). Abaixo deste valor está isento: não cobra IVA, mas também não o pode deduzir nos custos. Acima, passa a liquidar 6% sobre os serviços de alojamento e pode deduzir o IVA dos custos operacionais (plataformas, limpeza, etc.).'
+  },
+  {
+    question: 'A CEAL ainda existe?',
+    answer: 'Não. A Contribuição Extraordinária sobre o Alojamento Local (CEAL) foi criada em 2023 pelo programa Mais Habitação e revogada em 2024 pelo Decreto-Lei n.º 57/2024, de 10 de setembro, ao abrigo da Lei n.º 35/2024. Por isso, o simulador já não a inclui.'
+  },
+  {
+    question: 'Quando sou obrigado a pagar IVA no alojamento local?',
+    answer: 'É obrigado a enquadrar-se no regime de IVA quando o volume de negócios anual de AL ultrapassa €15.000 (artigo 53.º do CIVA, valor de 2026). A taxa de IVA para serviços de alojamento é de 6%. Se ultrapassar €15.000 mas não €18.750 (limiar + 25%), o regime normal de IVA aplica-se a partir de 1 de janeiro do ano seguinte; acima de €18.750, a saída da isenção é imediata. Confirme a sua situação com um contabilista.'
+  },
+  {
+    question: 'Qual a diferença entre regime simplificado e contabilidade organizada no AL?',
+    answer: 'No regime simplificado, aplica-se um coeficiente à receita bruta para determinar o rendimento tributável: 0,35 num AL em moradia ou apartamento (0,50 se estiver em área de contenção) e 0,15 num AL em quartos. É simples, mas sem dedução de custos reais. Na contabilidade organizada, deduzem-se os custos efetivos (limpeza, plataformas, seguros, manutenção). Compensa quando os custos reais superam 65% da receita (50% em área de contenção e 85% no caso dos quartos).'
+  },
+  {
+    question: 'Como se calcula o IRS do alojamento local?',
+    answer: 'No regime simplificado, num AL em moradia ou apartamento: receita bruta × 0,35 = rendimento tributável. Este valor soma-se aos outros rendimentos do ano e aplica-se a tabela progressiva de IRS (de 12,2% a 48% em 2026, no continente). O simulador acima calcula o IRS com base na sua receita e nos seus outros rendimentos.'
+  },
+  {
+    question: 'Quanto IRS pago num alojamento local?',
+    answer: 'Um AL em apartamento com €20.000/ano de receita, em regime simplificado, tem um rendimento tributável de €20.000 × 0,35 = €7.000. Se não tiver outros rendimentos, o IRS é de cerca de €854 (12,2% no 1.º escalão), ou seja, 4,3% da receita. Com outros rendimentos, o imposto sobe, porque o AL entra em escalões mais altos. Use o simulador acima para calcular o valor com os seus dados.'
+  },
+  {
+    question: 'Como declarar o alojamento local no IRS?',
+    answer: 'Os rendimentos de AL declaram-se como rendimentos empresariais e profissionais (Categoria B): no Anexo B, no regime simplificado, ou no Anexo C, na contabilidade organizada. A declaração entrega-se de abril a junho do ano seguinte.'
+  },
+  {
+    question: 'O alojamento local paga sempre IVA?',
+    answer: 'Não. Está isento de IVA enquanto o volume de negócios anual não ultrapassar €15.000 (artigo 53.º do CIVA, valor de 2026). Acima deste limiar, o AL passa a liquidar IVA à taxa de 6% sobre os serviços de alojamento. A vantagem de ser sujeito passivo de IVA é poder deduzir o IVA dos custos operacionais (limpeza, plataformas, etc.).'
+  }
+];
 
 function fmt(n: number): string {
   return n.toLocaleString('pt-PT', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
@@ -154,8 +129,7 @@ export default function Impostos() {
   const [form, setForm] = useState<FormData>({
     receitaAnualAL: 18000,
     outrosRendimentos: 22000,
-    regime: 'al_urbano',
-    zonaCEAL: 'pressao_alta',
+    regime: 'al_moradia',
     pagaIVA: false,
     deducoesDespesas: 5000,
   });
@@ -178,8 +152,8 @@ export default function Impostos() {
   return (
     <div className="min-h-screen bg-white">
       <PageMeta
-        title="Simulador IVA Alojamento Local — IRS, CEAL e IVA em Portugal 2025"
-        description="Simule o IVA, IRS e CEAL do seu Alojamento Local em Portugal. Calcule automaticamente se ultrapassou o limiar de IVA (€14.500), o imposto a pagar e o regime mais vantajoso. Gratuito."
+        title="Simulador de Impostos Alojamento Local: IRS e IVA em Portugal 2026"
+        description="Simule o IRS e o IVA do seu Alojamento Local em Portugal. Calcule o imposto a pagar no regime simplificado ou na contabilidade organizada e veja se ultrapassou o limiar de IVA (€15.000). Gratuito."
         canonical="https://calculadoraal.pt/impostos/"
       />
       <Helmet>
@@ -195,92 +169,22 @@ export default function Impostos() {
             "price": "0",
             "priceCurrency": "EUR"
           },
-          "description": "Simulador gratuito que calcula IRS Categoria B, CEAL e obrigações de IVA do Alojamento Local em Portugal, com suporte para regime simplificado e contabilidade organizada.",
+          "description": "Simulador gratuito que calcula IRS Categoria B e obrigações de IVA do Alojamento Local em Portugal, com suporte para regime simplificado e contabilidade organizada.",
           "featureList": [
             "Cálculo de IRS Categoria B (regime simplificado e contabilidade organizada)",
-            "Simulação da CEAL com taxas por município",
             "Verificação do limiar de IVA (artigo 53.º CIVA)",
             "Comparação entre regimes fiscais",
-            "Coeficientes atualizados para 2025"
+            "Escalões de IRS e coeficientes atualizados para 2026"
           ]
         })}</script>
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "Como funciona o simulador de IVA para alojamento local?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "O simulador verifica automaticamente se a sua receita bruta anual de AL ultrapassa o limiar de isenção de IVA (€14.500 em 2025, artigo 53.º do CIVA). Se ultrapassar, calcula o IVA à taxa de 6% sobre os serviços de alojamento e mostra o impacto na receita líquida. Insira a receita bruta anual no campo acima para obter o resultado imediato."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Qual é o limiar de IVA para alojamento local em Portugal?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Em 2025, o limiar de isenção de IVA é €14.500 de faturação anual (artigo 53.º do CIVA). Abaixo deste valor está isento — não cobra nem paga IVA. Acima deste valor, é obrigatório registar-se no regime de IVA e liquidar 6% sobre os serviços de alojamento. A vantagem é poder deduzir o IVA dos custos operacionais (plataformas, limpeza, etc.)."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "O que é a CEAL e quem tem de pagar?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "A CEAL (Contribuição Extraordinária sobre o Alojamento Local) foi criada em 2023 e incide sobre a receita bruta anual do AL. A taxa varia entre 4% (zonas sem pressão habitacional) e 15% (Lisboa, Porto e outros municípios de alta pressão). Estão isentos imóveis em habitação própria permanente e imóveis em zonas do interior."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Quando sou obrigado a pagar IVA no alojamento local?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "É obrigado a registar-se no regime de IVA quando a faturação anual de AL ultrapassa €14.500 (limiar de isenção do artigo 53.º do CIVA em 2025). A taxa de IVA para serviços de alojamento é de 6%. Abaixo deste valor, está isento mas não pode deduzir IVA dos custos."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Qual a diferença entre regime simplificado e contabilidade organizada no AL?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "No regime simplificado, aplica-se o coeficiente 0,35 à receita bruta para determinar o rendimento tributável — simples mas sem dedução de custos reais. Na contabilidade organizada, deduzem-se os custos efetivos (limpeza, plataformas, seguros, manutenção). Compensa quando os custos reais superam 65% da receita."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Como se calcula o IRS do alojamento local?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "No regime simplificado: Receita bruta × 0,35 = Rendimento tributável AL. Este valor soma-se aos outros rendimentos do ano e aplica-se a tabela progressiva de IRS (13% a 48%). O simulador acima calcula automaticamente o IRS, CEAL e obrigações de IVA com base na sua receita e localização."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Quanto IRS pago num alojamento local em Lisboa?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Em Lisboa (zona de alta pressão), um AL com €20.000/ano de receita paga em regime simplificado: Rendimento tributável = €20.000 × 0,35 = €7.000; IRS sobre €7.000 ≈ €910 (escalão 13%); CEAL = €20.000 × 15% = €3.000. Total de impostos sobre receita: cerca de €3.910 (19,6%). Use o simulador para calcular o valor exato com os seus dados."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Como declarar o alojamento local no IRS?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Os rendimentos de AL declaram-se no Anexo B do IRS (rendimentos empresariais e profissionais, Categoria B). No regime simplificado, preenche o quadro 4 com a receita bruta — o AT aplica automaticamente o coeficiente 0,35. Na contabilidade organizada, entrega o Anexo C com o resultado apurado pelo contabilista. O prazo de entrega é abril/junho do ano seguinte."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "O alojamento local paga sempre IVA?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Não. Está isento de IVA enquanto a faturação anual não ultrapassar €14.500 (artigo 53.º CIVA, valor de 2025). Acima deste limiar, o AL passa a liquidar IVA à taxa de 6% sobre os serviços de alojamento e é obrigado a emitir fatura com IVA. A vantagem de ser sujeito passivo de IVA é poder deduzir o IVA dos custos operacionais."
-              }
-            }
-          ]
+          "mainEntity": FAQ_ITEMS.map(({ question, answer }) => ({
+            "@type": "Question",
+            "name": question,
+            "acceptedAnswer": { "@type": "Answer", "text": answer }
+          }))
         })}</script>
       </Helmet>
       <Header />
@@ -305,20 +209,20 @@ export default function Impostos() {
                 <span className="block text-orange-500">Alojamento Local</span>
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
-                Calcule o IRS, CEAL e obrigações de IVA do seu AL em Portugal. Compare regimes fiscais e descubra o peso total dos impostos sobre a sua receita.
+                Calcule o IRS e as obrigações de IVA do seu AL em Portugal. Compare regimes fiscais e descubra o peso dos impostos sobre a sua receita.
               </p>
               <p className="text-sm text-gray-500 leading-relaxed max-w-2xl mt-3">
-                O Simulador de Impostos de Alojamento Local da CalculadoraAL é uma ferramenta gratuita para proprietários em Portugal. Suporta regime simplificado (coeficiente 0,35) e contabilidade organizada, calcula a CEAL por município com taxas 2025, e verifica automaticamente o limiar de IVA do artigo 53.º do CIVA.
+                O Simulador de Impostos de Alojamento Local da CalculadoraAL é uma ferramenta gratuita para proprietários em Portugal. Suporta regime simplificado (coeficientes 0,35, 0,50 e 0,15) e contabilidade organizada, usa os escalões de IRS de 2026 e verifica automaticamente o limiar de IVA do artigo 53.º do CIVA.
               </p>
               <div className="mt-4 flex flex-wrap gap-3">
                 <span className="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-200 text-orange-700 text-sm font-medium px-3 py-1.5 rounded-full">
                   ✓ Simulador de IVA incluído
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-200 text-orange-700 text-sm font-medium px-3 py-1.5 rounded-full">
-                  ✓ Limiar €14.500 calculado automaticamente
+                  ✓ Limiar €15.000 calculado automaticamente
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-200 text-orange-700 text-sm font-medium px-3 py-1.5 rounded-full">
-                  ✓ Coeficientes IRS 2025
+                  ✓ Escalões IRS 2026
                 </span>
               </div>
             </div>
@@ -399,7 +303,7 @@ export default function Impostos() {
                     </select>
                     {!isContab && (
                       <p className="text-xs text-gray-500 mt-1">
-                        {COEFICIENTES[form.regime]?.descricao} — coeficiente {COEFICIENTES[form.regime]?.valor}
+                        {COEFICIENTES[form.regime]?.descricao}
                       </p>
                     )}
                   </div>
@@ -423,32 +327,6 @@ export default function Impostos() {
                       <p className="text-xs text-gray-500 mt-1">Limpeza, manutenção, comissões, seguros, IMI, etc.</p>
                     </div>
                   )}
-                </div>
-              </div>
-
-              {/* CEAL */}
-              <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
-                <div className="flex items-center gap-2 mb-1">
-                  <h2 className="text-lg font-bold text-gray-900">CEAL</h2>
-                  <span className="text-xs bg-orange-100 text-orange-700 font-semibold px-2 py-0.5 rounded-full">Desde 2023</span>
-                </div>
-                <p className="text-sm text-gray-500 mb-5">Contribuição Extraordinária sobre o Alojamento Local</p>
-                <div>
-                  <label className={labelClass} htmlFor="zonaCEAL">Classificação do município</label>
-                  <select
-                    id="zonaCEAL"
-                    value={form.zonaCEAL}
-                    onChange={e => set('zonaCEAL', e.target.value)}
-                    className={inputClass}
-                  >
-                    {Object.entries(CEAL_TAXAS).map(([k, v]) => (
-                      <option key={k} value={k}>{v.label}</option>
-                    ))}
-                  </select>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {CEAL_TAXAS[form.zonaCEAL].descricao}
-                    {CEAL_TAXAS[form.zonaCEAL].taxa > 0 && ` — taxa ${pct(CEAL_TAXAS[form.zonaCEAL].taxa, 0)} sobre a receita bruta`}
-                  </p>
                 </div>
               </div>
 
@@ -477,7 +355,7 @@ export default function Impostos() {
                   <div>
                     <p className="text-sm font-semibold text-blue-800 mb-1">Simulação indicativa</p>
                     <p className="text-sm text-blue-700 leading-relaxed">
-                      Valores calculados com base na legislação fiscal de 2025 (IRS, CEAL). Não inclui deduções à coleta, segurança social, IMI adicional municipal nem situações de isenção específicas. Consulte um contabilista certificado para a sua situação concreta.
+                      Valores calculados com base na legislação fiscal de 2026 (IRS, continente). Taxas do 1.º ao 6.º escalão reduzidas pela Lei n.º 64-B/2026, a aguardar decreto-lei. Não inclui deduções à coleta, segurança social, IMI e AIMI nem situações de isenção específicas. Consulte um contabilista certificado para a sua situação concreta.
                     </p>
                   </div>
                 </div>
@@ -489,8 +367,8 @@ export default function Impostos() {
 
               {/* Resumo principal */}
               <div className="bg-gradient-to-br from-orange-500 via-red-500 to-red-600 rounded-2xl p-8 shadow-lg text-white">
-                <p className="text-orange-100 font-semibold text-sm uppercase tracking-wider mb-1">Total de Impostos Estimado</p>
-                <p className="text-5xl font-bold mb-1">€{fmt(resultado.totalImposto)}</p>
+                <p className="text-orange-100 font-semibold text-sm uppercase tracking-wider mb-1">IRS Estimado</p>
+                <p className="text-5xl font-bold mb-1">€{fmt(resultado.impostoIRS)}</p>
                 <p className="text-orange-100 text-sm">
                   {pct(resultado.taxaEfetivaSobreReceita)} da receita bruta de AL
                 </p>
@@ -502,11 +380,9 @@ export default function Impostos() {
                     <p className="text-orange-200 text-xs">taxa marginal {pct(taxaMarginal(resultado.baseIRS))}</p>
                   </div>
                   <div className="bg-white/10 rounded-xl p-4 backdrop-blur-sm">
-                    <p className="text-orange-100 text-xs font-medium mb-1">CEAL</p>
-                    <p className="text-white font-bold text-xl">€{fmt(resultado.ceal)}</p>
-                    <p className="text-orange-200 text-xs">
-                      {CEAL_TAXAS[form.zonaCEAL].taxa > 0 ? pct(CEAL_TAXAS[form.zonaCEAL].taxa, 0) + ' sobre receita bruta' : 'isento'}
-                    </p>
+                    <p className="text-orange-100 text-xs font-medium mb-1">Rendimento tributável AL</p>
+                    <p className="text-white font-bold text-xl">€{fmt(resultado.rendimentoTributavelIRS)}</p>
+                    <p className="text-orange-200 text-xs">soma-se aos outros rendimentos</p>
                   </div>
                 </div>
               </div>
@@ -519,7 +395,7 @@ export default function Impostos() {
                     <div>
                       <p className="font-bold text-orange-800 mb-1">Atenção: limiar de IVA ultrapassado</p>
                       <p className="text-sm text-orange-700">
-                        A sua receita anual (€{fmt(form.receitaAnualAL)}) ultrapassa o limiar de isenção de IVA (€{fmt(LIMIAR_IVA)}). É obrigatório o enquadramento no regime de IVA com taxa de 6% para serviços de alojamento. Contacte um contabilista para regularizar a sua situação.
+                        A sua receita anual (€{fmt(form.receitaAnualAL)}) ultrapassa o limiar de isenção de IVA (€{fmt(LIMIAR_IVA)}). Deixa de poder beneficiar da isenção e passa a liquidar IVA à taxa de 6% sobre os serviços de alojamento. {form.receitaAnualAL > LIMIAR_IVA_IMEDIATO ? `Como ultrapassa €${fmt(LIMIAR_IVA_IMEDIATO)} (limiar + 25%), a saída da isenção é imediata.` : `Como não ultrapassa €${fmt(LIMIAR_IVA_IMEDIATO)} (limiar + 25%), o regime normal de IVA aplica-se a partir de 1 de janeiro do ano seguinte.`} Contacte um contabilista para confirmar a sua situação.
                       </p>
                     </div>
                   </div>
@@ -572,35 +448,12 @@ export default function Impostos() {
                   </div>
                 </div>
 
-                {/* CEAL */}
-                {CEAL_TAXAS[form.zonaCEAL].taxa > 0 && (
-                  <div className="mb-6 pt-4 border-t border-gray-100">
-                    <p className="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wide">CEAL</p>
-                    <div className="space-y-2.5">
-                      {[
-                        { label: 'Receita bruta AL', value: `€${fmt(form.receitaAnualAL)}` },
-                        { label: `Taxa CEAL (${pct(CEAL_TAXAS[form.zonaCEAL].taxa, 0)})`, value: `×${pct(CEAL_TAXAS[form.zonaCEAL].taxa, 0)}` },
-                        { label: 'CEAL a pagar', value: `€${fmt(resultado.ceal)}`, highlight: true },
-                      ].map(({ label, value, highlight }) => (
-                        <div
-                          key={label}
-                          className={`flex justify-between py-2 border-b border-gray-100 last:border-0 ${highlight ? 'bg-orange-50 -mx-3 px-3 rounded-lg' : ''}`}
-                        >
-                          <span className="text-sm text-gray-600">{label}</span>
-                          <span className={`text-sm font-semibold ${highlight ? 'text-orange-600' : 'text-gray-900'}`}>{value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
                 {/* Resumo final */}
                 <div className="pt-4 border-t border-gray-200">
                   <div className="bg-gray-50 rounded-xl p-5 space-y-3">
                     {[
                       { label: 'Receita bruta AL', value: `€${fmt(form.receitaAnualAL)}` },
                       { label: 'IRS sobre AL', value: `− €${fmt(resultado.impostoIRS)}`, neg: true },
-                      { label: 'CEAL', value: `− €${fmt(resultado.ceal)}`, neg: true },
                     ].map(({ label, value, neg }) => (
                       <div key={label} className="flex justify-between">
                         <span className="text-sm text-gray-600">{label}</span>
@@ -620,18 +473,18 @@ export default function Impostos() {
 
               {/* Escalões IRS de referência */}
               <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
-                <h3 className="text-lg font-bold text-gray-900 mb-5">Escalões IRS 2025</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-5">Escalões IRS 2026</h3>
                 <div className="space-y-2">
-                  {ESCALOES.filter(e => e.limite !== Infinity || resultado.baseIRS > 51997).map(e => {
-                    const ativo = resultado.baseIRS > (ESCALOES[ESCALOES.indexOf(e) - 1]?.limite ?? 0) && resultado.baseIRS <= (e.limite === Infinity ? Infinity : e.limite);
+                  {ESCALOES_IRS.map((e, i) => {
+                    const ativo = resultado.baseIRS > (ESCALOES_IRS[i - 1]?.limite ?? 0) && resultado.baseIRS <= e.limite;
                     return (
                       <div
-                        key={e.label}
+                        key={e.limite}
                         className={`flex justify-between items-center py-2 px-3 rounded-lg text-sm ${ativo ? 'bg-orange-50 border border-orange-200' : ''}`}
                       >
-                        <span className={ativo ? 'font-semibold text-orange-800' : 'text-gray-600'}>{e.label}</span>
+                        <span className={ativo ? 'font-semibold text-orange-800' : 'text-gray-600'}>{rotuloEscalao(i)}</span>
                         <span className={`font-bold ${ativo ? 'text-orange-600' : 'text-gray-700'}`}>
-                          {pct(e.taxa, 0)}
+                          {pct(e.taxa)}
                           {ativo && <span className="text-xs ml-1 font-normal text-orange-500">(o seu escalão)</span>}
                         </span>
                       </div>
@@ -646,44 +499,7 @@ export default function Impostos() {
 
       <FAQAccordion
         title="Perguntas Frequentes sobre Impostos AL"
-        items={[
-          {
-            question: 'Como funciona o simulador de IVA para alojamento local?',
-            answer: 'O simulador verifica automaticamente se a sua receita bruta anual de AL ultrapassa o limiar de isenção de IVA (€14.500 em 2025, artigo 53.º do CIVA). Se ultrapassar, calcula o IVA à taxa de 6% sobre os serviços de alojamento e mostra o impacto na receita líquida. Insira a receita bruta anual no campo acima para obter o resultado imediato.'
-          },
-          {
-            question: 'Qual é o limiar de IVA para alojamento local em Portugal?',
-            answer: 'Em 2025, o limiar de isenção de IVA é €14.500 de faturação anual (artigo 53.º do CIVA). Abaixo deste valor está isento — não cobra nem paga IVA. Acima deste valor, é obrigatório registar-se no regime de IVA e liquidar 6% sobre os serviços de alojamento. A vantagem é poder deduzir o IVA dos custos operacionais (plataformas, limpeza, etc.).'
-          },
-          {
-            question: 'O que é a CEAL e quem tem de pagar?',
-            answer: 'A CEAL (Contribuição Extraordinária sobre o Alojamento Local) foi criada em 2023 e incide sobre a receita bruta anual do AL. A taxa varia entre 4% (zonas sem pressão habitacional) e 15% (Lisboa, Porto e outros municípios de alta pressão). Estão isentos imóveis em habitação própria permanente e imóveis em zonas do interior.'
-          },
-          {
-            question: 'Quando sou obrigado a pagar IVA no alojamento local?',
-            answer: 'É obrigado a registar-se no regime de IVA quando a faturação anual de AL ultrapassa €14.500 (limiar de isenção do artigo 53.º do CIVA em 2025). A taxa de IVA para serviços de alojamento é de 6%. Abaixo deste valor, está isento mas não pode deduzir IVA dos custos.'
-          },
-          {
-            question: 'Qual a diferença entre regime simplificado e contabilidade organizada no AL?',
-            answer: 'No regime simplificado, aplica-se o coeficiente 0,35 à receita bruta para determinar o rendimento tributável — simples mas sem dedução de custos reais. Na contabilidade organizada, deduzem-se os custos efetivos (limpeza, plataformas, seguros, manutenção). Compensa quando os custos reais superam 65% da receita.'
-          },
-          {
-            question: 'Como se calcula o IRS do alojamento local?',
-            answer: 'No regime simplificado: Receita bruta × 0,35 = Rendimento tributável AL. Este valor soma-se aos outros rendimentos do ano e aplica-se a tabela progressiva de IRS (13% a 48%). O simulador acima calcula automaticamente o IRS, CEAL e obrigações de IVA com base na sua receita e localização.'
-          },
-          {
-            question: 'Quanto IRS pago num alojamento local em Lisboa?',
-            answer: 'Em Lisboa (zona de alta pressão), um AL com €20.000/ano de receita paga em regime simplificado: Rendimento tributável = €20.000 × 0,35 = €7.000; IRS sobre €7.000 ≈ €910; CEAL = €20.000 × 15% = €3.000. Total: cerca de €3.910 (19,6% da receita). Use o simulador acima para calcular o valor exato com os seus dados.'
-          },
-          {
-            question: 'Como declarar o alojamento local no IRS?',
-            answer: 'Os rendimentos de AL declaram-se no Anexo B do IRS (Categoria B — rendimentos empresariais e profissionais). No regime simplificado, preenche o quadro 4 com a receita bruta — o AT aplica automaticamente o coeficiente 0,35. Na contabilidade organizada, entrega o Anexo C com o resultado apurado pelo contabilista. O prazo de entrega é abril a junho do ano seguinte.'
-          },
-          {
-            question: 'O alojamento local paga sempre IVA?',
-            answer: 'Não. Está isento de IVA enquanto a faturação anual não ultrapassar €14.500 (artigo 53.º CIVA, 2025). Acima deste limiar, o AL passa a liquidar IVA à taxa de 6% sobre os serviços de alojamento. A vantagem de ser sujeito passivo de IVA é poder deduzir o IVA dos custos operacionais (limpeza, plataformas, etc.).'
-          }
-        ]}
+        items={FAQ_ITEMS}
       />
 
       <OtherTools current="impostos" />

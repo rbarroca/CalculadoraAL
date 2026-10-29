@@ -21,7 +21,7 @@ const ferramentas = [
     to: '/impostos/',
     icon: FileText,
     titulo: 'Simulador de Impostos AL',
-    descricao: 'Calcule IRS (Categoria B), CEAL e obrigações de IVA. Compare o regime simplificado com contabilidade organizada.',
+    descricao: 'Calcule o IRS (Categoria B) e as obrigações de IVA. Compare o regime simplificado com contabilidade organizada.',
     query: 'simulador impostos alojamento local',
   },
 ];

@@ -7,6 +7,7 @@ import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
 import FAQAccordion from '../components/FAQAccordion';
 import OtherTools from '../components/OtherTools';
+import { impostoMarginal } from '../data/irs';
 
 // Coeficientes de desvalorização da moeda para bens alienados em 2026
 // Fonte: Portaria n.º 457/2026/1, de 15 de outubro (ano de aquisição -> coeficiente)
@@ -24,40 +25,6 @@ function getCoeficiente(ano: number): number {
   if (ano >= 2025) return 1.00;
   if (ano <= 1995) return COEFICIENTES[1995];
   return COEFICIENTES[ano] ?? 1.00;
-}
-
-// Escalões IRS 2026, continente (rendimento coletável e taxa normal).
-// Limites: OE2026 (Lei n.º 73-A/2025). Taxas: tabela reduzida do 1.º ao 6.º escalão
-// aprovada em outubro de 2026 (Lei n.º 64-B/2026), com efeitos a 1 de janeiro.
-const ESCALOES_IRS = [
-  { limite: 8342, taxa: 0.122 },
-  { limite: 12587, taxa: 0.152 },
-  { limite: 17838, taxa: 0.207 },
-  { limite: 23089, taxa: 0.236 },
-  { limite: 29397, taxa: 0.306 },
-  { limite: 43090, taxa: 0.346 },
-  { limite: 46566, taxa: 0.431 },
-  { limite: 86634, taxa: 0.446 },
-  { limite: Infinity, taxa: 0.48 },
-];
-
-function calcularImpostoMarginal(rendimentoColectavel: number, rendimentoOutros: number): number {
-  const base = rendimentoOutros + rendimentoColectavel;
-  let impostoTotal = 0;
-  let anterior = 0;
-  for (const escalao of ESCALOES_IRS) {
-    if (rendimentoOutros >= escalao.limite) {
-      anterior = escalao.limite;
-      continue;
-    }
-    const inicio = Math.max(anterior, rendimentoOutros);
-    const fim = Math.min(escalao.limite, base);
-    if (fim <= inicio) break;
-    impostoTotal += (fim - inicio) * escalao.taxa;
-    anterior = escalao.limite;
-    if (base <= escalao.limite) break;
-  }
-  return impostoTotal;
 }
 
 interface FormData {
@@ -97,7 +64,7 @@ function calcular(f: FormData): Resultado | null {
   const maisValiaTributavel = Math.max(0, maisValiaBreuta * 0.5);
 
   // Englobamento obrigatório aos restantes rendimentos, às taxas progressivas do IRS
-  const imposto = calcularImpostoMarginal(maisValiaTributavel, f.rendimentoAnualOutros);
+  const imposto = impostoMarginal(maisValiaTributavel, f.rendimentoAnualOutros);
   const taxaEfetiva = maisValiaTributavel > 0 ? imposto / maisValiaTributavel : 0;
 
   const lucroLiquido = f.valorRealizacao - f.valorAquisicao - despesasAquisicao - despesasAlienacao - imposto;
@@ -400,7 +367,7 @@ export default function MaisValias() {
                   <div>
                     <p className="text-sm font-semibold text-blue-800 mb-1">Nota informativa</p>
                     <p className="text-sm text-blue-700 leading-relaxed">
-                      Simulação baseada no regime geral de mais-valias (Categoria G, CIRS). Para imóveis registados como AL que tenham beneficiado de deduções específicas, consulte um contabilista. Escalões do continente para 2026. Não inclui o adicional de solidariedade nem deduções à coleta. Valores meramente indicativos.
+                      Simulação baseada no regime geral de mais-valias (Categoria G, CIRS). Para imóveis registados como AL que tenham beneficiado de deduções específicas, consulte um contabilista. Escalões do continente para 2026. Taxas do 1.º ao 6.º escalão reduzidas pela Lei n.º 64-B/2026, a aguardar decreto-lei. Não inclui o adicional de solidariedade nem deduções à coleta. Valores meramente indicativos.
                     </p>
                   </div>
                 </div>

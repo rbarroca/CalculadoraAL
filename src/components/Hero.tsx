@@ -10,7 +10,7 @@ export default function Hero() {
               Calcular Rendimento de Alojamento Local
             </h1>
             <p className="text-xl lg:text-2xl text-gray-600 mb-12 font-light leading-relaxed max-w-2xl mx-auto">
-              Simulador gratuito para proprietários e investidores em Portugal. Calcule receitas, custos e lucro líquido do seu AL, simule IRS e CEAL, e compare com arrendamento tradicional — com dados atualizados para Lisboa, Porto, Algarve e mais.
+              Simulador gratuito para proprietários e investidores em Portugal. Calcule receitas, custos e lucro líquido do seu AL, simule o IRS, e compare com arrendamento tradicional — com dados atualizados para Lisboa, Porto, Algarve e mais.
             </p>
             <div className="flex flex-wrap justify-center gap-6">
               <div className="flex items-center gap-2.5 text-gray-700">

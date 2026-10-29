@@ -12,7 +12,7 @@ const faqData = [
   },
   {
     question: 'Como simular os impostos de alojamento local?',
-    answer: 'No AL paga IRS sobre os rendimentos (coeficiente 0,35 no regime simplificado), CEAL (Contribuição Extraordinária AL) entre 4% e 15% conforme a zona, e IVA se faturar mais de €14.500/ano. O nosso simulador de impostos AL calcula automaticamente cada encargo.'
+    answer: 'No AL paga IRS sobre os rendimentos (coeficiente 0,35 no regime simplificado, num AL em moradia ou apartamento fora de áreas de contenção) e IVA se o volume de negócios anual ultrapassar €15.000. A CEAL (Contribuição Extraordinária AL) foi revogada em 2024. O nosso simulador de impostos AL calcula o IRS e verifica o limiar de IVA.'
   },
   {
     question: 'O AL é mais rentável do que o arrendamento tradicional?',
@@ -20,7 +20,7 @@ const faqData = [
   },
   {
     question: 'Como calcular a rentabilidade de um imóvel para arrendamento?',
-    answer: 'A rentabilidade bruta do arrendamento calcula-se dividindo a renda anual pelo valor do imóvel. Para a rentabilidade líquida, desconte IRS (28% sobre rendas), IMI, manutenção e seguros. Compare sempre com o cenário AL para escolher a melhor opção.'
+    answer: 'A rentabilidade bruta do arrendamento calcula-se dividindo a renda anual pelo valor do imóvel. Para a rentabilidade líquida, desconte IRS (taxa autónoma de 25% sobre rendas, com taxas reduzidas em contratos de renda moderada), IMI, manutenção e seguros. Compare sempre com o cenário AL para escolher a melhor opção.'
   },
   {
     question: 'Como calcular a taxa de ocupação de um alojamento local?',
