@@ -79,3 +79,11 @@ nos números do Search Console. Tratar como uma única janela de mudança.
   IMT -> calculadora de rentabilidade, mais-valias e impostos; mais-valias -> IMT (duas vezes) e impostos; impostos -> IMT e mais-valias.
 - Porquê: ligações contextuais com texto âncora descritivo ajudam o Google a perceber a relação entre páginas e a descobrir `/imt/`, que é nova.
 - Ainda por fazer: alargar `/mais-valias/` para "venda de casa", página de rendas, e rever o guia do tudosobrealojamentolocal.pt.
+
+### Navegação e descoberta das ferramentas (2026-10-29)
+- Header: logótipo e nome passam a ligar à home; menu "Ferramentas" com as 5 ferramentas e uma pergunta por ferramenta (as ligações estão sempre no HTML, o menu fecha com Escape ou clique fora); header mais baixo (69 px no telemóvel, antes 127 px).
+- Hero: botões "Calcular agora" e "Ver todas as ferramentas" e 4 cartões das ferramentas logo abaixo do Hero (antes só a 66% da página). Título do Hero mais pequeno no telemóvel.
+- Salto de teclado corrigido (aponta para `#calculator` na home e `#calculadora` nas outras páginas).
+- Dados partilhados em `src/data/ferramentas.ts`. Ver `AUDITORIA-UX-2026-10-29.md`.
+- Por medir depois: páginas por sessão e cliques no menu (sem dados ainda, o GA só mede quem aceita cookies). Ligações em todas as páginas ajudam também a `/imt/`.
+- Ainda por fazer da auditoria: migalhas de pão e "próxima ferramenta" depois do resultado.
